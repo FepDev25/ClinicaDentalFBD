@@ -1,0 +1,34 @@
+.parent{
+    -fx-background-color: white;
+}
+
+.sidebar{
+    -fx-background-color: #98DBF9;
+}
+
+.inputs{
+    -fx-border-color: #98DBF9;
+}
+
+.boton{
+    -fx-background-color: #98DBF9;
+    -fx-font-weight: bold;
+    -fx-cursor:hand
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(#98DBF9, #50C2F5); 
+}
+
+.check_b{
+    -fx-background-color: #98DBF9;
+}
+
+.check_b:hover {
+    -fx-background-color: linear-gradient(#98DBF9, #50C2F5); 
+}
+
+.sombra {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.7), 10, 0, 0, 1);
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.7), 20, 0, 0, 0);
+}
