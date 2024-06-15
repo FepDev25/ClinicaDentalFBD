@@ -113,7 +113,7 @@ public class PrimaryController implements Initializable {
             if (ver_password.getText().isEmpty()){
                 message.errorMessage("Ingresar una contrasenia.");
             } else{
-                password_ingresado = password.getText();
+                password_ingresado = ver_password.getText();
                 datos.add(password_ingresado);
             } 
         }
