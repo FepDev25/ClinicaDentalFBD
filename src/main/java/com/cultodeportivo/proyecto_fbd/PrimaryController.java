@@ -16,10 +16,14 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import com.cultodeportivo.Modelos.*;
+import com.cultodeportivo.Control.Control;
 
 public class PrimaryController implements Initializable {
 
     private List<String> tiposEmpleados = Arrays.asList("Administrativo", "General");
+    private ArrayList<Usuario> usuarios;
+    private Control controlador;
     private AlertMessage message = new AlertMessage();
 
     @FXML
@@ -30,7 +34,11 @@ public class PrimaryController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        controlador = new Control();
+        usuarios = controlador.obtenerUsuarios();
         combo_usuario.setItems(FXCollections.observableArrayList(tiposEmpleados));
+        
+        System.out.println(usuarios);
     }
 
 
@@ -73,6 +81,7 @@ public class PrimaryController implements Initializable {
             boolean validar_comboBox = validar_combo();
             if (validar_comboBox){
                 if (validar_informacion(datos)) {
+                    message.confirmationMessage("Bienvenido " + datos.get(0) + "! Inicio de sesion con exito.");
                     switchToSecondary();
                 } else{
                     message.errorMessage("Informacion Incorrecta.");
