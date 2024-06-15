@@ -1,10 +1,10 @@
 package com.cultodeportivo.Control;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import com.cultodeportivo.Modelos.*;
+import java.sql.Statement;
 
 public class Operaciones {
     private ConexionOracle conexion;
@@ -15,12 +15,17 @@ public class Operaciones {
 
     public ArrayList<Usuario> obtenerUsuarios() {
         ArrayList<Usuario> usuarios = new ArrayList<>();
+        System.out.println("Iniciando metodo");
+        
         try (Connection conn = this.conexion.getConexion()) {
-
+            
             String sql = "SELECT * FROM CD_USUARIOS";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            ResultSet rs = pstmt.executeQuery();
+            System.out.println(sql);
+            Statement myStatement = conn.createStatement();
 
+            ResultSet rs = myStatement.executeQuery(sql);
+            System.out.println("Obtenido");
+            System.out.println(rs);
             while (rs.next()) {
                 int usrId = rs.getInt("usr_id");
                 String usrNombre = rs.getString("usr_nombre");
@@ -34,8 +39,9 @@ public class Operaciones {
             }
             return usuarios;
         } catch (Exception e) {
-            System.err.println(e);
+            System.err.println("Error al obtener usuarios: " + e.getMessage());
+            e.printStackTrace(); // Imprime la traza completa para facilitar la depuración
         }
-        return usuarios;
+        return null;
     }
 }

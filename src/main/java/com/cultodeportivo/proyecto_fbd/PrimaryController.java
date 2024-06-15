@@ -37,8 +37,6 @@ public class PrimaryController implements Initializable {
         controlador = new Control();
         usuarios = controlador.obtenerUsuarios();
         combo_usuario.setItems(FXCollections.observableArrayList(tiposEmpleados));
-        
-        System.out.println(usuarios);
     }
 
 
@@ -75,6 +73,8 @@ public class PrimaryController implements Initializable {
     }
 
     public void iniciar_sesion() throws IOException  { 
+        System.out.println(usuarios);
+        
         ArrayList<String> datos = validar_ingresos();
         
         if (datos.size() == 2){
