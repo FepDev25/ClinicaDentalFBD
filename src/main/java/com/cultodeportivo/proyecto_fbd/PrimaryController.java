@@ -72,9 +72,7 @@ public class PrimaryController implements Initializable {
         }        
     }
 
-    public void iniciar_sesion() throws IOException  { 
-        System.out.println(usuarios);
-        
+    public void iniciar_sesion() throws IOException  {         
         ArrayList<String> datos = validar_ingresos();
         
         if (datos.size() == 2){
@@ -84,7 +82,7 @@ public class PrimaryController implements Initializable {
                     message.confirmationMessage("Bienvenido " + datos.get(0) + "! Inicio de sesion con exito.");
                     switchToSecondary();
                 } else{
-                    message.errorMessage("Informacion Incorrecta.");
+                    message.errorMessage("Error al Iniciar sesi'on: Credenciales Incorrectas.");
                 }
                 
             } else{
@@ -133,9 +131,9 @@ public class PrimaryController implements Initializable {
     private boolean validar_combo() {
         try {
             if (combo_usuario.getValue().equals("Administrativo")) {
-                message.successMessage("Entrando como Admin...");
+                message.successMessage("Entrando con permiso Administrativo...");
             } else if (combo_usuario.getValue().equals("General")) {
-                message.successMessage("Entrando como General...");              
+                message.successMessage("Entrando con permiso General...");              
             }
             return true;
         } catch (NullPointerException e) {
@@ -145,12 +143,28 @@ public class PrimaryController implements Initializable {
    
     // A nivel de base de datos
     private boolean validar_informacion (ArrayList<String> datos){
-        System.out.println(datos.get(0));
-        System.out.println(datos.get(1));
-
-        if (datos.get(0).equals("Felipe") && datos.get(1).equals("12345")) {
-            return true;
+        String usuario_ingresado = datos.get(0);
+        String password_ingresado = datos.get(1);
+        char permiso_char = combo_usuario.getValue().equals("Administrativo") ? 'A' : 'G';
+        
+        for (Usuario user : usuarios){
+            String nombre_x = user.getUsrNombre();
+            String password_x = user.getUsrContrasenia();
+            char permiso_x = user.getUsrPermiso();
+            
+            if (usuario_ingresado.equals(nombre_x)){
+                if (password_ingresado.equals(password_x)){
+                    if (permiso_char == permiso_x){
+                        return true;
+                    } else{
+                        message.errorMessage("Permiso Incorrecto.");
+                    }
+                } else{
+                    message.errorMessage("Contrasenia Incorrecta.");
+                }
+            }
         }
+        
         return false;
     }
     @FXML

@@ -58,8 +58,10 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Usuario{" + "usrId=" + usrId + ", usrNombre=" + usrNombre + ", usrContrasenia=" + usrContrasenia + '}';
+        return "Usuario{" + "usrId=" + usrId + ", usrNombre=" + usrNombre + ", usrContrasenia=" + usrContrasenia + ", usrPermiso=" + usrPermiso + ", empId=" + empId + '}';
     }
+
+    
     
     
 

@@ -3,6 +3,8 @@ package com.cultodeportivo.Control;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ConexionOracle {
     private static final String URL = "jdbc:oracle:thin:@localhost:1521:xe"; // Ajusta esto según tu configuración
@@ -26,7 +28,7 @@ public class ConexionOracle {
     }
 
     public static ConexionOracle getInstance() {
-        if (instancia == null) {
+        if (instancia == null ) {
             System.out.println("Creando conexion...");
             instancia = new ConexionOracle();
         }
@@ -34,6 +36,13 @@ public class ConexionOracle {
     }
 
     public Connection getConexion() {
+        try {
+            if (this.conexion.isClosed()){
+                instancia = new ConexionOracle();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ConexionOracle.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return this.conexion;
     }
 }
