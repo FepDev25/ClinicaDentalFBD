@@ -18,6 +18,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import com.cultodeportivo.Modelos.*;
 import com.cultodeportivo.Control.Control;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.paint.Color;
 
 public class PrimaryController implements Initializable {
 
@@ -34,6 +36,9 @@ public class PrimaryController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        DropShadow shadow = new DropShadow(40, Color.valueOf("#0058FF"));
+        nombre.setEffect(shadow);
+        bienvenida.setEffect(shadow);
         controlador = new Control();
         usuarios = controlador.obtenerUsuarios();
         combo_usuario.setItems(FXCollections.observableArrayList(tiposEmpleados));
@@ -79,10 +84,10 @@ public class PrimaryController implements Initializable {
             boolean validar_comboBox = validar_combo();
             if (validar_comboBox){
                 if (validar_informacion(datos)) {
-                    message.confirmationMessage("Bienvenido " + datos.get(0) + "! Inicio de sesion con exito.");
+                    message.confirmationMessage("Bienvenido " + datos.get(0) + "! Inicio de sesión con exito.");
                     switchToSecondary();
                 } else{
-                    message.errorMessage("Error al Iniciar sesi'on: Credenciales Incorrectas.");
+                    message.errorMessage("Error al Iniciar sesión: Credenciales Incorrectas.");
                 }
                 
             } else{
@@ -169,6 +174,6 @@ public class PrimaryController implements Initializable {
     }
     @FXML
     private void switchToSecondary() throws IOException {
-        App.setRoot("secondary");
+        App.setRoot("secondary",1100, 650);
     }
 }

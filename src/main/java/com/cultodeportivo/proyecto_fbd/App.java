@@ -8,7 +8,6 @@ import javafx.stage.Stage;
 import com.cultodeportivo.Control.*;
 import java.io.IOException;
 
-
 public class App extends Application {
 
     private static Scene scene;
@@ -20,8 +19,10 @@ public class App extends Application {
         stage.show();
     }
 
-    static void setRoot(String fxml) throws IOException {
+    static void setRoot(String fxml, int width, int height) throws IOException {
         scene.setRoot(loadFXML(fxml));
+        scene.getWindow().setWidth(width);
+        scene.getWindow().setHeight(height);
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
