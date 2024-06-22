@@ -23,7 +23,12 @@ import javafx.scene.paint.Color;
 
 public class PrimaryController implements Initializable {
 
-    private List<String> tiposEmpleados = Arrays.asList("Administrativo", "General");
+    private List<String> permisosEmpleados = new ArrayList<>();
+    private ArrayList<Persona> personas;
+    private ArrayList<Permiso> permisos;
+    private ArrayList<Tipo> tipos;
+    private ArrayList<Empleado> empleados;
+    private ArrayList<Cliente> clientes;
     private ArrayList<Usuario> usuarios;
     private Control controlador;
     private AlertMessage message = new AlertMessage();
@@ -40,8 +45,11 @@ public class PrimaryController implements Initializable {
         nombre.setEffect(shadow);
         bienvenida.setEffect(shadow);
         controlador = new Control();
-        usuarios = controlador.obtenerUsuarios();
-        combo_usuario.setItems(FXCollections.observableArrayList(tiposEmpleados));
+        
+        if (obtenerPermisos()){
+            combo_usuario.setItems(FXCollections.observableArrayList(permisosEmpleados));
+        }
+        obtenerData();
     }
 
 
@@ -84,7 +92,7 @@ public class PrimaryController implements Initializable {
             boolean validar_comboBox = validar_combo();
             if (validar_comboBox){
                 if (validar_informacion(datos)) {
-                    message.confirmationMessage("Bienvenido " + datos.get(0) + "! Inicio de sesión con exito.");
+                    message.successMessage("Bienvenido " + datos.get(0) + "! Inicio de sesión con exito.");
                     switchToSecondary();
                 } else{
                     message.errorMessage("Error al Iniciar sesión: Credenciales Incorrectas.");
@@ -135,8 +143,8 @@ public class PrimaryController implements Initializable {
 
     private boolean validar_combo() {
         try {
-            if (combo_usuario.getValue().equals("Administrativo")) {
-                message.successMessage("Entrando con permiso Administrativo...");
+            if (combo_usuario.getValue().equals("Administrador")) {
+                message.successMessage("Entrando con permiso Administrador...");
             } else if (combo_usuario.getValue().equals("General")) {
                 message.successMessage("Entrando con permiso General...");              
             }
@@ -150,16 +158,16 @@ public class PrimaryController implements Initializable {
     private boolean validar_informacion (ArrayList<String> datos){
         String usuario_ingresado = datos.get(0);
         String password_ingresado = datos.get(1);
-        char permiso_char = combo_usuario.getValue().equals("Administrativo") ? 'A' : 'G';
+        String permiso = combo_usuario.getValue();
         
         for (Usuario user : usuarios){
             String nombre_x = user.getUsrNombre();
             String password_x = user.getUsrContrasenia();
-            char permiso_x = user.getUsrPermiso();
+            String permiso_x = user.getPermiso().getPrmTipo();
             
             if (usuario_ingresado.equals(nombre_x)){
                 if (password_ingresado.equals(password_x)){
-                    if (permiso_char == permiso_x){
+                    if (permiso.equals(permiso_x)){
                         return true;
                     } else{
                         message.errorMessage("Permiso Incorrecto.");
@@ -172,6 +180,28 @@ public class PrimaryController implements Initializable {
         
         return false;
     }
+    
+    private boolean obtenerPermisos(){
+        permisos = controlador.obtenerPermisos();
+        permisos.forEach(p -> permisosEmpleados.add(p.getPrmTipo()));
+        return !permisosEmpleados.isEmpty();
+    }
+    
+    private boolean obtenerData(){
+        personas = controlador.obtenerPersonas();
+        tipos = controlador.obtenerTipos();
+        permisos = controlador.obtenerPermisos();
+        if ((!personas.isEmpty()) && (!tipos.isEmpty())){
+            empleados = controlador.obtenerEmpleados(personas, tipos);
+            clientes = controlador.obtenerClientes(personas);
+            if ((!empleados.isEmpty()) && (!permisos.isEmpty())){
+                usuarios = controlador.obtenerUsuarios(empleados, permisos);
+            }
+        }
+        boolean validar = (!personas.isEmpty()) && (!tipos.isEmpty());
+        return validar;
+    }
+    
     @FXML
     private void switchToSecondary() throws IOException {
         App.setRoot("secondary",1100, 650);

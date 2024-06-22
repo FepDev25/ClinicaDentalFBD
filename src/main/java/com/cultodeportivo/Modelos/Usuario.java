@@ -1,19 +1,21 @@
 package com.cultodeportivo.Modelos;
 
+import java.util.Objects;
+
 public class Usuario {
     private int usrId;
     private String usrNombre;
     private String usrContrasenia;
-    private char usrPermiso;
-    private int empId;
+    private Empleado empleado; 
+    private Permiso permiso;
 
     // Constructor
-    public Usuario(int usrId, String usrNombre, String usrContrasenia, char usrPermiso, int empId) {
+    public Usuario(int usrId, String usrNombre, String usrContrasenia, Empleado empleado, Permiso permiso) {
         this.usrId = usrId;
         this.usrNombre = usrNombre;
         this.usrContrasenia = usrContrasenia;
-        this.usrPermiso = usrPermiso;
-        this.empId = empId;
+        this.empleado = Objects.requireNonNull(empleado, "El objeto 'empleado' no puede ser nulo");
+        this.permiso = Objects.requireNonNull(permiso, "El objeto 'permiso' no puede ser nulo");
     }
 
     public int getUsrId() {
@@ -40,29 +42,37 @@ public class Usuario {
         this.usrContrasenia = usrContrasenia;
     }
 
-    public char getUsrPermiso() {
-        return usrPermiso;
+    public Empleado getEmpleado() {
+        return empleado;
     }
 
-    public void setUsrPermiso(char usrPermiso) {
-        this.usrPermiso = usrPermiso;
+    public void setEmpleado(Empleado empleado) {
+        if (this.empleado!= null) {
+            this.empleado.setEmpId(usrId);
+        }
+        this.empleado = Objects.requireNonNull(empleado, "El objeto 'empleado' no puede ser nulo");
     }
 
-    public int getEmpId() {
-        return empId;
+    public Permiso getPermiso() {
+        return permiso;
     }
 
-    public void setEmpId(int empId) {
-        this.empId = empId;
+    public void setPermiso(Permiso permiso) {
+        if (this.permiso!= null) {
+            this.permiso.setPrmId(usrId); 
+        }
+        this.permiso = Objects.requireNonNull(permiso, "El objeto 'permiso' no puede ser nulo");
     }
 
+    // Método toString
     @Override
     public String toString() {
-        return "Usuario{" + "usrId=" + usrId + ", usrNombre=" + usrNombre + ", usrContrasenia=" + usrContrasenia + ", usrPermiso=" + usrPermiso + ", empId=" + empId + '}';
+        return "Usuario{" +
+                "usrId=" + usrId +
+                ", usrNombre='" + usrNombre + '\'' +
+                ", usrContrasenia='" + usrContrasenia + '\'' +
+                ", empleado=" + empleado +
+                ", permiso=" + permiso +
+                '}';
     }
-
-    
-    
-    
-
 }
