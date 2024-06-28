@@ -1,22 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import java.lang.String?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1250.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cultodeportivo.proyecto_fbd.SecondaryController">
    <children>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+      <AnchorPane prefHeight="650.0" prefWidth="1250.0">
          <children>
             <BorderPane layoutX="46.0" layoutY="41.0" prefHeight="600.0" prefWidth="1100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <top>
-                  <AnchorPane prefHeight="40.0" prefWidth="1100.0" styleClass="cabecera" stylesheets="@estilos.css" BorderPane.alignment="CENTER">
+                  <AnchorPane fx:id="frame_barra_superior" prefHeight="40.0" prefWidth="1100.0" styleClass="cabecera" stylesheets="@estilos.css" BorderPane.alignment="CENTER">
                      <children>
                         <AnchorPane layoutX="-35.0" layoutY="-80.0" prefHeight="40.0" prefWidth="210.0" styleClass="cabecera" stylesheets="@estilos.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="890.0" AnchorPane.topAnchor="0.0">
                            <children>
@@ -31,24 +40,353 @@
                   </AnchorPane>
                </top>
                <left>
-                  <AnchorPane prefHeight="560.0" prefWidth="210.0" styleClass="fondo_menu" stylesheets="@estilos.css" BorderPane.alignment="CENTER">
+                  <AnchorPane fx:id="frame_barra_lateral" prefHeight="560.0" prefWidth="210.0" styleClass="fondo_menu" stylesheets="@estilos.css" BorderPane.alignment="CENTER">
                      <children>
                         <FontAwesomeIcon glyphName="USER" layoutX="69.0" layoutY="78.0" size="7em" />
                         <Label layoutX="14.0" layoutY="156.0" text="Menú de Opciones" textFill="WHITE" />
-                        <Button layoutX="5.0" layoutY="185.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" styleClass="boton_menu" stylesheets="@estilos.css" text="Facturación" />
-                        <Button layoutX="5.0" layoutY="365.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" styleClass="boton_menu" stylesheets="@estilos.css" text="Empleados" />
-                        <Button layoutX="5.0" layoutY="305.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" styleClass="boton_menu" stylesheets="@estilos.css" text="Clientes" />
-                        <Button layoutX="5.0" layoutY="245.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" styleClass="boton_menu" stylesheets="@estilos.css" text="Citas" />
+                        <Button fx:id="boton_facturacion" layoutX="5.0" layoutY="185.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" styleClass="boton_menu" stylesheets="@estilos.css" text="Facturación" />
+                        <Button fx:id="boton_empleados" layoutX="5.0" layoutY="365.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" styleClass="boton_menu" stylesheets="@estilos.css" text="Empleados" />
+                        <Button fx:id="boton_clientes" layoutX="5.0" layoutY="305.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" styleClass="boton_menu" stylesheets="@estilos.css" text="Clientes" />
+                        <Button fx:id="boton_citas" layoutX="5.0" layoutY="245.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" styleClass="boton_menu" stylesheets="@estilos.css" text="Citas" />
                         <Label layoutX="14.0" layoutY="477.0" text="Perfil" textFill="WHITE" />
-                        <Button layoutX="5.0" layoutY="500.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" styleClass="boton_menu" stylesheets="@estilos.css" text="Mi Perfil" />
-                        <Button layoutX="5.0" layoutY="425.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" styleClass="boton_menu" stylesheets="@estilos.css" text="Servicios" />
+                        <Button fx:id="boton_perfil" layoutX="5.0" layoutY="500.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" styleClass="boton_menu" stylesheets="@estilos.css" text="Mi Perfil" />
+                        <Button fx:id="boton_servicios" layoutX="5.0" layoutY="425.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" styleClass="boton_menu" stylesheets="@estilos.css" text="Servicios" />
                         <Line endX="100.0" layoutX="105.0" layoutY="146.0" startX="-100.0" />
-                        <Label layoutX="6.0" layoutY="113.0" text="Usuario:" textFill="WHITE" />
+                        <Label fx:id="label_usuario" layoutX="6.0" layoutY="113.0" text="Usuario:" textFill="WHITE" />
+                        <Button fx:id="boton_salir" layoutX="5.0" layoutY="557.0" mnemonicParsing="false" onAction="#switchToPrimary" prefHeight="40.0" prefWidth="200.0" styleClass="boton_eliminar" stylesheets="@estilos.css" text="Salir" />
                      </children>
                   </AnchorPane>
                </left>
                <center>
-                  <AnchorPane prefHeight="560.0" prefWidth="890.0" stylesheets="@estilos.css" BorderPane.alignment="CENTER" />
+                  <AnchorPane prefHeight="560.0" prefWidth="890.0" stylesheets="@estilos.css" BorderPane.alignment="CENTER">
+                     <children>
+                        <AnchorPane fx:id="frame_facturacion" prefHeight="758.0" prefWidth="1040.0">
+                           <children>
+                              <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="740.0" prefWidth="276.0" stylesheets="@estilos.css">
+                                 <styleClass>
+                                    <String fx:value="white-bg" />
+                                    <String fx:value="shadow" />
+                                 </styleClass>
+                                 <children>
+                                    <Label layoutX="1.0" layoutY="138.0" prefHeight="40.0" prefWidth="265.0" styleClass="labels_info" stylesheets="@estilos.css" text="Cedula:" />
+                                    <Label layoutX="1.0" layoutY="177.0" prefHeight="40.0" prefWidth="265.0" styleClass="labels_info" stylesheets="@estilos.css" text="Nombre:" />
+                                    <Label layoutX="1.0" layoutY="216.0" prefHeight="40.0" prefWidth="265.0" styleClass="labels_info" stylesheets="@estilos.css" text="Apellidos:" />
+                                    <Label layoutX="1.0" layoutY="255.0" prefHeight="40.0" prefWidth="265.0" styleClass="labels_info" stylesheets="@estilos.css" text="Teléfono:" />
+                                    <Label layoutX="1.0" layoutY="294.0" prefHeight="40.0" prefWidth="265.0" styleClass="labels_info" stylesheets="@estilos.css" text="Correo electrónico:" />
+                                    <Label layoutX="1.0" layoutY="333.0" prefHeight="40.0" prefWidth="265.0" styleClass="labels_info" stylesheets="@estilos.css" text="Dirección:" />
+                                    <Button fx:id="boton_buscar_cliente" layoutX="1.0" layoutY="382.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0" styleClass="boton_anchor" stylesheets="@estilos.css" text="Seleccionar Cliente" />
+                                    <Label layoutX="4.0" layoutY="14.0" text="Detalle Factura:">
+                                       <font>
+                                          <Font name="System Bold" size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="3.0" layoutY="80.0" prefHeight="40.0" prefWidth="265.0" styleClass="labels_info" stylesheets="@estilos.css" text="Fecha:" />
+                                    <Button fx:id="boton_buscar_servicio11" layoutX="59.0" layoutY="454.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0" styleClass="boton_facturar" stylesheets="@estilos.css" text="Facturar" />
+                                    <Label layoutX="3.0" layoutY="41.0" prefHeight="40.0" prefWidth="265.0" styleClass="labels_info" stylesheets="@estilos.css" text="Nro. Factura:" />
+                                    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="60.0" layoutY="525.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@carrito.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane layoutX="300.0" layoutY="180.0" prefHeight="417.0" prefWidth="400.0" stylesheets="@estilos.css">
+                                 <styleClass>
+                                    <String fx:value="white-bg" />
+                                    <String fx:value="shadow" />
+                                 </styleClass>
+                                 <children>
+                                    <TableView fx:id="boton_facturar" prefHeight="570.0" prefWidth="740.0">
+                                      <columns>
+                                        <TableColumn prefWidth="397.6082763671875" text="Nombre Servicio" />
+                                        <TableColumn prefWidth="78.3917236328125" text="Cantidad" />
+                                          <TableColumn prefWidth="90.83441162109375" text="Subtotal" />
+                                          <TableColumn prefWidth="75.00439453125" text="IVA" />
+                                          <TableColumn prefWidth="96.00433349609375" text="Total" />
+                                      </columns>
+                                    </TableView>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane layoutX="300.0" layoutY="5.0" prefHeight="155.0" prefWidth="518.0" stylesheets="@estilos.css">
+                                 <styleClass>
+                                    <String fx:value="white-bg" />
+                                    <String fx:value="shadow" />
+                                 </styleClass>
+                                 <children>
+                                    <Label fx:id="label_usuario1" layoutX="30.0" layoutY="21.0" text="Servicio:">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField layoutX="94.0" layoutY="18.0" />
+                                    <Label fx:id="label_usuario11" layoutX="301.0" layoutY="21.0" text="Cantidad:">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField layoutX="380.0" layoutY="18.0" prefHeight="25.0" prefWidth="120.0" />
+                                    <Button fx:id="boton_buscar_servicio" layoutX="380.0" layoutY="60.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="120.0" styleClass="boton_anchor" stylesheets="@estilos.css" text="Buscar" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane layoutX="830.0" layoutY="5.0" prefHeight="155.0" prefWidth="200.0" stylesheets="@estilos.css">
+                                 <styleClass>
+                                    <String fx:value="white-bg" />
+                                    <String fx:value="shadow" />
+                                 </styleClass>
+                                 <children>
+                                    <Label layoutX="-3.0" layoutY="-1.0" prefHeight="155.0" prefWidth="200.0" styleClass="labels_info" stylesheets="@estilos.css" text="0.00" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <font>
+                                          <Font name="System Bold" size="60.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </AnchorPane>
+                           </children></AnchorPane>
+                        <AnchorPane fx:id="frame_citas" prefHeight="758.0" prefWidth="1041.0" visible="false">
+                           <children>
+                              <AnchorPane layoutX="340.0" layoutY="8.0" prefHeight="421.0" prefWidth="681.0" stylesheets="@estilos.css">
+                                 <styleClass>
+                                    <String fx:value="shadow" />
+                                    <String fx:value="white-bg" />
+                                 </styleClass>
+                                 <children>
+                                    <DatePicker layoutX="220.0" layoutY="65.0" />
+                                    <Label layoutX="10.0" layoutY="15.0" text="Reserva de Citas">
+                                       <font>
+                                          <Font name="System Bold" size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="85.0" layoutY="65.0" text="Ingresar día:" />
+                                    <Label layoutX="85.0" layoutY="126.0" text="Odontólogo:" />
+                                    <Label layoutX="85.0" layoutY="180.0" text="Ingresar Hora:" />
+                                    <ComboBox layoutX="224.0" layoutY="122.0" prefHeight="25.0" prefWidth="188.0" />
+                                    <Label layoutX="275.0" layoutY="180.0" text="H" />
+                                    <TextField layoutX="229.0" layoutY="176.0" prefHeight="25.0" prefWidth="42.0" />
+                                    <TextField layoutX="316.0" layoutY="176.0" prefHeight="25.0" prefWidth="42.0" />
+                                    <Label layoutX="369.0" layoutY="180.0" text="M" />
+                                    <Button fx:id="boton_reservar_cita1" layoutX="155.0" layoutY="320.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="150.0" styleClass="boton_facturar" stylesheets="@estilos.css" text="Agendar Cita" />
+                                    <Label layoutX="89.0" layoutY="237.0" text="Odontólogo:" />
+                                    <ComboBox layoutX="224.0" layoutY="233.0" prefHeight="25.0" prefWidth="188.0" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane layoutX="8.0" layoutY="442.0" prefHeight="303.0" prefWidth="1013.0" stylesheets="@estilos.css">
+                                 <styleClass>
+                                    <String fx:value="shadow" />
+                                    <String fx:value="white-bg" />
+                                 </styleClass>
+                                 <children>
+                                    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="836.0" layoutY="39.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@cita.png" />
+                                       </image>
+                                    </ImageView>
+                                    <TableView layoutX="24.0" layoutY="36.0" prefHeight="263.0" prefWidth="791.0">
+                                      <columns>
+                                        <TableColumn prefWidth="134.09869384765625" text="Hora" />
+                                        <TableColumn prefWidth="285.47412109375" text="Nombre Odontólogo" />
+                                          <TableColumn prefWidth="369.52587890625" text="Nombre Cliente" />
+                                      </columns>
+                                    </TableView>
+                                    <Label layoutX="17.0" layoutY="10.0" text="Próximas Citas">
+                                       <font>
+                                          <Font name="System Bold" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane layoutX="8.0" layoutY="8.0" prefHeight="422.0" prefWidth="319.0" stylesheets="@estilos.css">
+                                 <styleClass>
+                                    <String fx:value="shadow" />
+                                    <String fx:value="white-bg" />
+                                 </styleClass>
+                                 <children>
+                                    <Label layoutX="17.0" layoutY="24.0" text="Menú Citas">
+                                       <font>
+                                          <Font name="System Bold" size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <Button fx:id="boton_reservar_cita" layoutX="84.0" layoutY="90.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="150.0" styleClass="boton_anchor" stylesheets="@estilos.css" text="Reservar Cita" />
+                                    <Button fx:id="boton_cancelar_cita" layoutX="84.0" layoutY="160.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="150.0" styleClass="boton_eliminar" stylesheets="@estilos.css" text="Cancelar Cita" />
+                                 </children>
+                              </AnchorPane>
+                           </children></AnchorPane>
+                        <AnchorPane fx:id="frame_clientes" prefHeight="758.0" prefWidth="1041.0" visible="false">
+                           <children>
+                              <AnchorPane layoutX="9.0" layoutY="520.0" prefHeight="231.0" prefWidth="684.0" stylesheets="@estilos.css">
+                                 <children>
+                                    <Label layoutX="13.0" layoutY="24.0" text="Cedula:" />
+                                    <Label layoutX="307.0" layoutY="24.0" text="Direccion" />
+                                    <Label layoutX="10.0" layoutY="72.0" text="Nombre:" />
+                                    <Label layoutX="8.0" layoutY="116.0" text="Apellidos:" />
+                                    <Label layoutX="3.0" layoutY="163.0" prefHeight="17.0" prefWidth="106.0" text="Correo Electronico" />
+                                    <Label layoutX="309.0" layoutY="155.0" text="Telefono" />
+                                    <TextField layoutX="382.0" layoutY="151.0" />
+                                    <TextField layoutX="113.0" layoutY="160.0" />
+                                    <TextField layoutX="108.0" layoutY="112.0" />
+                                    <TextField layoutX="110.0" layoutY="68.0" />
+                                    <TextField layoutX="110.0" layoutY="20.0" />
+                                    <TextArea layoutX="379.0" layoutY="16.0" prefHeight="111.0" prefWidth="287.0" />
+                                 </children>
+                                 <styleClass>
+                                    <String fx:value="white-bg" />
+                                    <String fx:value="shadow" />
+                                 </styleClass>
+                              </AnchorPane>
+                              <AnchorPane layoutX="5.0" layoutY="5.0" prefHeight="502.0" prefWidth="1031.0" stylesheets="@estilos.css">
+                                 <styleClass>
+                                    <String fx:value="white-bg" />
+                                    <String fx:value="shadow" />
+                                 </styleClass>
+                                 <children>
+                                    <Label layoutX="5.0" layoutY="5.0" text="Menú Clientes">
+                                       <font>
+                                          <Font name="System Bold" size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <TableView layoutX="15.0" layoutY="28.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="476.0" prefWidth="1016.0">
+                                      <columns>
+                                          <TableColumn prefWidth="43.55735778808594" text="ID" />
+                                        <TableColumn prefWidth="97.442626953125" text="Cedula" />
+                                        <TableColumn prefWidth="78.0" text="Nombre" />
+                                          <TableColumn minWidth="0.0" prefWidth="126.04336547851562" text="Apellidos" />
+                                          <TableColumn prefWidth="269.272705078125" text="Direccion" />
+                                          <TableColumn minWidth="0.0" prefWidth="84.727294921875" text="Telefono" />
+                                          <TableColumn prefWidth="228.83795166015625" text="Correo Electronico" />
+                                          <TableColumn prefWidth="91.8897705078125" text="Estado" />
+                                      </columns>
+                                    </TableView>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane layoutX="702.0" layoutY="520.0" prefHeight="181.0" prefWidth="332.0" stylesheets="@estilos.css">
+                                 <children>
+                                    <Button fx:id="boton_modificar_cliente" layoutX="17.0" layoutY="72.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="150.0" styleClass="boton_anchor" stylesheets="@estilos.css" text="Modificar" />
+                                    <Button fx:id="boton_agregar_cliente" layoutX="16.0" layoutY="15.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="150.0" styleClass="boton_anchor" stylesheets="@estilos.css" text="Agregar" />
+                                    <Button fx:id="boton_limpiar_campos" layoutX="170.0" layoutY="15.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="150.0" styleClass="boton_anchor" stylesheets="@estilos.css" text="Limpiar Campos" />
+                                    <Button fx:id="boton_eliminar_cliente" layoutX="170.0" layoutY="129.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="150.0" styleClass="boton_eliminar" stylesheets="@estilos.css" text="Eliminar" textFill="#dd0404" />
+                                    <Button fx:id="boton_listar_facturas_clientes" layoutX="17.0" layoutY="129.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="150.0" styleClass="boton_anchor" stylesheets="@estilos.css" text="Listar Facturas" />
+                                    <Button fx:id="boton_guardar_modificar_clientes" disable="true" layoutX="171.0" layoutY="72.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="150.0" styleClass="boton_anchor" stylesheets="@estilos.css" text="Guardar" />
+                                 </children>
+                                 <styleClass>
+                                    <String fx:value="white-bg" />
+                                    <String fx:value="shadow" />
+                                 </styleClass>
+                              </AnchorPane>
+                           </children></AnchorPane>
+                        <AnchorPane fx:id="frame_empleados" prefHeight="758.0" prefWidth="1042.0" visible="false">
+                           <children>
+                              <AnchorPane layoutX="5.0" layoutY="465.0" prefHeight="287.0" prefWidth="602.0" stylesheets="@estilos.css">
+                                 <children>
+                                    <Label layoutX="10.0" layoutY="14.0" text="Cedula" />
+                                    <Label layoutX="300.0" layoutY="14.0" text="Direccion" />
+                                    <Label layoutX="10.0" layoutY="53.0" text="Nombre" />
+                                    <Label layoutX="10.0" layoutY="92.0" text="Apellidos" />
+                                    <Label layoutX="2.0" layoutY="131.0" prefHeight="17.0" prefWidth="106.0" text="Correo Electronico" />
+                                    <Label layoutX="10.0" layoutY="170.0" text="Telefono" />
+                                    <TextField layoutX="104.0" layoutY="170.0" />
+                                    <TextField layoutX="104.0" layoutY="131.0" />
+                                    <TextField layoutX="104.0" layoutY="92.0" />
+                                    <TextField layoutX="103.0" layoutY="53.0" />
+                                    <TextField layoutX="104.0" layoutY="14.0" />
+                                    <TextArea layoutX="370.0" layoutY="10.0" prefHeight="92.0" prefWidth="215.0" />
+                                    <ComboBox layoutX="111.0" layoutY="209.0" prefWidth="150.0" />
+                                    <Label layoutX="10.0" layoutY="209.0" prefHeight="17.0" prefWidth="106.0" text="Tipo de Empleado" />
+                                    <Label layoutX="300.0" layoutY="120.0" prefHeight="17.0" prefWidth="106.0" text="Permiso" />
+                                    <Label layoutX="300.0" layoutY="159.0" text="Usuario" />
+                                    <Label layoutX="300.0" layoutY="198.0" text="Contraseña" />
+                                    <ComboBox disable="true" layoutX="373.0" layoutY="120.0" prefWidth="150.0" />
+                                    <TextField disable="true" editable="false" layoutX="373.0" layoutY="159.0" />
+                                    <PasswordField disable="true" layoutX="373.0" layoutY="198.0" />
+                                 </children>
+                                 <styleClass>
+                                    <String fx:value="white-bg" />
+                                    <String fx:value="shadow" />
+                                 </styleClass>
+                              </AnchorPane>
+                              <AnchorPane layoutX="5.0" layoutY="5.0" prefHeight="363.0" prefWidth="1034.0" stylesheets="@estilos.css">
+                                 <styleClass>
+                                    <String fx:value="white-bg" />
+                                    <String fx:value="shadow" />
+                                 </styleClass>
+                                 <children>
+                                    <Label layoutX="5.0" layoutY="5.0" text="Menú Empleados">
+                                       <font>
+                                          <Font name="System Bold" size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <TableView layoutX="5.0" layoutY="30.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="415.0" prefWidth="1030.0">
+                                       <columns>
+                                          <TableColumn prefWidth="43.55729675292969" text="ID" />
+                                          <TableColumn prefWidth="109.72332763671875" text="Cedula" />
+                                          <TableColumn prefWidth="104.27670288085938" text="Nombre" />
+                                          <TableColumn prefWidth="126.50201416015625" text="Apellidos" />
+                                          <TableColumn prefWidth="300.67596435546875" text="Direccion" />
+                                          <TableColumn minWidth="0.0" prefWidth="101.33636474609375" text="Telefono" />
+                                          <TableColumn prefWidth="158.22576904296875" text="Correo Electronico" />
+                                          <TableColumn prefWidth="88.00439453125" text="Tipo" />
+                                       </columns>
+                                    </TableView>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane layoutX="640.0" layoutY="465.0" prefHeight="200.0" prefWidth="398.0" stylesheets="@estilos.css">
+                                 <children>
+                                    <Button fx:id="boton_agregar_cliente3" layoutX="20.0" layoutY="15.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="150.0" styleClass="boton_anchor" stylesheets="@estilos.css" text="Agregar" />
+                                    <Button fx:id="boton_limpiar_campos1" layoutX="188.0" layoutY="15.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="150.0" styleClass="boton_anchor" stylesheets="@estilos.css" text="Limpiar Campos" />
+                                    <Button fx:id="boton_agregar_cliente21" layoutX="20.0" layoutY="85.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="150.0" styleClass="boton_anchor" stylesheets="@estilos.css" text="Modificar" />
+                                    <Button fx:id="boton_guardar_modificar_empleado" disable="true" layoutX="188.0" layoutY="85.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="150.0" styleClass="boton_anchor" stylesheets="@estilos.css" text="Guardar" />
+                                    <Button fx:id="boton_agregar_cliente11" layoutX="20.0" layoutY="148.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="150.0" styleClass="boton_eliminar" stylesheets="@estilos.css" text="Eliminar" textFill="#dd0404" />
+                                 </children>
+                                 <styleClass>
+                                    <String fx:value="white-bg" />
+                                    <String fx:value="shadow" />
+                                 </styleClass>
+                              </AnchorPane>
+                           </children></AnchorPane>
+                        <AnchorPane fx:id="frame_servicios" prefHeight="758.0" prefWidth="1034.0" visible="false">
+                           <children>
+                              <AnchorPane layoutX="5.0" layoutY="5.0" prefHeight="348.0" prefWidth="880.0" stylesheets="@estilos.css">
+                                 <styleClass>
+                                    <String fx:value="white-bg" />
+                                    <String fx:value="shadow" />
+                                 </styleClass>
+                                 <children>
+                                    <Label layoutX="10.0" layoutY="4.0" text="Servicios">
+                                       <font>
+                                          <Font name="System Bold" size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <TableView layoutX="10.0" layoutY="44.0" prefHeight="537.0" prefWidth="1017.0">
+                                      <columns>
+                                        <TableColumn prefWidth="75.0" text="N. Estado" />
+                                        <TableColumn prefWidth="655.4338684082031" text="Nombre" />
+                                          <TableColumn prefWidth="106.56613159179688" text="Precio" />
+                                          <TableColumn prefWidth="61.50994873046875" text="IVA" />
+                                          <TableColumn prefWidth="119.73614501953125" text="Estado" />
+                                      </columns>
+                                    </TableView>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane layoutX="5.0" layoutY="601.0" prefHeight="136.0" prefWidth="1029.0" stylesheets="@estilos.css">
+                                 <styleClass>
+                                    <String fx:value="white-bg" />
+                                    <String fx:value="shadow" />
+                                 </styleClass>
+                                 <children>
+                                    <Label layoutX="35.0" layoutY="29.0" text="Nombre:" />
+                                    <Label layoutX="333.0" layoutY="30.0" text="IVA:" />
+                                    <Label layoutX="40.0" layoutY="82.0" text="Precio:" />
+                                    <TextField layoutX="100.0" layoutY="26.0" />
+                                    <TextField layoutX="99.0" layoutY="78.0" />
+                                    <ComboBox layoutX="374.0" layoutY="26.0" prefWidth="150.0" />
+                                    <Button fx:id="boton_agregar_servicio" layoutX="341.0" layoutY="72.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="200.0" styleClass="boton_anchor" stylesheets="@estilos.css" text="Agregar" />
+                                    <Button fx:id="boton_modificar_servicio" layoutX="568.0" layoutY="20.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="200.0" styleClass="boton_anchor" stylesheets="@estilos.css" text="Modificar" />
+                                    <Button fx:id="boton_limpiar_campos_servicios" layoutX="800.0" layoutY="20.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="200.0" styleClass="boton_anchor" stylesheets="@estilos.css" text="Limpiar Campos" />
+                                    <Button fx:id="boton_eliminar_servicios" layoutX="800.0" layoutY="72.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" styleClass="boton_eliminar" stylesheets="@estilos.css" text="Eliminar" />
+                                    <Button fx:id="boton_guardar_modificar_servicio" disable="true" layoutX="572.0" layoutY="73.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="200.0" styleClass="boton_anchor" stylesheets="@estilos.css" text="Guardar" />
+                                 </children>
+                              </AnchorPane>
+                           </children></AnchorPane>
+                        <AnchorPane fx:id="frame_perfil" prefHeight="612.0" prefWidth="1041.0" visible="false" />
+                     </children></AnchorPane>
                </center>
             </BorderPane>
          </children>

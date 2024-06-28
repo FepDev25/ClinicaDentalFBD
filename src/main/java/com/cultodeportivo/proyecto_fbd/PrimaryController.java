@@ -30,6 +30,7 @@ public class PrimaryController implements Initializable {
     private ArrayList<Empleado> empleados;
     private ArrayList<Cliente> clientes;
     private ArrayList<Usuario> usuarios;
+    
     private Control controlador;
     private AlertMessage message = new AlertMessage();
 
@@ -44,12 +45,13 @@ public class PrimaryController implements Initializable {
         DropShadow shadow = new DropShadow(40, Color.valueOf("#0058FF"));
         nombre.setEffect(shadow);
         bienvenida.setEffect(shadow);
-        controlador = new Control();
+        controlador = new Control(this);
         
         if (obtenerPermisos()){
             combo_usuario.setItems(FXCollections.observableArrayList(permisosEmpleados));
         }
-        obtenerData();
+        
+        controlador.cargarListasController1();
     }
 
 
@@ -186,24 +188,61 @@ public class PrimaryController implements Initializable {
         permisos.forEach(p -> permisosEmpleados.add(p.getPrmTipo()));
         return !permisosEmpleados.isEmpty();
     }
-    
-    private boolean obtenerData(){
-        personas = controlador.obtenerPersonas();
-        tipos = controlador.obtenerTipos();
-        permisos = controlador.obtenerPermisos();
-        if ((!personas.isEmpty()) && (!tipos.isEmpty())){
-            empleados = controlador.obtenerEmpleados(personas, tipos);
-            clientes = controlador.obtenerClientes(personas);
-            if ((!empleados.isEmpty()) && (!permisos.isEmpty())){
-                usuarios = controlador.obtenerUsuarios(empleados, permisos);
-            }
-        }
-        boolean validar = (!personas.isEmpty()) && (!tipos.isEmpty());
-        return validar;
-    }
-    
+        
     @FXML
     private void switchToSecondary() throws IOException {
-        App.setRoot("secondary",1100, 650);
+        App.setRoot("secondary",1250, 820);
     }
+
+    public ArrayList<Persona> getPersonas() {
+        return personas;
+    }
+
+    public void setPersonas(ArrayList<Persona> personas) {
+        this.personas = personas;
+    }
+
+    public ArrayList<Permiso> getPermisos() {
+        return permisos;
+    }
+
+    public void setPermisos(ArrayList<Permiso> permisos) {
+        this.permisos = permisos;
+    }
+
+    public ArrayList<Tipo> getTipos() {
+        return tipos;
+    }
+
+    public void setTipos(ArrayList<Tipo> tipos) {
+        this.tipos = tipos;
+    }
+
+    public ArrayList<Cliente> getClientes() {
+        return clientes;
+    }
+
+    public void setClientes(ArrayList<Cliente> clientes) {
+        this.clientes = clientes;
+    }
+
+    public ArrayList<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(ArrayList<Usuario> usuarios) {
+        this.usuarios = usuarios;
+    }
+
+    public ArrayList<Empleado> getEmpleados() {
+        return empleados;
+    }
+
+    public void setEmpleados(ArrayList<Empleado> empleados) {
+        this.empleados = empleados;
+    }
+    
+    
+    
+    
 }

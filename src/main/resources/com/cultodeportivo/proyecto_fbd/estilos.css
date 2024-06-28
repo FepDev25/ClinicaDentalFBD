@@ -48,3 +48,52 @@
     -fx-font-weight: bold;
     -fx-cursor:hand;
 }
+
+.boton_anchor{
+    -fx-background-color: #5FBBFF;
+    -fx-border-color: #fff;
+    -fx-border-width:1px;
+    -fx-text-fill: #fff; 
+    -fx-font-weight: bold;
+    -fx-cursor:hand;
+}
+
+
+.boton_eliminar{
+    -fx-background-color: #dd0404;
+    -fx-border-color: #fff;
+    -fx-border-width:1px;
+    -fx-text-fill: #fff; 
+    -fx-font-weight: bold;
+    -fx-cursor:hand;
+}
+
+.boton_eliminar:hover{
+    -fx-background-color: linear-gradient(#f22727, #b90202); 
+}
+
+.shadow{
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 5,0,0,0);
+}
+
+.white-bg{
+    -fx-background-color: #fff;
+}
+
+.labels_info{
+    -fx-background-color: #B4CEE1;
+    -fx-text-fill: #000000; 
+}
+
+.boton_facturar{
+    -fx-background-color: #2FEC11;
+    -fx-border-color: #fff;
+    -fx-border-width:1px;
+    -fx-text-fill: #000000; 
+    -fx-font-weight: bold;
+    -fx-cursor:hand;
+}
+
+.boton_facturar:hover{
+    -fx-background-color: linear-gradient(#6EFB58, #2FEC11); 
+}
