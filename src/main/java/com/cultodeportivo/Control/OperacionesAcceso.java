@@ -194,5 +194,37 @@ public class OperacionesAcceso {
         }
         return null;
     }
+    
+    public ArrayList<Servicio> obtenerServicios() {
+        ArrayList<Servicio> servicios = new ArrayList<>();
+        System.out.println("Iniciando metodo");
+        ConexionOracle.getInstance().getConexion();
+        
+        try {
+            String sql = "SELECT * FROM CD_SERVICIOS";
+            System.out.println("SQL: " + sql);
+            myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
+
+            ResultSet rs = myStatement.executeQuery(); 
+
+            System.out.println(rs);
+            while (rs.next()) {
+                int serId = rs.getInt("ser_id");
+                String serNombre = rs.getString("ser_nombre");
+                Float serPrecio = rs.getFloat("ser_precio");
+                char tiene_iva = rs.getString("ser_iva").charAt(0);
+                char estado = rs.getString("ser_estado").charAt(0);
+                
+                Servicio servicio = new Servicio(serId, serNombre, serPrecio, tiene_iva, estado);
+                System.out.println(servicio);
+                servicios.add(servicio);
+            }
+            myStatement.close();
+            return servicios;
+        } catch (SQLException e) {
+            System.err.println("Error al obtener servicios: " + e.getMessage());
+        }
+        return null;
+    }
 
 }

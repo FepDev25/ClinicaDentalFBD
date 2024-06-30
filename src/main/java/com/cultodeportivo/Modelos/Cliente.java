@@ -33,7 +33,7 @@ public class Cliente {
     public Persona getPersona() {
         return persona;
     }
-
+    
     public void setPersona(Persona persona) {
         if (this.persona!= null) {
             this.persona.setPerId(cliId); 

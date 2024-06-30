@@ -3,7 +3,6 @@ package com.cultodeportivo.Control;
 import java.util.ArrayList;
 import com.cultodeportivo.Modelos.*;
 import com.cultodeportivo.proyecto_fbd.*;
-import java.sql.SQLException;
 
 public class Control {
     private OperacionesAcceso operacionesAcceso;
@@ -47,6 +46,10 @@ public class Control {
         return operacionesAcceso.obtenerUsuarios(empleados, permisos);
     }
     
+    public ArrayList<Servicio> obtenerServicios(){
+        return operacionesAcceso.obtenerServicios();
+    }
+    
     public boolean cargarListasController1(){
         controller.setPermisos(this.obtenerPermisos());
         controller.setPersonas(this.obtenerPersonas());
@@ -54,9 +57,28 @@ public class Control {
         
         if ((!controller.getPersonas().isEmpty()) && (!controller.getTipos().isEmpty())){
             controller.setEmpleados(this.obtenerEmpleados(controller.getPersonas(), controller.getTipos()));
-            controller.setClientes(this.obtenerClientes(controller.getPersonas()));
             if ((!controller.getEmpleados().isEmpty()) && (!controller.getPermisos().isEmpty())){
                 controller.setUsuarios(this.obtenerUsuarios(controller.getEmpleados(), controller.getPermisos())); 
+            } else{
+                return false;
+            }
+        } else{
+            return false;
+        }
+        return true;
+    }
+    
+    public boolean cargarListasController2(){
+        controller2.setPermisos(this.obtenerPermisos());
+        controller2.setPersonas(this.obtenerPersonas());
+        controller2.setTipos(this.obtenerTipos());
+        controller2.setServicios(this.obtenerServicios());
+        
+        if ((!controller2.getPersonas().isEmpty()) && (!controller2.getTipos().isEmpty())){
+            controller2.setEmpleados(this.obtenerEmpleados(controller2.getPersonas(), controller2.getTipos()));
+            controller2.setClientes(this.obtenerClientes(controller2.getPersonas()));
+            if ((!controller2.getEmpleados().isEmpty()) && (!controller2.getPermisos().isEmpty())){
+                controller2.setUsuarios(this.obtenerUsuarios(controller2.getEmpleados(), controller2.getPermisos())); 
             } else{
                 return false;
             }

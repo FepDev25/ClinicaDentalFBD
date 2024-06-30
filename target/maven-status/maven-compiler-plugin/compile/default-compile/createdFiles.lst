@@ -1,5 +1,6 @@
 com/cultodeportivo/Modelos/Cita.class
 com/cultodeportivo/Modelos/Cliente.class
+com/cultodeportivo/proyecto_fbd/GlobalValues.class
 com/cultodeportivo/Modelos/Servicio.class
 com/cultodeportivo/Control/Test.class
 com/cultodeportivo/Control/Emparejador.class
@@ -20,3 +21,4 @@ com/cultodeportivo/Control/Control.class
 com/cultodeportivo/Modelos/Tipo.class
 com/cultodeportivo/Control/ConexionOracle.class
 com/cultodeportivo/Modelos/Persona.class
+com/cultodeportivo/proyecto_fbd/TableWorker.class

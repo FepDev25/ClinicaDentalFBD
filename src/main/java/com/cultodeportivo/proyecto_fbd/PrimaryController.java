@@ -3,7 +3,6 @@ package com.cultodeportivo.proyecto_fbd;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -22,13 +21,12 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 
 public class PrimaryController implements Initializable {
-
+    
     private List<String> permisosEmpleados = new ArrayList<>();
     private ArrayList<Persona> personas;
     private ArrayList<Permiso> permisos;
     private ArrayList<Tipo> tipos;
     private ArrayList<Empleado> empleados;
-    private ArrayList<Cliente> clientes;
     private ArrayList<Usuario> usuarios;
     
     private Control controlador;
@@ -170,6 +168,7 @@ public class PrimaryController implements Initializable {
             if (usuario_ingresado.equals(nombre_x)){
                 if (password_ingresado.equals(password_x)){
                     if (permiso.equals(permiso_x)){
+                        GlobalValues.userApp = user;
                         return true;
                     } else{
                         message.errorMessage("Permiso Incorrecto.");
@@ -216,14 +215,6 @@ public class PrimaryController implements Initializable {
 
     public void setTipos(ArrayList<Tipo> tipos) {
         this.tipos = tipos;
-    }
-
-    public ArrayList<Cliente> getClientes() {
-        return clientes;
-    }
-
-    public void setClientes(ArrayList<Cliente> clientes) {
-        this.clientes = clientes;
     }
 
     public ArrayList<Usuario> getUsuarios() {
