@@ -232,8 +232,4 @@ public class PrimaryController implements Initializable {
     public void setEmpleados(ArrayList<Empleado> empleados) {
         this.empleados = empleados;
     }
-    
-    
-    
-    
 }

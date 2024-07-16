@@ -19,6 +19,16 @@ public class Persona {
         this.perTelefono = perTelefono;
         this.perCorreoElectronico = perCorreoElectronico;
     }
+    
+    public Persona(String perCedula, String perNombre, String perApellido, String perDireccion, String perTelefono, String perCorreoElectronico) {
+        this.perId = perId;
+        this.perCedula = perCedula;
+        this.perNombre = perNombre;
+        this.perApellido = perApellido;
+        this.perDireccion = perDireccion;
+        this.perTelefono = perTelefono;
+        this.perCorreoElectronico = perCorreoElectronico;
+    }
 
     // Getters
     public int getPerId() {

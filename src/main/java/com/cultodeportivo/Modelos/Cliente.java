@@ -13,6 +13,11 @@ public class Cliente {
         this.cliEstado = cliEstado;
         this.persona = Objects.requireNonNull(persona, "El objeto 'persona' no puede ser nulo");
     }
+    
+    public Cliente(char cliEstado, Persona persona) {
+        this.cliEstado = cliEstado;
+        this.persona = Objects.requireNonNull(persona, "El objeto 'persona' no puede ser nulo");
+    }
 
     public int getCliId() {
         return cliId;

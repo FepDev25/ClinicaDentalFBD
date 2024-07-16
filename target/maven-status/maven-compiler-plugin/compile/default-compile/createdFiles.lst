@@ -11,10 +11,12 @@ com/cultodeportivo/Modelos/Impuesto.class
 module-info.class
 com/cultodeportivo/proyecto_fbd/AlertMessage.class
 com/cultodeportivo/Modelos/Permiso.class
+com/cultodeportivo/Control/OperacionesActualizar.class
 com/cultodeportivo/Modelos/FacturaDetalle.class
 com/cultodeportivo/Control/OperacionesAcceso.class
 com/cultodeportivo/proyecto_fbd/PrimaryController.class
 com/cultodeportivo/Modelos/FacturaCabecera.class
+com/cultodeportivo/Control/OperacionesEliminar.class
 com/cultodeportivo/Control/OperacionesEscritura.class
 com/cultodeportivo/Modelos/Empleado.class
 com/cultodeportivo/Control/Control.class
@@ -22,3 +24,4 @@ com/cultodeportivo/Modelos/Tipo.class
 com/cultodeportivo/Control/ConexionOracle.class
 com/cultodeportivo/Modelos/Persona.class
 com/cultodeportivo/proyecto_fbd/TableWorker.class
+com/cultodeportivo/proyecto_fbd/ButtonWorker.class

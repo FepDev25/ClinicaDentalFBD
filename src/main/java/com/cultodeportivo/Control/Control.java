@@ -3,12 +3,16 @@ package com.cultodeportivo.Control;
 import java.util.ArrayList;
 import com.cultodeportivo.Modelos.*;
 import com.cultodeportivo.proyecto_fbd.*;
+import java.sql.SQLException;
 
 public class Control {
     private OperacionesAcceso operacionesAcceso;
     private OperacionesEscritura operacionesEscritura;
+    private OperacionesEliminar operacionesEliminar;
+    private OperacionesActualizar operacionesModificar;
     public PrimaryController controller;
     public SecondaryController controller2;
+    public Emparejador empj;
 
     public Control(PrimaryController controller) {
         this.operacionesAcceso = new OperacionesAcceso();
@@ -19,7 +23,10 @@ public class Control {
     public Control(SecondaryController controller2) {
         this.operacionesAcceso = new OperacionesAcceso();
         this.operacionesEscritura = new OperacionesEscritura();
+        this.operacionesEliminar = new OperacionesEliminar();
+        this.operacionesModificar = new OperacionesActualizar();
         this.controller2 = controller2;
+        this.empj = new Emparejador();
     }
     
     public ArrayList<Permiso> obtenerPermisos(){
@@ -40,6 +47,32 @@ public class Control {
     
     public ArrayList<Cliente> obtenerClientes(ArrayList<Persona> personas){
         return operacionesAcceso.obtenerClientes(personas);
+    }
+    
+    public boolean agregarPersona(Persona persona){
+        boolean crearPersona = operacionesEscritura.CrearPersona(persona);
+        return crearPersona;
+    }
+    
+    public boolean agregarCliente(Cliente cliente){
+        Persona persona = cliente.getPersona();
+        if (persona != null){
+            operacionesEscritura.CrearCliente(cliente);
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean modificarPersona(Persona persona) {
+        return operacionesModificar.actualizarPersona(persona);
+    }
+    
+    public void modificarCliente(){
+        
+    }
+    
+    public boolean elimiarCliente(int id){
+        return operacionesEliminar.eliminarCliente(id);
     }
     
     public ArrayList<Usuario> obtenerUsuarios(ArrayList<Empleado> empleados, ArrayList<Permiso> permisos){

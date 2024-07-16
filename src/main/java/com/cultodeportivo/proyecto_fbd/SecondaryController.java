@@ -42,10 +42,14 @@ public class SecondaryController implements Initializable {
     private ArrayList<FacturaCabecera> cabeceras;
     private ArrayList<FacturaDetalle> detalles;
     private ArrayList<Servicio> servicios;
-    
-    private Control controlador;
-    
-    private TableWorker tableWorker;
+    private ButtonWorker btnWorker;
+
+    public Control controlador;
+    public AlertMessage message;
+
+    public int indiceClientes;
+
+    public TableWorker tableWorker;
 
     public ArrayList<Persona> getPersonas() {
         return personas;
@@ -131,12 +135,21 @@ public class SecondaryController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         controlador = new Control(this);
         tableWorker = new TableWorker(this);
+        btnWorker = new ButtonWorker(this);
         accionBotones();
         validarPermiso();
         label_usuario.setText("Usuario: " + GlobalValues.userApp.getUsrNombre());
         controlador.cargarListasController2();
         tableWorker.cargarValuesTablas();
         tableWorker.setDataTablas();
+        btnWorker.asignarAcciones();
+        message = new AlertMessage();
+
+        this.tabla_cliente.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                indiceClientes = this.tabla_cliente.getItems().indexOf(newSelection);
+            }
+        });
     }
 
     @FXML
@@ -218,9 +231,6 @@ public class SecondaryController implements Initializable {
     private Button boton_limpiar_campos_servicios;
 
     @FXML
-    private Button boton_listar_facturas_clientes;
-
-    @FXML
     private Button boton_modificar_cliente;
 
     @FXML
@@ -240,6 +250,12 @@ public class SecondaryController implements Initializable {
 
     @FXML
     private Button boton_servicios;
+
+    @FXML
+    private Button button_seleccionar_cliente_citas;
+
+    @FXML
+    private Button button_seleccionar_odontologo_citas;
 
     @FXML
     private TextField cliente_apellidos;
@@ -264,12 +280,6 @@ public class SecondaryController implements Initializable {
 
     @FXML
     private ComboBox<?> combo_empleado_tipo;
-
-    @FXML
-    private ComboBox<?> combo_seleccionar_cliente;
-
-    @FXML
-    private ComboBox<?> combo_seleccionar_doctor;
 
     @FXML
     private ComboBox<?> combo_servicios_iva;
@@ -386,6 +396,12 @@ public class SecondaryController implements Initializable {
     private TextField servicios_precio;
 
     @FXML
+    private TextField text_seleccionar_cliente_citas;
+
+    @FXML
+    private TextField text_seleccionar_odontologo_citas;
+
+    @FXML
     private TableColumn<?, ?> tab_cit_cliente;
 
     @FXML
@@ -450,7 +466,7 @@ public class SecondaryController implements Initializable {
 
     @FXML
     private TableColumn<Servicio, Double> tab_ser_precio;
-            
+
     @FXML
     private TableColumn<Servicio, Character> tab_ser_iva;
 
@@ -466,6 +482,7 @@ public class SecondaryController implements Initializable {
     @FXML
     private TableView<Servicio> tabla_servicios;
 
+    // Detalles factura en menu facturacion 
     @FXML
     private TableView<?> table_citas_recientes;
 
@@ -486,6 +503,19 @@ public class SecondaryController implements Initializable {
 
     @FXML
     private TableColumn<?, ?> tb_fac_det_total;
+
+    // Factura cabecera en menu facturacion
+    @FXML
+    private TableView<?> tabla_factura_cabecera;
+
+    @FXML
+    private TableColumn<?, ?> tabla_factura_cabecera_iva;
+
+    @FXML
+    private TableColumn<?, ?> tabla_factura_cabecera_subtotal;
+
+    @FXML
+    private TableColumn<?, ?> tabla_factura_cabecera_total;
 
     @FXML
     private void switchToPrimary() throws IOException {
@@ -552,7 +582,7 @@ public class SecondaryController implements Initializable {
     public TableColumn<Servicio, Double> getTab_ser_precio() {
         return tab_ser_precio;
     }
-    
+
     public TableView<Servicio> getTabla_servicios() {
         return tabla_servicios;
     }
@@ -628,11 +658,149 @@ public class SecondaryController implements Initializable {
     public TableView<Empleado> getTabla_empleados() {
         return tabla_empleados;
     }
-    
-    
-    
-    
-    
-    
+
+    public Button getBoton_agendar_cita() {
+        return boton_agendar_cita;
+    }
+
+    public Button getBoton_agregar_cliente() {
+        return boton_agregar_cliente;
+    }
+
+    public Button getBoton_agregar_empleado() {
+        return boton_agregar_empleado;
+    }
+
+    public Button getBoton_agregar_servicio() {
+        return boton_agregar_servicio;
+    }
+
+    public Button getBoton_buscar_cliente() {
+        return boton_buscar_cliente;
+    }
+
+    public Button getBoton_buscar_servicio() {
+        return boton_buscar_servicio;
+    }
+
+    public Button getBoton_cancelar_cita() {
+        return boton_cancelar_cita;
+    }
+
+    public Button getBoton_citas() {
+        return boton_citas;
+    }
+
+    public Button getBoton_clientes() {
+        return boton_clientes;
+    }
+
+    public Button getBoton_eliminar_cliente() {
+        return boton_eliminar_cliente;
+    }
+
+    public Button getBoton_eliminar_empleado() {
+        return boton_eliminar_empleado;
+    }
+
+    public Button getBoton_eliminar_servicios() {
+        return boton_eliminar_servicios;
+    }
+
+    public Button getBoton_empleados() {
+        return boton_empleados;
+    }
+
+    public Button getBoton_facturacion() {
+        return boton_facturacion;
+    }
+
+    public Button getBoton_facturar() {
+        return boton_facturar;
+    }
+
+    public Button getBoton_guardar_clientes() {
+        return boton_guardar_clientes;
+    }
+
+    public Button getBoton_guardar_empleado() {
+        return boton_guardar_empleado;
+    }
+
+    public Button getBoton_guardar_servicio() {
+        return boton_guardar_servicio;
+    }
+
+    public Button getBoton_limpiar_campos_cliente() {
+        return boton_limpiar_campos_cliente;
+    }
+
+    public Button getBoton_limpiar_campos_empleado() {
+        return boton_limpiar_campos_empleado;
+    }
+
+    public Button getBoton_limpiar_campos_servicios() {
+        return boton_limpiar_campos_servicios;
+    }
+
+    public Button getBoton_modificar_cliente() {
+        return boton_modificar_cliente;
+    }
+
+    public Button getBoton_modificar_empleado() {
+        return boton_modificar_empleado;
+    }
+
+    public Button getBoton_modificar_servicio() {
+        return boton_modificar_servicio;
+    }
+
+    public Button getBoton_perfil() {
+        return boton_perfil;
+    }
+
+    public Button getBoton_reservar_cita() {
+        return boton_reservar_cita;
+    }
+
+    public Button getBoton_salir() {
+        return boton_salir;
+    }
+
+    public Button getBoton_servicios() {
+        return boton_servicios;
+    }
+
+    public Button getButton_seleccionar_cliente_citas() {
+        return button_seleccionar_cliente_citas;
+    }
+
+    public Button getButton_seleccionar_odontologo_citas() {
+        return button_seleccionar_odontologo_citas;
+    }
+
+    public TextField getCliente_apellidos() {
+        return cliente_apellidos;
+    }
+
+    public TextField getCliente_cedula() {
+        return cliente_cedula;
+    }
+
+    public TextField getCliente_correo() {
+        return cliente_correo;
+    }
+
+    public TextArea getCliente_direccion() {
+        return cliente_direccion;
+    }
+
+    public TextField getCliente_nombre() {
+        return cliente_nombre;
+    }
+
+    public TextField getCliente_telefono() {
+        return cliente_telefono;
+    }
 
 }

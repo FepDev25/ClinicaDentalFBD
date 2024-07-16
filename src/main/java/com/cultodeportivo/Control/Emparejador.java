@@ -1,6 +1,7 @@
 package com.cultodeportivo.Control;
 
 import com.cultodeportivo.Modelos.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -54,6 +55,39 @@ public class Emparejador {
             return new Usuario(usrId, usrNombre, usrContrasenia, empleado, permiso);
         } else {
             System.out.println("Empleado o Permiso no encontrado.");
+            return null;
+        }
+    }
+    
+    public Cita emparejarCitas(char citId,  LocalDateTime citFecha, int cliId, int empId, char citEstado,  ArrayList<Empleado> empleados, ArrayList<Cliente> clientes){
+        Optional<Empleado> empleadoOpt = empleados.stream()
+               .filter(e -> e.getEmpId() == empId)
+               .findFirst();
+        
+        Optional<Cliente> clienteOpt = clientes.stream()
+               .filter(c -> c.getCliId() == cliId)
+               .findFirst();
+        
+        if (empleadoOpt.isPresent() && clienteOpt.isPresent()) {
+            Empleado empleado = empleadoOpt.get();
+            Cliente cliente = clienteOpt.get();
+            return new Cita(citId,  citFecha, citEstado, empleado, cliente);
+        } else {
+            System.out.println("Empleado o Cliente no encontrado al emparejar citas.");
+            return null;
+        }
+    }
+    
+    public Persona encontrarClientePorCedula(ArrayList<Persona> personas, String cedula){
+        Optional<Persona> personaOpt = personas.stream()
+               .filter(e -> e.getPerCedula().equals(cedula))
+               .findFirst();
+        
+        if (personaOpt.isPresent()){
+            Persona persona = personaOpt.get();
+            return persona;
+        } else {
+            System.out.println("Persona no encontrada.");
             return null;
         }
     }

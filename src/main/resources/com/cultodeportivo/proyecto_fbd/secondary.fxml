@@ -90,13 +90,20 @@
                                     </ImageView>
                                  </children>
                               </AnchorPane>
-                              <AnchorPane layoutX="300.0" layoutY="180.0" prefHeight="417.0" prefWidth="400.0" stylesheets="@estilos.css">
+                              <AnchorPane layoutX="300.0" layoutY="180.0" prefHeight="571.0" prefWidth="732.0" stylesheets="@estilos.css">
                                  <styleClass>
                                     <String fx:value="white-bg" />
                                     <String fx:value="shadow" />
                                  </styleClass>
                                  <children>
-                                    <TableView fx:id="table_factura_detalle" prefHeight="570.0" prefWidth="740.0">
+                                    <TableView fx:id="tabla_factura_cabecera" layoutY="503.0" prefHeight="70.0" prefWidth="730.0">
+                                      <columns>
+                                        <TableColumn fx:id="tabla_factura_cabecera_subtotal" prefWidth="249.6480712890625" text="Subtotal" />
+                                        <TableColumn fx:id="tabla_factura_cabecera_iva" prefWidth="261.550537109375" text="IVA" />
+                                         <TableColumn fx:id="tabla_factura_cabecera_total" prefWidth="223.44940185546875" text="Total" />
+                                      </columns>
+                                    </TableView>
+                                    <TableView fx:id="table_factura_detalle" prefHeight="461.0" prefWidth="730.0">
                                       <columns>
                                         <TableColumn fx:id="tb_fac_det_nombre" prefWidth="397.6082763671875" text="Nombre Servicio" />
                                         <TableColumn fx:id="tb_fac_det_cantidad" prefWidth="78.3917236328125" text="Cantidad" />
@@ -105,6 +112,11 @@
                                           <TableColumn fx:id="tb_fac_det_total" prefWidth="96.00433349609375" text="Total" />
                                       </columns>
                                     </TableView>
+                                    <Label layoutX="4.0" layoutY="471.0" text="Total Factura:">
+                                       <font>
+                                          <Font name="System Bold" size="15.0" />
+                                       </font>
+                                    </Label>
                                  </children>
                               </AnchorPane>
                               <AnchorPane layoutX="300.0" layoutY="5.0" prefHeight="155.0" prefWidth="518.0" stylesheets="@estilos.css">
@@ -150,7 +162,7 @@
                                     <String fx:value="white-bg" />
                                  </styleClass>
                                  <children>
-                                    <DatePicker fx:id="reserva_fecha" layoutX="220.0" layoutY="65.0" />
+                                    <DatePicker fx:id="reserva_fecha" layoutX="225.0" layoutY="65.0" />
                                     <Label layoutX="10.0" layoutY="15.0" text="Reserva de Citas">
                                        <font>
                                           <Font name="System Bold" size="15.0" />
@@ -159,14 +171,16 @@
                                     <Label layoutX="85.0" layoutY="65.0" text="Ingresar día:" />
                                     <Label layoutX="85.0" layoutY="126.0" text="Odontólogo:" />
                                     <Label layoutX="85.0" layoutY="180.0" text="Ingresar Hora:" />
-                                    <ComboBox fx:id="combo_seleccionar_doctor" layoutX="224.0" layoutY="122.0" prefHeight="25.0" prefWidth="188.0" />
                                     <Label layoutX="275.0" layoutY="180.0" text="H" />
                                     <TextField fx:id="reserva_label_hora" layoutX="229.0" layoutY="176.0" prefHeight="25.0" prefWidth="42.0" />
                                     <TextField fx:id="reserva_label_minutos" layoutX="316.0" layoutY="176.0" prefHeight="25.0" prefWidth="42.0" />
                                     <Label layoutX="369.0" layoutY="180.0" text="M" />
                                     <Button fx:id="boton_agendar_cita" layoutX="155.0" layoutY="320.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="150.0" styleClass="boton_facturar" stylesheets="@estilos.css" text="Agendar Cita" />
                                     <Label layoutX="89.0" layoutY="237.0" text="Cliente" />
-                                    <ComboBox fx:id="combo_seleccionar_cliente" layoutX="224.0" layoutY="233.0" prefHeight="25.0" prefWidth="188.0" />
+                                    <TextField fx:id="text_seleccionar_odontologo_citas" layoutX="225.0" layoutY="122.0" />
+                                    <TextField fx:id="text_seleccionar_cliente_citas" layoutX="225.0" layoutY="233.0" />
+                                    <Button fx:id="button_seleccionar_odontologo_citas" layoutX="440.0" layoutY="120.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="140.0" styleClass="boton_anchor" stylesheets="@estilos.css" text="Buscar Odontologo" />
+                                    <Button fx:id="button_seleccionar_cliente_citas" layoutX="440.0" layoutY="232.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="140.0" styleClass="boton_anchor" stylesheets="@estilos.css" text="Buscar Cliente" />
                                  </children>
                               </AnchorPane>
                               <AnchorPane layoutX="8.0" layoutY="442.0" prefHeight="303.0" prefWidth="1013.0" stylesheets="@estilos.css">
@@ -182,7 +196,7 @@
                                     </ImageView>
                                     <TableView fx:id="table_citas_recientes" layoutX="24.0" layoutY="36.0" prefHeight="263.0" prefWidth="791.0">
                                       <columns>
-                                        <TableColumn fx:id="tab_cit_hora" prefWidth="134.09869384765625" text="Hora" />
+                                        <TableColumn fx:id="tab_cit_hora" prefWidth="134.09869384765625" text="Fecha" />
                                         <TableColumn fx:id="tab_cit_odontologo" prefWidth="285.47412109375" text="Nombre Odontólogo" />
                                           <TableColumn fx:id="tab_cit_cliente" prefWidth="369.52587890625" text="Nombre Cliente" />
                                       </columns>
@@ -268,8 +282,7 @@
                                     <Button fx:id="boton_modificar_cliente" layoutX="17.0" layoutY="72.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="150.0" styleClass="boton_anchor" stylesheets="@estilos.css" text="Modificar" />
                                     <Button fx:id="boton_agregar_cliente" layoutX="16.0" layoutY="15.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="150.0" styleClass="boton_anchor" stylesheets="@estilos.css" text="Agregar" />
                                     <Button fx:id="boton_limpiar_campos_cliente" layoutX="170.0" layoutY="15.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="150.0" styleClass="boton_anchor" stylesheets="@estilos.css" text="Limpiar Campos" />
-                                    <Button fx:id="boton_eliminar_cliente" layoutX="170.0" layoutY="129.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="150.0" styleClass="boton_eliminar" stylesheets="@estilos.css" text="Eliminar" textFill="#dd0404" />
-                                    <Button fx:id="boton_listar_facturas_clientes" layoutX="17.0" layoutY="129.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="150.0" styleClass="boton_anchor" stylesheets="@estilos.css" text="Listar Facturas" />
+                                    <Button fx:id="boton_eliminar_cliente" layoutX="17.0" layoutY="129.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="150.0" styleClass="boton_eliminar" stylesheets="@estilos.css" text="Eliminar" textFill="#dd0404" />
                                     <Button fx:id="boton_guardar_clientes" disable="true" layoutX="171.0" layoutY="72.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="150.0" styleClass="boton_anchor" stylesheets="@estilos.css" text="Guardar" />
                                  </children>
                                  <styleClass>
