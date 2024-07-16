@@ -14,6 +14,13 @@ public class Servicio {
         this.serIva = serIva;
         this.serEstado = serEstado;
     }
+    
+    public Servicio(String serNombre, double serPrecio, char serIva, char serEstado) {
+        this.serNombre = serNombre;
+        this.serPrecio = serPrecio;
+        this.serIva = serIva;
+        this.serEstado = serEstado;
+    }
 
     public int getSerId() {
         return serId;

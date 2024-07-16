@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -130,6 +131,8 @@ public class SecondaryController implements Initializable {
     public void setTipos(ArrayList<Tipo> tipos) {
         this.tipos = tipos;
     }
+    
+    List<String> yes_no = Arrays.asList("Si", "No");
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -150,6 +153,8 @@ public class SecondaryController implements Initializable {
                 indiceClientes = this.tabla_cliente.getItems().indexOf(newSelection);
             }
         });
+        
+        this.getCombo_servicios_iva().setItems(FXCollections.observableArrayList(yes_no));
     }
 
     @FXML
@@ -282,7 +287,7 @@ public class SecondaryController implements Initializable {
     private ComboBox<?> combo_empleado_tipo;
 
     @FXML
-    private ComboBox<?> combo_servicios_iva;
+    private ComboBox<String> combo_servicios_iva;
 
     @FXML
     private TextField empleado_apellidos;
@@ -801,6 +806,20 @@ public class SecondaryController implements Initializable {
 
     public TextField getCliente_telefono() {
         return cliente_telefono;
+    }
+    
+    // Para ingresar servicios
+    
+    public ComboBox<String> getCombo_servicios_iva() {
+        return combo_servicios_iva;
+    }
+
+    public TextField getServicios_nombre() {
+        return servicios_nombre;
+    }
+
+    public TextField getServicios_precio() {
+        return servicios_precio;
     }
 
 }

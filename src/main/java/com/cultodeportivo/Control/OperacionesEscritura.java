@@ -4,6 +4,7 @@ import com.cultodeportivo.Modelos.*;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Timestamp;
 
 public class OperacionesEscritura {
@@ -15,7 +16,7 @@ public class OperacionesEscritura {
         this.conexion = ConexionOracle.getInstance();
     }
 
-    public boolean CrearPersona(Persona persona) {
+    public int CrearPersona(Persona persona) {
         System.out.println("Iniciando metodo");
         ConexionOracle.getInstance().getConexion();
 
@@ -38,16 +39,18 @@ public class OperacionesEscritura {
             myStatement.setString(5, telefono);
             myStatement.setString(6, correo);
 
-            int ejecutar = myStatement.executeUpdate();
+            myStatement.executeUpdate();
             System.out.println("Persona creada exitosamente.");
             myStatement.close();
-            return ejecutar > 0;
+            return 1;
 
+        } catch (SQLIntegrityConstraintViolationException e) {
+            System.out.println("Exception de Constraint.");
+            return 2;
         } catch (SQLException e) {
             System.out.println("Error al establecer la conexión a la base de datos o al ejecutar la consulta.");
-            e.printStackTrace();
         }
-        return false;
+        return 0;
     }
 
     public void CrearEmpleado(Empleado empleado) {

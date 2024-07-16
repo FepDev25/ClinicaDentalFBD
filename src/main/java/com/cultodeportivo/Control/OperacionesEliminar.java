@@ -3,6 +3,7 @@ package com.cultodeportivo.Control;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 
 public class OperacionesEliminar {
@@ -116,7 +117,7 @@ public class OperacionesEliminar {
         }
     }
 
-    public boolean eliminarCliente(int id) {
+    public int eliminarCliente(int id) {
         System.out.println("Iniciando metodo");
         ConexionOracle.getInstance().getConexion();
 
@@ -127,16 +128,17 @@ public class OperacionesEliminar {
 
             myStatement.setInt(1, id);
 
-            int ejecutar = myStatement.executeUpdate();
+            myStatement.executeUpdate();
             System.out.println("Cliente eliminado exitosamente.");
             myStatement.close();
-            return ejecutar > 0;
+            return 1;
 
+        } catch (SQLIntegrityConstraintViolationException e) {
+            return 2;
         } catch (SQLException e) {
             System.out.println("Error al establecer la conexión a la base de datos o al ejecutar la consulta.");
-            e.printStackTrace();
-        }
-        return false;
+        } 
+        return 0;
     }
     
     

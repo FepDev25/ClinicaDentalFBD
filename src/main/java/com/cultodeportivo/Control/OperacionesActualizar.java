@@ -1,7 +1,6 @@
 package com.cultodeportivo.Control;
 
 import com.cultodeportivo.Modelos.Persona;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -18,7 +17,6 @@ public class OperacionesActualizar {
     public boolean actualizarPersona(Persona persona)  {
         System.out.println(persona);
         String sql = "UPDATE cd_personas SET per_cedula = ?, per_nombre = ?, per_apellido = ?, per_direccion = ?, per_telefono = ?, per_correo_electronico = ? WHERE per_id = ?";
-        
         try {
             myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
             

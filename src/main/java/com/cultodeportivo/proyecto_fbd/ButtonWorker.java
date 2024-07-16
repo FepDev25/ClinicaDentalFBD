@@ -18,6 +18,12 @@ public class ButtonWorker {
         vista.getBoton_modificar_cliente().setOnAction(e -> modificarCliente());
         vista.getBoton_guardar_clientes().setOnAction(e -> guardarCliente());
         vista.getBoton_eliminar_cliente().setOnAction(e -> eliminarCliente());
+
+        vista.getBoton_agregar_servicio().setOnAction(e -> agregarServicio());
+        vista.getBoton_eliminar_servicios().setOnAction(e -> eliminarServicio());
+        vista.getBoton_guardar_servicio().setOnAction(e -> guardarServicio());
+        vista.getBoton_limpiar_campos_servicios().setOnAction(e -> limpiarCamposServicio());
+        vista.getBoton_modificar_servicio().setOnAction(e -> modificarServicio());
     }
 
     public void agregarCliente() {
@@ -34,6 +40,7 @@ public class ButtonWorker {
         if (agregarPersona) {
             vista.setPersonas(vista.controlador.obtenerPersonas());
             Persona personaCliente = vista.controlador.empj.encontrarClientePorCedula(vista.getPersonas(), cedulaCliente);
+            System.out.println("La persona se va a buscar en: " + vista.getPersonas());
             Cliente cliente = new Cliente('A', personaCliente);
             boolean agregarCliente = vista.controlador.agregarCliente(cliente);
             if (agregarCliente) {
@@ -43,7 +50,6 @@ public class ButtonWorker {
                 vista.tableWorker.setDataClientes();
                 limpiarCamposClientes();
             }
-
         } else {
             vista.message.errorMessage("Error al crear Cliente.");
         }
@@ -70,7 +76,7 @@ public class ButtonWorker {
         String correoCliente = vista.getCliente_correo().getText();
         String telefonoCliente = vista.getCliente_telefono().getText();
         String direccionCliente = vista.getCliente_direccion().getText();
-        
+
         clienteSeleccionado = vista.getTabla_cliente().getItems().get(vista.indiceClientes);
         clienteSeleccionado.getPersona().setPerCedula(cedulaCliente);
         clienteSeleccionado.getPersona().setPerNombre(nombreCliente);
@@ -78,7 +84,7 @@ public class ButtonWorker {
         clienteSeleccionado.getPersona().setPerCorreoElectronico(correoCliente);
         clienteSeleccionado.getPersona().setPerTelefono(telefonoCliente);
         clienteSeleccionado.getPersona().setPerDireccion(direccionCliente);
-        
+
         boolean ejecutar = vista.controlador.modificarPersona(clienteSeleccionado.getPersona());
 
         if (ejecutar) {
@@ -121,6 +127,48 @@ public class ButtonWorker {
         vista.getCliente_telefono().setText("");
         vista.getCliente_direccion().setText("");
         vista.getCliente_correo().setText("");
+    }
+
+    public void agregarServicio() {
+        String nombreServicio = vista.getServicios_nombre().getText();
+        String precioServicio = vista.getServicios_precio().getText();
+        String tiene_iva = "";
+
+        if (nombreServicio.isEmpty() || precioServicio.isEmpty()) {
+            vista.message.errorMessage("Ingresar un nombre o precio válidos.");
+        } else {
+            try {
+                if (vista.getCombo_servicios_iva().getValue().equals("Si")) {
+                    tiene_iva = "Si";
+                } else if (vista.getCombo_servicios_iva().getValue().equals("No")) {
+                    tiene_iva = "No";
+                }
+                char iva = tiene_iva.equals("Si") ? 'S' : 'N';
+
+                Servicio servicio = new Servicio(nombreServicio, Double.parseDouble(precioServicio), iva, 'A');
+
+                System.out.println(servicio);
+            } catch (NullPointerException e) {
+                vista.message.errorMessage("Seleccionar si el producto tiene IVA.");
+            }
+        }
+
+    }
+
+    public void modificarServicio() {
+
+    }
+
+    public void guardarServicio() {
+
+    }
+
+    public void eliminarServicio() {
+
+    }
+
+    public void limpiarCamposServicio() {
+
     }
 
 }

@@ -7,7 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ConexionOracle {
-    private static final String URL = "jdbc:oracle:thin:@localhost:1521:xe"; // Ajusta esto según tu configuración
+    private static final String URL = "jdbc:oracle:thin:@localhost:1521:xe";
     private static final String USER = "DB_SISTEMA";
     private static final String PASSWORD = "trabajo123";
 
