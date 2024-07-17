@@ -99,6 +99,10 @@ public class Control {
         return false;
 
     }
+    
+    public boolean agregarServicio(Servicio servicio){
+        return operacionesEscritura.CrearServicio(servicio);
+    }
 
     public ArrayList<Usuario> obtenerUsuarios(ArrayList<Empleado> empleados, ArrayList<Permiso> permisos) {
         return operacionesAcceso.obtenerUsuarios(empleados, permisos);

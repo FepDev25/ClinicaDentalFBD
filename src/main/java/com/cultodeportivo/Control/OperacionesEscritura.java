@@ -102,7 +102,7 @@ public class OperacionesEscritura {
         }
     }
 
-    public void CrearServicio(Servicio servicio) {
+    public boolean CrearServicio(Servicio servicio) {
         System.out.println("Iniciando metodo");
         ConexionOracle.getInstance().getConexion();
 
@@ -113,16 +113,18 @@ public class OperacionesEscritura {
 
             myStatement.setString(1, servicio.getSerNombre());
             myStatement.setDouble(2, servicio.getSerPrecio());
-            myStatement.setString(3, String.valueOf(servicio.getSerEstado()));
             myStatement.setString(3, String.valueOf(servicio.getSerIva()));
+            myStatement.setString(4, String.valueOf(servicio.getSerEstado()));
 
-            myStatement.executeUpdate();
+            int ejecutar = myStatement.executeUpdate();
             System.out.println("Servicio creado exitosamente.");
-
+            myStatement.close();
+            return ejecutar > 0;
         } catch (SQLException e) {
             System.out.println("Error al establecer la conexión a la base de datos o al ejecutar la consulta.");
             e.printStackTrace();
         }
+        return false;
     }
 
     public void CrearFacturaCabecera(Timestamp cabFecha, double cabSubtotal, double cabIva, double cabTotal, int cliId, int usrId) {

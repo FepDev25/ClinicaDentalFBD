@@ -49,6 +49,9 @@ public class SecondaryController implements Initializable {
     public AlertMessage message;
 
     public int indiceClientes;
+    public int indiceServicios;
+    public int indiceEmpleados;
+    public int indiceFacturaDetlles;
 
     public TableWorker tableWorker;
 
@@ -151,6 +154,12 @@ public class SecondaryController implements Initializable {
         this.tabla_cliente.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 indiceClientes = this.tabla_cliente.getItems().indexOf(newSelection);
+            }
+        });
+        
+        this.tabla_servicios.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                indiceServicios = this.tabla_servicios.getItems().indexOf(newSelection);
             }
         });
         
