@@ -1,4 +1,3 @@
-
 package com.cultodeportivo.Control;
 
 import java.sql.PreparedStatement;
@@ -94,26 +93,25 @@ public class OperacionesEliminar {
         }
     }
 
-    public void eliminarServicio(int id) {
+    public int eliminarServicio(int id) {
         System.out.println("Iniciando metodo");
         ConexionOracle.getInstance().getConexion();
 
         try {
             String sql = "DELETE FROM cd_servicios WHERE ser_id = ?";
             System.out.println("SQL: " + sql);
-            PreparedStatement myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
+            myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
 
             myStatement.setInt(1, id);
 
             myStatement.executeUpdate();
             System.out.println("Servicio eliminado exitosamente.");
+            return 1;
 
         } catch(java.sql.SQLIntegrityConstraintViolationException e){
-            OperacionesActualizar a = new OperacionesActualizar();
-            a.actualizarServicio(id, 5,(char)'I');
+            return 2;
         }catch (SQLException e) {
-            System.out.println("Error al establecer la conexión a la base de datos o al ejecutar la consulta."+e);
-            
+            return 0;
         }
     }
 

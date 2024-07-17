@@ -7,8 +7,7 @@ public class ButtonWorker {
     Cliente clienteSeleccionado;
     Servicio servicioSeleccionado;
     Empleado empleadoSeleccionado;
-    
-    
+
     SecondaryController vista;
 
     public ButtonWorker(SecondaryController vista) {
@@ -150,17 +149,17 @@ public class ButtonWorker {
 
                 Servicio servicio = new Servicio(nombreServicio, Double.parseDouble(precioServicio), iva, 'A');
                 boolean agregar = vista.controlador.agregarServicio(servicio);
-                if(agregar){
+                if (agregar) {
                     vista.message.successMessage("Servicio creado Correctamente!");
                     vista.setServicios(vista.controlador.obtenerServicios());
                     vista.tableWorker.setDataServicios();
                     limpiarCamposServicio();
-                } else{
+                } else {
                     vista.message.errorMessage("Error al crear Servicio.");
                 }
             } catch (NullPointerException e) {
                 vista.message.errorMessage("Seleccionar si el producto tiene IVA.");
-            } catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 vista.message.errorMessage("Ingresar un precio válido.");
             }
         }
@@ -169,23 +168,78 @@ public class ButtonWorker {
 
     public void modificarServicio() {
         servicioSeleccionado = vista.getTabla_servicios().getItems().get(vista.indiceServicios);
-        
+
         vista.getServicios_nombre().setText(servicioSeleccionado.getSerNombre());
         vista.getServicios_precio().setText(String.valueOf(servicioSeleccionado.getSerPrecio()));
-        String tiene_iva = servicioSeleccionado.getSerIva() == 'S'? "Si" : "No";
+        String tiene_iva = servicioSeleccionado.getSerIva() == 'S' ? "Si" : "No";
         vista.getCombo_servicios_iva().setValue(tiene_iva);
-        
+
         vista.getBoton_agregar_servicio().setDisable(true);
         vista.getBoton_guardar_servicio().setDisable(false);
     }
 
     public void guardarServicio() {
+        String nombreServicio = vista.getServicios_nombre().getText();
+        String precioServicio = vista.getServicios_precio().getText();
+        String tiene_iva = "";
+
+        if (nombreServicio.isEmpty() || precioServicio.isEmpty()) {
+            vista.message.errorMessage("No se puede modificar al servicio con valores inválidos.");
+        } else {
+            try {
+                if (vista.getCombo_servicios_iva().getValue().equals("Si")) {
+                    tiene_iva = "Si";
+                } else if (vista.getCombo_servicios_iva().getValue().equals("No")) {
+                    tiene_iva = "No";
+                }
+                char iva = tiene_iva.equals("Si") ? 'S' : 'N';
+
+                servicioSeleccionado = vista.getTabla_servicios().getItems().get(vista.indiceServicios);
+
+                servicioSeleccionado.setSerNombre(nombreServicio);
+                servicioSeleccionado.setSerPrecio(Double.parseDouble(precioServicio));
+                servicioSeleccionado.setSerIva(iva);
+
+                boolean ejecutar = vista.controlador.modificarServicio(servicioSeleccionado);
+
+                if (ejecutar) {
+                    vista.setServicios(vista.controlador.obtenerServicios());
+                    vista.message.successMessage("Servicio modificado Correctamente!");
+                    vista.tableWorker.setDataServicios();
+                } else {
+                    vista.message.errorMessage("Error al modificar Servicio.");
+                }
+
+            } catch (NullPointerException e) {
+                vista.message.errorMessage("Seleccionar si el producto tiene IVA.");
+            } catch (NumberFormatException e) {
+                vista.message.errorMessage("Ingresar un precio válido.");
+            }
+        }
+
         vista.getBoton_agregar_servicio().setDisable(false);
         vista.getBoton_guardar_servicio().setDisable(true);
+        limpiarCamposServicio();
+
     }
 
     public void eliminarServicio() {
+        servicioSeleccionado = vista.getTabla_servicios().getItems().get(vista.indiceServicios);
 
+        boolean confirmar = vista.message.confirmationMessage("Estas seguro que quieres eliminar el Servicio?");
+        if (confirmar) {
+            boolean ejecutar = vista.controlador.eliminarServicio(servicioSeleccionado.getSerId());
+            if (ejecutar) {
+                vista.message.successMessage("Servicio eliminado Correctamente!");
+                vista.setServicios(vista.controlador.obtenerServicios());
+                vista.tableWorker.setDataServicios();
+            } else {
+                vista.message.errorMessage("Error al eliminar Servicio.");
+            }
+        } else {
+            vista.message.successMessage("Eliminar servicio cancelado.");
+        }
+        limpiarCamposServicio();
     }
 
     public void limpiarCamposServicio() {

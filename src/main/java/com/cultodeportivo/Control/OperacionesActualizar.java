@@ -1,6 +1,6 @@
 package com.cultodeportivo.Control;
 
-import com.cultodeportivo.Modelos.Persona;
+import com.cultodeportivo.Modelos.*;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -31,7 +31,7 @@ public class OperacionesActualizar {
             int ejecutar = myStatement.executeUpdate();
             return ejecutar > 0;
         } catch (SQLException e) {
-            System.err.println("Error al obtener permisos: " + e.getMessage());     
+            System.err.println("Error al actualizar persona. ");     
         }
         return false;
         
@@ -131,55 +131,28 @@ public class OperacionesActualizar {
     }
 }
     
-    public void actualizarServicio(int idServicio, int caracteristica, Object dato) {
-    System.out.println("Iniciando metodo");
-    ConexionOracle.getInstance().getConexion();
+    public boolean actualizarServicio(Servicio servicio) {
+        System.out.println("Iniciando metodo");
+        ConexionOracle.getInstance().getConexion();
+        String sql = "UPDATE cd_servicios SET ser_nombre = ?, ser_precio = ?, ser_estado = ?, ser_iva = ? WHERE ser_id = ?";
 
-    String campo = "";
-    try {
-        switch (caracteristica) {
-            case 1:
-                campo = "ser_id";
-                break;
-            case 2:
-                campo = "ser_nombre";
-                break;
-            case 3:
-                campo = "ser_precio";
-                break;
-            case 4:
-                campo = "ser_estado";
-                break;
-            default:
-                throw new IllegalArgumentException("Característica inválida: " + caracteristica);
+        try {
+            myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
+            
+            myStatement.setString(1, servicio.getSerNombre());
+            myStatement.setDouble(2, servicio.getSerPrecio());
+            myStatement.setString(3, String.valueOf(servicio.getSerEstado()));
+            myStatement.setString(4, String.valueOf(servicio.getSerIva()));
+            myStatement.setInt(5, servicio.getSerId());
+            
+            int ejecutar = myStatement.executeUpdate();
+            return ejecutar > 0;
+        } catch (SQLException e) {
+            System.err.println("Error al actualizar servicios.");     
         }
-
-        String sql = "UPDATE cd_servicios SET " + campo + " = ? WHERE ser_id = ?";
-        System.out.println("SQL: " + sql);
-        PreparedStatement myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
-
-        if (dato instanceof Integer) {
-            myStatement.setInt(1, (Integer) dato);
-        } else if (dato instanceof String) {
-            myStatement.setString(1, (String) dato);
-        } else if (dato instanceof Double) {
-            myStatement.setDouble(1, (Double) dato);
-        } else {
-            throw new IllegalArgumentException("Tipo de dato no soportado: " + dato.getClass().getSimpleName());
-        }
-
-        myStatement.setInt(2, idServicio);
-        myStatement.executeUpdate();
-        System.out.println("Campo actualizado exitosamente.");
-
-    } catch (SQLException e) {
-        System.out.println("Error al establecer la conexión a la base de datos o al ejecutar la consulta.");
-        e.printStackTrace();
-    } catch (IllegalArgumentException e) {
-        System.out.println("Error: " + e.getMessage());
-        e.printStackTrace();
+        return false;
+    
     }
-}
 
     public void actualizarFacturaDetalle(int idDetalle, int caracteristica, Object dato) {
     System.out.println("Iniciando metodo");

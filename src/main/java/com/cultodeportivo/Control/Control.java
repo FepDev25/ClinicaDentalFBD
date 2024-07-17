@@ -3,10 +3,7 @@ package com.cultodeportivo.Control;
 import java.util.ArrayList;
 import com.cultodeportivo.Modelos.*;
 import com.cultodeportivo.proyecto_fbd.*;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 public class Control {
 
@@ -102,6 +99,23 @@ public class Control {
     
     public boolean agregarServicio(Servicio servicio){
         return operacionesEscritura.CrearServicio(servicio);
+    }
+    
+    public boolean modificarServicio(Servicio servicio){
+        return operacionesModificar.actualizarServicio(servicio);
+    }
+    
+    public boolean eliminarServicio(int id){
+        int operacion = operacionesEliminar.eliminarServicio(id);
+        switch (operacion){
+            case 0:
+                return false;
+            case 1:
+                return true;
+            case 2:
+                controller2.message.errorMessage("El servicio tiene facturas asociadas, no se puede eliminar.");
+        }
+        return false;
     }
 
     public ArrayList<Usuario> obtenerUsuarios(ArrayList<Empleado> empleados, ArrayList<Permiso> permisos) {
