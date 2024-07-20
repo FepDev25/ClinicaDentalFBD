@@ -3,6 +3,7 @@ package com.cultodeportivo.Control;
 import java.util.ArrayList;
 import com.cultodeportivo.Modelos.*;
 import com.cultodeportivo.proyecto_fbd.*;
+import java.util.Optional;
 
 
 public class Control {
@@ -117,6 +118,39 @@ public class Control {
         }
         return false;
     }
+    
+    public boolean agregarEmpleado(Empleado empleado){
+        return operacionesEscritura.CrearEmpleado(empleado);
+    }
+    
+    public void modificarEmpleado(){
+        
+    }
+    
+    public void eliminarEmpleado(){
+        
+    }
+    
+    public boolean agregarUsuario(Usuario usuario){
+        return operacionesEscritura.CrearUsuario(usuario);
+    }
+    
+    public Tipo obtenerTipoPorNombre(String nombre){
+        Optional <Tipo> tipoOpt = this.obtenerTipos().stream().filter(t -> t.getTipNombre().equals(nombre)).findFirst();
+        if (tipoOpt.isPresent()){
+            return tipoOpt.get();
+        }
+        return null;
+    }
+    
+    public Permiso obtenerPermisoPorNombre(String nombre){
+        Optional <Permiso> permisoOpt = this.obtenerPermisos().stream().filter(t -> t.getPrmTipo().equals(nombre)).findFirst();
+        if (permisoOpt.isPresent()){
+            return permisoOpt.get();
+        }
+        return null;
+    }
+
 
     public ArrayList<Usuario> obtenerUsuarios(ArrayList<Empleado> empleados, ArrayList<Permiso> permisos) {
         return operacionesAcceso.obtenerUsuarios(empleados, permisos);

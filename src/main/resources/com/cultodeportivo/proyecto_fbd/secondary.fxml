@@ -313,7 +313,7 @@
                                     <Label layoutX="300.0" layoutY="159.0" text="Usuario" />
                                     <Label layoutX="300.0" layoutY="198.0" text="Contraseña" />
                                     <ComboBox fx:id="combo_empleado_permiso" disable="true" layoutX="373.0" layoutY="120.0" prefWidth="150.0" />
-                                    <TextField fx:id="empleado_usuario" disable="true" editable="false" layoutX="373.0" layoutY="159.0" />
+                                    <TextField fx:id="empleado_usuario" disable="true" layoutX="373.0" layoutY="159.0" />
                                     <PasswordField fx:id="empleado_contrasena" disable="true" layoutX="373.0" layoutY="198.0" />
                                  </children>
                                  <styleClass>

@@ -78,7 +78,7 @@ public class Emparejador {
         }
     }
     
-    public Persona encontrarClientePorCedula(ArrayList<Persona> personas, String cedula){
+    public Persona encontrarPersonaPorCedula(ArrayList<Persona> personas, String cedula){
         Optional<Persona> personaOpt = personas.stream()
                .filter(e -> e.getPerCedula().equals(cedula))
                .findFirst();
@@ -91,4 +91,20 @@ public class Emparejador {
             return null;
         }
     }
+    
+    public Empleado encontrarEmpleadoPorCedula(ArrayList<Empleado> empleados, String cedula){
+        Optional<Empleado> empleadoOpt = empleados.stream()
+               .filter(e -> e.getPersona().getPerCedula().equals(cedula))
+               .findFirst();
+        
+        if (empleadoOpt.isPresent()){
+            Empleado empleado = empleadoOpt.get();
+            return empleado;
+        } else {
+            System.out.println("Empleado no encontrado.");
+            return null;
+        }
+    }
+    
+
 }

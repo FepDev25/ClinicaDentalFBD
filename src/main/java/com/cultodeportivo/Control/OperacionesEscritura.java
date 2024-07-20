@@ -53,33 +53,32 @@ public class OperacionesEscritura {
         return 0;
     }
 
-    public void CrearEmpleado(Empleado empleado) {
+    public boolean CrearEmpleado(Empleado empleado) {
         System.out.println("Iniciando metodo");
         ConexionOracle.getInstance().getConexion();
 
         try {
-            Persona persona = empleado.getPersona();
-            Tipo tipo = empleado.getTipo();
-            int perId = persona != null ? persona.getPerId() : 0;
-            int tipId = tipo != null ? tipo.getTipId() : 0;
+    
 
             String sql = "INSERT INTO CD_EMPLEADOS VALUES (empleados_seq.nextval, ?, ?)";
             System.out.println("SQL: " + sql);
             myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
 
-            myStatement.setInt(1, perId);
-            myStatement.setInt(2, tipId);
+            myStatement.setInt(1, empleado.getPersona().getPerId());
+            myStatement.setInt(2, empleado.getTipo().getTipId());
 
-            myStatement.executeUpdate();
+            int filas = myStatement.executeUpdate();
             System.out.println("Empleado creado exitosamente.");
+            myStatement.close();
+            return filas > 0;
 
         } catch (SQLException e) {
-            System.out.println("Error al establecer la conexión a la base de datos o al ejecutar la consulta.");
-            e.printStackTrace();
+            System.out.println("Error al establecer la conexión a la base de datos o al ejecutar la consulta: " + e.getMessage());
         }
+        return false;
     }
 
-    public void CrearUsuario(Usuario user) {
+    public boolean CrearUsuario(Usuario user) {
         System.out.println("Iniciando metodo");
         ConexionOracle.getInstance().getConexion();
 
@@ -93,13 +92,14 @@ public class OperacionesEscritura {
             myStatement.setInt(3, user.getEmpleado().getEmpId());
             myStatement.setInt(4, user.getPermiso().getPrmId());
 
-            myStatement.executeUpdate();
+            int filas = myStatement.executeUpdate();
             System.out.println("Usuario creado exitosamente.");
-
+            myStatement.close();
+            return filas > 0;
         } catch (SQLException e) {
-            System.out.println("Error al establecer la conexión a la base de datos o al ejecutar la consulta.");
-            e.printStackTrace();
+            System.out.println("Error al establecer la conexión a la base de datos o al ejecutar la consulta: " + e.getMessage());
         }
+        return false;
     }
 
     public boolean CrearServicio(Servicio servicio) {

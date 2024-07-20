@@ -163,7 +163,13 @@ public class SecondaryController implements Initializable {
             }
         });
         
-        this.getCombo_servicios_iva().setItems(FXCollections.observableArrayList(yes_no));
+        this.tabla_empleados.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                indiceEmpleados = this.tabla_empleados.getItems().indexOf(newSelection);
+            }
+        });
+        
+        llenarCombos();
     }
 
     @FXML
@@ -290,10 +296,10 @@ public class SecondaryController implements Initializable {
     private TextField cliente_telefono;
 
     @FXML
-    private ComboBox<?> combo_empleado_permiso;
+    private ComboBox<String> combo_empleado_permiso;
 
     @FXML
-    private ComboBox<?> combo_empleado_tipo;
+    private ComboBox<String> combo_empleado_tipo;
 
     @FXML
     private ComboBox<String> combo_servicios_iva;
@@ -830,5 +836,66 @@ public class SecondaryController implements Initializable {
     public TextField getServicios_precio() {
         return servicios_precio;
     }
+    
+    // Empleados
+
+    public ComboBox<String> getCombo_empleado_permiso() {
+        return combo_empleado_permiso;
+    }
+
+    public ComboBox<String> getCombo_empleado_tipo() {
+        return combo_empleado_tipo;
+    }
+
+    public TextField getEmpleado_apellidos() {
+        return empleado_apellidos;
+    }
+
+    public TextField getEmpleado_cedula() {
+        return empleado_cedula;
+    }
+
+    public PasswordField getEmpleado_contrasena() {
+        return empleado_contrasena;
+    }
+
+    public TextField getEmpleado_correo() {
+        return empleado_correo;
+    }
+
+    public TextArea getEmpleado_direccion() {
+        return empleado_direccion;
+    }
+
+    public TextField getEmpleado_nombre() {
+        return empleado_nombre;
+    }
+
+    public TextField getEmpleado_telefono() {
+        return empleado_telefono;
+    }
+
+    public TextField getEmpleado_usuario() {
+        return empleado_usuario;
+    }
+    
+    
+    
+    public void llenarCombos(){
+        List<String> permisosString = new ArrayList<>();
+        for (Permiso permiso : this.getPermisos()) {
+            permisosString.add(permiso.getPrmTipo());
+        }
+        
+        List<String> tiposString = new ArrayList<>();
+        for (Tipo tipo : this.getTipos()) {
+            tiposString.add(tipo.getTipNombre());
+        }
+        
+        this.getCombo_servicios_iva().setItems(FXCollections.observableArrayList(yes_no));
+        this.getCombo_empleado_permiso().setItems(FXCollections.observableArrayList(permisosString));
+        this.getCombo_empleado_tipo().setItems(FXCollections.observableArrayList(tiposString));
+    }
+    
 
 }

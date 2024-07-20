@@ -17,6 +17,13 @@ public class Usuario {
         this.empleado = Objects.requireNonNull(empleado, "El objeto 'empleado' no puede ser nulo");
         this.permiso = Objects.requireNonNull(permiso, "El objeto 'permiso' no puede ser nulo");
     }
+    
+    public Usuario(String usrNombre, String usrContrasenia, Empleado empleado, Permiso permiso) {
+        this.usrNombre = usrNombre;
+        this.usrContrasenia = usrContrasenia;
+        this.empleado = Objects.requireNonNull(empleado, "El objeto 'empleado' no puede ser nulo");
+        this.permiso = Objects.requireNonNull(permiso, "El objeto 'permiso' no puede ser nulo");
+    }
 
     public int getUsrId() {
         return usrId;

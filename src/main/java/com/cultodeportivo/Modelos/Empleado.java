@@ -13,6 +13,11 @@ public class Empleado {
         this.persona = Objects.requireNonNull(persona, "El objeto 'persona' no puede ser nulo");
         this.tipo = Objects.requireNonNull(tipo, "El objeto 'tipo' no puede ser nulo");
     }
+    
+    public Empleado(Persona persona, Tipo tipo) {
+        this.persona = Objects.requireNonNull(persona, "El objeto 'persona' no puede ser nulo");
+        this.tipo = Objects.requireNonNull(tipo, "El objeto 'tipo' no puede ser nulo");
+    }
 
     // Getter y Setter para empId
     public int getEmpId() {

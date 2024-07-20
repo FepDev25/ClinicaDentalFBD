@@ -45,6 +45,31 @@ public class OperacionesAcceso {
         return null;
     }
     
+    public Permiso obtenerPermisoPorNombre(String nombre){
+        Permiso permiso = null;
+        ConexionOracle.getInstance().getConexion();
+        
+        try {
+            String sql = "SELECT * FROM CD_PERMISOS WHERE prm_tipo = ?;";
+            myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
+            myStatement.setString(1, nombre);
+            ResultSet rs = myStatement.executeQuery(); 
+
+            System.out.println(rs);
+            while (rs.next()) {
+                int prmId = rs.getInt("prm_id");
+                String prmTipo = rs.getString("prm_tipo");
+
+                permiso = new Permiso(prmId, prmTipo);
+            }
+            myStatement.close();
+            return permiso;
+        } catch (SQLException e) {
+            System.err.println("Error al obtener permisos: " + e.getMessage());        
+        }
+        return null;
+    }
+    
     public ArrayList<Persona> obtenerPersonas() {
         ArrayList<Persona> personas = new ArrayList<>();
         ConexionOracle.getInstance().getConexion();
@@ -98,6 +123,31 @@ public class OperacionesAcceso {
             return tipos;
         } catch (SQLException e) {
             System.err.println("Error al obtener tipos: " + e.getMessage());        
+        }
+        return null;
+    }
+    
+    public Tipo obtenerTipsPorNombre(String nombre){
+        Tipo tipo = null;
+        ConexionOracle.getInstance().getConexion();
+        
+        try {
+            String sql = "SELECT * FROM CD_TIPOS WHERE tip_nombre = ?";
+            myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
+            myStatement.setString(1, nombre);
+            ResultSet rs = myStatement.executeQuery(); 
+
+            System.out.println(rs);
+            while (rs.next()) {
+                int tipId = rs.getInt("tip_id");
+                String tipNombre = rs.getString("tip_nombre");
+
+                tipo = new Tipo(tipId, tipNombre);
+            }
+            myStatement.close();
+            return tipo;
+        } catch (SQLException e) {
+            System.err.println("Error al obtener tipo: " + e.getMessage());        
         }
         return null;
     }
