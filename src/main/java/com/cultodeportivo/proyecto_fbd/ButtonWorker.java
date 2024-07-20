@@ -58,6 +58,7 @@ public class ButtonWorker {
                 vista.setPersonas(vista.controlador.obtenerPersonas());
                 vista.setClientes(vista.controlador.obtenerClientes(vista.getPersonas()));
                 vista.tableWorker.setDataClientes();
+                vista.tableWorker.setDataClientesCitas();
                 limpiarCamposClientes();
             }
         } else {
@@ -102,6 +103,7 @@ public class ButtonWorker {
             vista.setClientes(vista.controlador.obtenerClientes(vista.getPersonas()));
             vista.message.successMessage("Cliente modificado Correctamente!");
             vista.tableWorker.setDataClientes();
+            vista.tableWorker.setDataClientesCitas();
         } else {
             vista.message.errorMessage("Error al modificar Cliente.");
         }
@@ -122,6 +124,7 @@ public class ButtonWorker {
                 vista.message.successMessage("Cliente elimina Correctamente!");
                 vista.setClientes(vista.controlador.obtenerClientes(vista.getPersonas()));
                 vista.tableWorker.setDataClientes();
+                vista.tableWorker.setDataClientesCitas();
             } else {
                 vista.message.errorMessage("Error al eliminar Cliente.");
             }
@@ -299,6 +302,7 @@ public class ButtonWorker {
                         vista.message.successMessage("Empleado creado correctamente.");
                         vista.setEmpleados(vista.controlador.obtenerEmpleados(vista.getPersonas(), vista.controlador.obtenerTipos()));
                         vista.tableWorker.setDataEmpleados();
+                        vista.tableWorker.setDataEmpleadosCitas();
 
                         Empleado empleadoEmp = vista.controlador.empj.encontrarEmpleadoPorCedula(vista.getEmpleados(), cedula);
 
@@ -425,6 +429,7 @@ public class ButtonWorker {
                     vista.controlador.obtenerEmpleados(vista.controlador.obtenerPersonas(),
                             vista.controlador.obtenerTipos()), vista.controlador.obtenerPermisos()));
             vista.tableWorker.setDataEmpleados();
+            vista.tableWorker.setDataEmpleadosCitas();
         } else {
             vista.message.errorMessage("Error al modificar Empleado.");
         }
@@ -455,6 +460,7 @@ public class ButtonWorker {
                         vista.controlador.obtenerEmpleados(vista.controlador.obtenerPersonas(),
                                 vista.controlador.obtenerTipos()), vista.controlador.obtenerPermisos()));
                 vista.tableWorker.setDataEmpleados();
+                vista.tableWorker.setDataEmpleadosCitas();
             } else {
                 vista.message.errorMessage("Error al eliminar Empleado.");
             }

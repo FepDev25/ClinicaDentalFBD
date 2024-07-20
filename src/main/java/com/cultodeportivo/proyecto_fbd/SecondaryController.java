@@ -44,6 +44,7 @@ public class SecondaryController implements Initializable {
     private ArrayList<FacturaDetalle> detalles;
     private ArrayList<Servicio> servicios;
     private ButtonWorker btnWorker;
+    private ButtonCitas btnCitas;
 
     public Control controlador;
     public AlertMessage message;
@@ -52,6 +53,9 @@ public class SecondaryController implements Initializable {
     public int indiceServicios;
     public int indiceEmpleados;
     public int indiceFacturaDetlles;
+    
+    public int indiceDoctoresCitas;
+    public int indiceClientesCitas;
 
     public TableWorker tableWorker;
 
@@ -142,6 +146,7 @@ public class SecondaryController implements Initializable {
         controlador = new Control(this);
         tableWorker = new TableWorker(this);
         btnWorker = new ButtonWorker(this);
+        btnCitas = new ButtonCitas(this);
         accionBotones();
         validarPermiso();
         label_usuario.setText("Usuario: " + GlobalValues.userApp.getUsrNombre());
@@ -149,6 +154,7 @@ public class SecondaryController implements Initializable {
         tableWorker.cargarValuesTablas();
         tableWorker.setDataTablas();
         btnWorker.asignarAcciones();
+        btnCitas.asignarAcciones();
         message = new AlertMessage();
 
         this.tabla_cliente.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
@@ -166,6 +172,18 @@ public class SecondaryController implements Initializable {
         this.tabla_empleados.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 indiceEmpleados = this.tabla_empleados.getItems().indexOf(newSelection);
+            }
+        });
+        
+        this.tabla_seleccionar_doctor.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                indiceDoctoresCitas = this.tabla_seleccionar_doctor.getItems().indexOf(newSelection);
+            }
+        });
+        
+        this.tabla_seleccionar_cliente_citas.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                indiceClientesCitas = this.tabla_seleccionar_cliente_citas.getItems().indexOf(newSelection);
             }
         });
         
@@ -536,8 +554,118 @@ public class SecondaryController implements Initializable {
 
     @FXML
     private TableColumn<?, ?> tabla_factura_cabecera_total;
-
+    
+    // Seleccionar doctor citas
     @FXML
+    private TextField buscador_doctor;
+    
+    @FXML
+    private AnchorPane seleccionar_doctor;
+    
+    @FXML
+    private TableView<Empleado> tabla_seleccionar_doctor;
+     
+    @FXML
+    private Button boton_cancelar_seleccion_doctor;
+     
+    @FXML
+    private Button boton_aceptar_seleccion_doctor;
+    
+    @FXML
+    private TableColumn<Empleado, String> tb_selec_doc_nombre;
+    
+    @FXML
+    private TableColumn<Empleado, String> tb_selec_doc_apellido;
+
+    public AnchorPane getSeleccionar_doctor() {
+        return seleccionar_doctor;
+    }
+
+    public TableView<Empleado> getTabla_seleccionar_doctor() {
+        return tabla_seleccionar_doctor;
+    }
+
+    public Button getBoton_cancelar_seleccion_doctor() {
+        return boton_cancelar_seleccion_doctor;
+    }
+
+    public Button getBoton_aceptar_seleccion_doctor() {
+        return boton_aceptar_seleccion_doctor;
+    }
+
+    public TableColumn<Empleado, String> getTb_selec_doc_nombre() {
+        return tb_selec_doc_nombre;
+    }
+
+    public TableColumn<Empleado, String> getTb_selec_doc_apellido() {
+        return tb_selec_doc_apellido;
+    }
+
+    public TextField getText_seleccionar_odontologo_citas() {
+        return text_seleccionar_odontologo_citas;
+    }
+    
+    public TextField getBuscador_doctor() {
+        return buscador_doctor;
+    }
+    
+    // Seleccionar Cliente citas
+    @FXML
+    private AnchorPane seleccionar_cliente_citas;
+    
+    @FXML
+    private TextField buscador_cliente_citas;
+    
+    @FXML
+    private TableView<Cliente> tabla_seleccionar_cliente_citas;
+     
+    @FXML
+    private Button boton_cancelar_seleccion_cliente_citas;
+     
+    @FXML
+    private Button boton_aceptar_seleccion_cliente_citas;
+    
+    @FXML
+    private TableColumn<Cliente, String> tb_selec_cli_cit_nombre;
+    
+    @FXML
+    private TableColumn<Cliente, String> tb_selec_cli_cit_apellido;
+
+    public AnchorPane getSeleccionar_cliente_citas() {
+        return seleccionar_cliente_citas;
+    }
+
+    public TextField getBuscador_cliente_citas() {
+        return buscador_cliente_citas;
+    }
+
+    public TableView<Cliente> getTabla_seleccionar_cliente_citas() {
+        return tabla_seleccionar_cliente_citas;
+    }
+
+    public Button getBoton_cancelar_seleccion_cliente_citas() {
+        return boton_cancelar_seleccion_cliente_citas;
+    }
+
+    public Button getBoton_aceptar_seleccion_cliente_citas() {
+        return boton_aceptar_seleccion_cliente_citas;
+    }
+
+    public TableColumn<Cliente, String> getTb_selec_cli_cit_nombre() {
+        return tb_selec_cli_cit_nombre;
+    }
+
+    public TableColumn<Cliente, String> getTb_selec_cli_cit_apellido() {
+        return tb_selec_cli_cit_apellido;
+    }
+
+    public TextField getText_seleccionar_cliente_citas() {
+        return text_seleccionar_cliente_citas;
+    }
+     
+    
+    
+     @FXML
     private void switchToPrimary() throws IOException {
         App.setRoot("primary", 800, 600);
     }
@@ -549,6 +677,16 @@ public class SecondaryController implements Initializable {
         boton_empleados.setOnAction(e -> cambiarVistaBotones("Empleados"));
         boton_perfil.setOnAction(e -> cambiarVistaBotones("Perfil"));
         boton_servicios.setOnAction(e -> cambiarVistaBotones("Servicios"));
+        
+        boton_reservar_cita.setOnAction(e -> {
+            frame_cancelar_cita.setVisible(false);
+            frame_reservar_citas.setVisible(true);
+        });
+        
+        boton_cancelar_cita.setOnAction(e -> {
+            frame_reservar_citas.setVisible(false);
+            frame_cancelar_cita.setVisible(true);
+        });
     }
 
     public void cambiarVistaBotones(String clave) {
