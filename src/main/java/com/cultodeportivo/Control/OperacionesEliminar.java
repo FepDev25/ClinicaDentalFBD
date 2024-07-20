@@ -33,7 +33,7 @@ public class OperacionesEliminar {
         }
     }
     
-    public void eliminarUsuario(int id) {
+    public int eliminarUsuario(int id) {
         System.out.println("Iniciando metodo");
         ConexionOracle.getInstance().getConexion();
 
@@ -46,30 +46,37 @@ public class OperacionesEliminar {
 
             myStatement.executeUpdate();
             System.out.println("Usuario eliminado exitosamente.");
+            return 1;
 
+        } catch(java.sql.SQLIntegrityConstraintViolationException e){
+            return 2;
         } catch (SQLException e) {
-            System.out.println("Error al establecer la conexión a la base de datos o al ejecutar la consulta.");
-            e.printStackTrace();
+            System.out.println("Error al establecer la conexión a la base de datos o al ejecutar la consulta: " + e.getMessage());
+            return 0;
         }
     }
 
-    public void eliminarEmpleado(int id) {
+    public int eliminarEmpleado(int id) {
         System.out.println("Iniciando metodo");
         ConexionOracle.getInstance().getConexion();
 
         try {
             String sql = "DELETE FROM cd_empleados WHERE emp_id = ?";
             System.out.println("SQL: " + sql);
-            PreparedStatement myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
+            myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
 
             myStatement.setInt(1, id);
 
             myStatement.executeUpdate();
             System.out.println("Empleado eliminado exitosamente.");
+            
+            return 1;
 
+        } catch(java.sql.SQLIntegrityConstraintViolationException e){
+            return 2;
         } catch (SQLException e) {
-            System.out.println("Error al establecer la conexión a la base de datos o al ejecutar la consulta.");
-            e.printStackTrace();
+            System.out.println("Error al establecer la conexión a la base de datos o al ejecutar la consulta: " + e.getMessage());
+            return 0;
         }
     }
 

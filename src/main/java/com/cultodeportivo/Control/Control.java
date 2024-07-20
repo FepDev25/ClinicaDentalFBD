@@ -5,7 +5,6 @@ import com.cultodeportivo.Modelos.*;
 import com.cultodeportivo.proyecto_fbd.*;
 import java.util.Optional;
 
-
 public class Control {
 
     private OperacionesAcceso operacionesAcceso;
@@ -14,6 +13,7 @@ public class Control {
     private OperacionesActualizar operacionesModificar;
     public PrimaryController controller;
     public SecondaryController controller2;
+    public ValidarIngresos validar;
     public Emparejador empj;
 
     public Control(PrimaryController controller) {
@@ -61,7 +61,7 @@ public class Control {
                 return true;
             case 2:
                 controller2.message.errorMessage("La persona con esa cedula ya existe.");
-                boolean crear = controller2.message.confirmationMessage("Desea crear el cliente con esa persona?");
+                boolean crear = controller2.message.confirmationMessage("Desea crear el registro con esa persona?");
                 return crear;
         }
         return false;
@@ -80,10 +80,6 @@ public class Control {
         return operacionesModificar.actualizarPersona(persona);
     }
 
-    public void modificarCliente() {
-
-    }
-
     public boolean elimiarCliente(int id) {
         int operacion = operacionesEliminar.eliminarCliente(id);
         switch (operacion) {
@@ -97,18 +93,18 @@ public class Control {
         return false;
 
     }
-    
-    public boolean agregarServicio(Servicio servicio){
+
+    public boolean agregarServicio(Servicio servicio) {
         return operacionesEscritura.CrearServicio(servicio);
     }
-    
-    public boolean modificarServicio(Servicio servicio){
+
+    public boolean modificarServicio(Servicio servicio) {
         return operacionesModificar.actualizarServicio(servicio);
     }
-    
-    public boolean eliminarServicio(int id){
+
+    public boolean eliminarServicio(int id) {
         int operacion = operacionesEliminar.eliminarServicio(id);
-        switch (operacion){
+        switch (operacion) {
             case 0:
                 return false;
             case 1:
@@ -118,39 +114,75 @@ public class Control {
         }
         return false;
     }
-    
-    public boolean agregarEmpleado(Empleado empleado){
+
+    public boolean agregarEmpleado(Empleado empleado) {
         return operacionesEscritura.CrearEmpleado(empleado);
     }
-    
-    public void modificarEmpleado(){
-        
+
+    public boolean eliminarEmpleado(Empleado empleado) {
+        int operacion = operacionesEliminar.eliminarEmpleado(empleado.getEmpId());
+        switch (operacion) {
+            case 0:
+                return false;
+            case 1:
+                return true;
+            case 2:
+                if (empleado.getTipo().getTipNombre().equals("Odontologo")) {
+                    controller2.message.errorMessage("El Odontologo tiene citas asociadas, no se puede eliminar.");
+                } else {
+                    boolean quererEliminarUsuario = controller2.message.confirmationMessage("El empleado tiene asociado un usuario. Desea eliminar el usuario?.");
+                    if (quererEliminarUsuario) {
+                        boolean eliminarUsuario = this.eliminarUsuario(empleado);
+
+                        if (eliminarUsuario) {
+                            int eliminar2 = operacionesEliminar.eliminarEmpleado(empleado.getEmpId());
+                            return eliminar2 == 1;
+                        } else {
+                            return false;
+                        }
+                    }
+                }
+
+        }
+        return false;
     }
-    
-    public void eliminarEmpleado(){
-        
+
+    public boolean eliminarUsuario(Empleado empleado) {
+        Usuario user = this.empj.encontrarUsuarioPorCedula(
+                this.obtenerUsuarios(this.obtenerEmpleados(this.obtenerPersonas(), this.obtenerTipos()), this.obtenerPermisos()), empleado.getPersona().getPerCedula());
+        int operacion2 = operacionesEliminar.eliminarUsuario(user.getUsrId());
+
+        if (operacion2 == 1) {
+            return true;
+        } else if (operacion2 == 2) {
+            controller2.message.errorMessage("El usuario tiene facturas asociadas, no se puede eliminar.");
+        }
+        return false;
     }
-    
-    public boolean agregarUsuario(Usuario usuario){
+
+    public boolean agregarUsuario(Usuario usuario) {
         return operacionesEscritura.CrearUsuario(usuario);
     }
-    
-    public Tipo obtenerTipoPorNombre(String nombre){
-        Optional <Tipo> tipoOpt = this.obtenerTipos().stream().filter(t -> t.getTipNombre().equals(nombre)).findFirst();
-        if (tipoOpt.isPresent()){
+
+    public boolean modificarUsuario(Usuario usuario) {
+        return operacionesModificar.actualizarUsuario(usuario);
+    }
+
+    public Tipo obtenerTipoPorNombre(String nombre) {
+        Optional<Tipo> tipoOpt = this.obtenerTipos().stream().filter(t -> t.getTipNombre().equals(nombre)).findFirst();
+        if (tipoOpt.isPresent()) {
             return tipoOpt.get();
         }
         return null;
     }
-    
-    public Permiso obtenerPermisoPorNombre(String nombre){
-        Optional <Permiso> permisoOpt = this.obtenerPermisos().stream().filter(t -> t.getPrmTipo().equals(nombre)).findFirst();
-        if (permisoOpt.isPresent()){
+
+    public Permiso obtenerPermisoPorNombre(String nombre) {
+        Optional<Permiso> permisoOpt = this.obtenerPermisos().stream().filter(t -> t.getPrmTipo().equals(nombre)).findFirst();
+        if (permisoOpt.isPresent()) {
             return permisoOpt.get();
         }
         return null;
     }
-
 
     public ArrayList<Usuario> obtenerUsuarios(ArrayList<Empleado> empleados, ArrayList<Permiso> permisos) {
         return operacionesAcceso.obtenerUsuarios(empleados, permisos);

@@ -106,5 +106,19 @@ public class Emparejador {
         }
     }
     
+    public Usuario encontrarUsuarioPorCedula(ArrayList<Usuario> usuarios, String cedula){
+        Optional<Usuario> usuarioOpt = usuarios.stream()
+               .filter(e -> e.getEmpleado().getPersona().getPerCedula().equals(cedula))
+               .findFirst();
+        
+        if (usuarioOpt.isPresent()){
+            Usuario usuario = usuarioOpt.get();
+            return usuario;
+        } else {
+            System.out.println("Usuario no encontrado.");
+            return null;
+        }
+    }
+    
 
 }

@@ -24,12 +24,10 @@ public class OperacionesAcceso {
         
         try {
             String sql = "SELECT * FROM CD_PERMISOS";
-            System.out.println("SQL: " + sql);
             myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
 
             ResultSet rs = myStatement.executeQuery(); 
 
-            System.out.println(rs);
             while (rs.next()) {
                 int prmId = rs.getInt("prm_id");
                 String prmTipo = rs.getString("prm_tipo");
@@ -55,7 +53,6 @@ public class OperacionesAcceso {
             myStatement.setString(1, nombre);
             ResultSet rs = myStatement.executeQuery(); 
 
-            System.out.println(rs);
             while (rs.next()) {
                 int prmId = rs.getInt("prm_id");
                 String prmTipo = rs.getString("prm_tipo");
@@ -106,12 +103,10 @@ public class OperacionesAcceso {
         
         try {
             String sql = "SELECT * FROM CD_TIPOS";
-            System.out.println("SQL: " + sql);
             myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
 
             ResultSet rs = myStatement.executeQuery(); 
 
-            System.out.println(rs);
             while (rs.next()) {
                 int tipId = rs.getInt("tip_id");
                 String tipNombre = rs.getString("tip_nombre");
@@ -137,7 +132,6 @@ public class OperacionesAcceso {
             myStatement.setString(1, nombre);
             ResultSet rs = myStatement.executeQuery(); 
 
-            System.out.println(rs);
             while (rs.next()) {
                 int tipId = rs.getInt("tip_id");
                 String tipNombre = rs.getString("tip_nombre");
@@ -158,12 +152,10 @@ public class OperacionesAcceso {
         
         try {
             String sql = "SELECT * FROM CD_EMPLEADOS";
-            System.out.println("SQL: " + sql);
             myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
 
             ResultSet rs = myStatement.executeQuery(); 
 
-            System.out.println(rs);
             while (rs.next()) {
                 int empId = rs.getInt("emp_id");
                 int per_id = rs.getInt("cd_personas_per_id");
@@ -187,12 +179,10 @@ public class OperacionesAcceso {
         
         try {
             String sql = "SELECT * FROM CD_CLIENTES";
-            System.out.println("SQL: " + sql);
             myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
 
             ResultSet rs = myStatement.executeQuery(); 
 
-            System.out.println(rs);
             while (rs.next()) {
                 int cliId = rs.getInt("cli_id");
                 char cliEstado = rs.getString("cli_estado").charAt(0);
@@ -212,7 +202,6 @@ public class OperacionesAcceso {
 
     public ArrayList<Usuario> obtenerUsuarios(ArrayList<Empleado> empleados, ArrayList<Permiso> permisos) {
         ArrayList<Usuario> usuarios = new ArrayList<>();
-        System.out.println("Iniciando metodo");
         ConexionOracle.getInstance().getConexion();
         
         try {
@@ -222,7 +211,6 @@ public class OperacionesAcceso {
 
             ResultSet rs = myStatement.executeQuery(); 
 
-            System.out.println(rs);
             while (rs.next()) {
                 int usrId = rs.getInt("usr_id");
                 String usrNombre = rs.getString("usr_nombre");
@@ -248,12 +236,10 @@ public class OperacionesAcceso {
         
         try {
             String sql = "SELECT * FROM CD_SERVICIOS";
-            System.out.println("SQL: " + sql);
             myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
 
             ResultSet rs = myStatement.executeQuery(); 
 
-            System.out.println(rs);
             while (rs.next()) {
                 int serId = rs.getInt("ser_id");
                 String serNombre = rs.getString("ser_nombre");

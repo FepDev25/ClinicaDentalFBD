@@ -12,6 +12,7 @@ module-info.class
 com/cultodeportivo/proyecto_fbd/AlertMessage.class
 com/cultodeportivo/Modelos/Permiso.class
 com/cultodeportivo/Control/OperacionesActualizar.class
+com/cultodeportivo/Control/ValidarIngresos.class
 com/cultodeportivo/Modelos/FacturaDetalle.class
 com/cultodeportivo/Control/OperacionesAcceso.class
 com/cultodeportivo/proyecto_fbd/PrimaryController.class

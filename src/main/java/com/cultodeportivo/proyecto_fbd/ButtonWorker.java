@@ -131,6 +131,9 @@ public class ButtonWorker {
     }
 
     public void limpiarCamposClientes() {
+        vista.getBoton_agregar_cliente().setDisable(false);
+        vista.getBoton_guardar_clientes().setDisable(true);
+
         vista.getCliente_nombre().setText("");
         vista.getCliente_apellidos().setText("");
         vista.getCliente_cedula().setText("");
@@ -251,6 +254,9 @@ public class ButtonWorker {
     }
 
     public void limpiarCamposServicio() {
+        vista.getBoton_agregar_servicio().setDisable(false);
+        vista.getBoton_guardar_servicio().setDisable(true);
+
         vista.getServicios_nombre().setText("");
         vista.getServicios_precio().setText("");
     }
@@ -278,7 +284,7 @@ public class ButtonWorker {
             try {
                 vista.setPersonas(vista.controlador.obtenerPersonas());
                 Persona personaCliente = vista.controlador.empj.encontrarPersonaPorCedula(vista.getPersonas(), cedula);
-                
+
                 if (vista.getCombo_empleado_tipo().getValue().equals("Atencion al Cliente")) {
                     nombreTipo = "Atencion al Cliente";
                 } else if (vista.getCombo_empleado_tipo().getValue().equals("Odontologo")) {
@@ -293,9 +299,9 @@ public class ButtonWorker {
                         vista.message.successMessage("Empleado creado correctamente.");
                         vista.setEmpleados(vista.controlador.obtenerEmpleados(vista.getPersonas(), vista.controlador.obtenerTipos()));
                         vista.tableWorker.setDataEmpleados();
-                        
+
                         Empleado empleadoEmp = vista.controlador.empj.encontrarEmpleadoPorCedula(vista.getEmpleados(), cedula);
-                        
+
                         if (atencion) {
                             if (vista.getCombo_empleado_permiso().getValue().equals("Administrador")) {
                                 nombrePermiso = "Administrador";
@@ -309,7 +315,10 @@ public class ButtonWorker {
                             boolean crearUsuario = vista.controlador.agregarUsuario(usuario);
 
                             if (crearUsuario) {
-                                vista.message.successMessage("Empleado creado correctamente.");
+                                vista.message.successMessage("Usuario creado correctamente.");
+                                vista.setUsuarios(vista.controlador.obtenerUsuarios(
+                                        vista.controlador.obtenerEmpleados(vista.controlador.obtenerPersonas(),
+                                                vista.controlador.obtenerTipos()), vista.controlador.obtenerPermisos()));
                             } else {
                                 vista.message.errorMessage("Error al crear usuario.");
                             }
@@ -329,18 +338,135 @@ public class ButtonWorker {
     }
 
     public void modificarEmpleado() {
+        vista.getBoton_agregar_empleado().setDisable(true);
+        vista.getCombo_empleado_tipo().setDisable(true);
+        vista.getBoton_guardar_empleado().setDisable(false);
+        empleadoSeleccionado = vista.getTabla_empleados().getItems().get(vista.indiceEmpleados);
 
+        vista.getEmpleado_nombre().setText(empleadoSeleccionado.getPersona().getPerNombre());
+        vista.getEmpleado_apellidos().setText(empleadoSeleccionado.getPersona().getPerApellido());
+        vista.getEmpleado_cedula().setText(empleadoSeleccionado.getPersona().getPerCedula());
+        vista.getEmpleado_correo().setText(empleadoSeleccionado.getPersona().getPerCorreoElectronico());
+        vista.getEmpleado_direccion().setText(empleadoSeleccionado.getPersona().getPerDireccion());
+        vista.getEmpleado_telefono().setText(empleadoSeleccionado.getPersona().getPerTelefono());
+        String tipo = empleadoSeleccionado.getTipo().getTipNombre().equals("Odontologo") ? "Odontologo" : "Atencion al Cliente";
+        vista.getCombo_empleado_tipo().setValue(tipo);
+        if (tipo.equals("Atencion al Cliente")) {
+            vista.getEmpleado_usuario().setDisable(false);
+            vista.getCombo_empleado_permiso().setDisable(false);
+            vista.getEmpleado_contrasena().setDisable(false);
+
+            Usuario user = vista.controlador.empj.encontrarUsuarioPorCedula(vista.getUsuarios(), empleadoSeleccionado.getPersona().getPerCedula());
+            vista.getEmpleado_usuario().setText(user.getUsrNombre());
+            vista.getEmpleado_contrasena().setText(user.getUsrContrasenia());
+            String permiso = user.getPermiso().getPrmTipo().equals("General") ? "General" : "Administrador";
+            vista.getCombo_empleado_permiso().setValue(permiso);
+        }
     }
 
     public void guardarEmpleado() {
+        boolean modificarUsuario = false;
 
+        String nombre = vista.getEmpleado_nombre().getText();
+        String apellido = vista.getEmpleado_apellidos().getText();
+        String cedula = vista.getEmpleado_cedula().getText();
+        String correo = vista.getEmpleado_correo().getText();
+        String direccion = vista.getEmpleado_direccion().getText();
+        String telefono = vista.getEmpleado_telefono().getText();
+        String nombrePermiso = "";
+        Usuario newuUsuario = null;
+
+        empleadoSeleccionado = vista.getTabla_empleados().getItems().get(vista.indiceEmpleados);
+        empleadoSeleccionado.getPersona().setPerCedula(cedula);
+        empleadoSeleccionado.getPersona().setPerNombre(nombre);
+        empleadoSeleccionado.getPersona().setPerApellido(apellido);
+        empleadoSeleccionado.getPersona().setPerCorreoElectronico(correo);
+        empleadoSeleccionado.getPersona().setPerDireccion(direccion);
+        empleadoSeleccionado.getPersona().setPerTelefono(telefono);
+
+        boolean modifiarPersona = vista.controlador.modificarPersona(empleadoSeleccionado.getPersona());
+
+        if (empleadoSeleccionado.getTipo().getTipNombre().equals("Atencion al Cliente")) {
+            vista.getEmpleado_usuario().setDisable(false);
+            vista.getCombo_empleado_permiso().setDisable(false);
+            vista.getEmpleado_contrasena().setDisable(false);
+
+            modificarUsuario = true;
+            String userName = vista.getEmpleado_usuario().getText();
+            String passwordUser = vista.getEmpleado_contrasena().getText();
+
+            if (vista.getCombo_empleado_permiso().getValue().equals("Administrador")) {
+                nombrePermiso = "Administrador";
+            } else if (vista.getCombo_empleado_permiso().getValue().equals("General")) {
+                nombrePermiso = "General";
+            }
+
+            Permiso permiso = vista.controlador.obtenerPermisoPorNombre(nombrePermiso);
+
+            newuUsuario = vista.controlador.empj.encontrarUsuarioPorCedula(vista.getUsuarios(), cedula);
+            newuUsuario.setPermiso(permiso);
+            newuUsuario.setUsrNombre(userName);
+            newuUsuario.setUsrContrasenia(passwordUser);
+        }
+
+        if (modifiarPersona) {
+            if (modificarUsuario && (newuUsuario != null)) {
+                boolean modifcar = vista.controlador.modificarUsuario(newuUsuario);
+                if (modifcar) {
+                    vista.message.successMessage("Usuario modificado Correctamente!");
+                } else {
+                    vista.message.errorMessage("Error al modificar Usuario.");
+                }
+            }
+            vista.message.successMessage("Empleado modificado Correctamente!");
+            vista.setPersonas(vista.controlador.obtenerPersonas());
+            vista.setEmpleados(vista.controlador.obtenerEmpleados(vista.getPersonas(), vista.controlador.obtenerTipos()));
+            vista.setUsuarios(vista.controlador.obtenerUsuarios(
+                    vista.controlador.obtenerEmpleados(vista.controlador.obtenerPersonas(),
+                            vista.controlador.obtenerTipos()), vista.controlador.obtenerPermisos()));
+            vista.tableWorker.setDataEmpleados();
+        } else {
+            vista.message.errorMessage("Error al modificar Empleado.");
+        }
+
+        vista.getBoton_agregar_empleado().setDisable(false);
+        vista.getBoton_guardar_empleado().setDisable(true);
+        vista.getCombo_empleado_tipo().setDisable(false);
+
+        vista.getEmpleado_usuario().setDisable(true);
+        vista.getCombo_empleado_permiso().setDisable(true);
+        vista.getEmpleado_contrasena().setDisable(true);
+        atencion = false;
+        limpiarCamposEmpleado();
     }
 
     public void eliminarEmpleado() {
+        empleadoSeleccionado = vista.getTabla_empleados().getItems().get(vista.indiceEmpleados);
 
+        boolean confirmar = vista.message.confirmationMessage("Estas seguro que quieres eliminar al Empleado?");
+
+        if (confirmar) {
+            boolean ejecutar = vista.controlador.eliminarEmpleado(empleadoSeleccionado);
+            if (ejecutar) {
+                vista.message.successMessage("Empleado eliminado Correctamente!");
+                vista.setPersonas(vista.controlador.obtenerPersonas());
+                vista.setEmpleados(vista.controlador.obtenerEmpleados(vista.getPersonas(), vista.controlador.obtenerTipos()));
+                vista.setUsuarios(vista.controlador.obtenerUsuarios(
+                        vista.controlador.obtenerEmpleados(vista.controlador.obtenerPersonas(),
+                                vista.controlador.obtenerTipos()), vista.controlador.obtenerPermisos()));
+                vista.tableWorker.setDataEmpleados();
+            } else {
+                vista.message.errorMessage("Error al eliminar Empleado.");
+            }
+        } else {
+            vista.message.successMessage("Eliminar Empleado cancelado.");
+        }
     }
 
     public void limpiarCamposEmpleado() {
+        vista.getBoton_agregar_empleado().setDisable(false);
+        vista.getBoton_guardar_empleado().setDisable(true);
+
         vista.getEmpleado_nombre().setText("");
         vista.getEmpleado_apellidos().setText("");
         vista.getEmpleado_cedula().setText("");
