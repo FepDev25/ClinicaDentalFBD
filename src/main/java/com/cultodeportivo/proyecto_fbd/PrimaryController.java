@@ -18,6 +18,7 @@ import javafx.scene.control.TextField;
 import com.cultodeportivo.Modelos.*;
 import com.cultodeportivo.Control.Control;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 
 public class PrimaryController implements Initializable {
@@ -32,6 +33,13 @@ public class PrimaryController implements Initializable {
     private Control controlador;
     private AlertMessage message = new AlertMessage();
 
+    @FXML
+    private AnchorPane anchor_login;
+
+    public AnchorPane getAnchor_login() {
+        return anchor_login;
+    }
+    
     @FXML
     private Label bienvenida;
 
@@ -232,4 +240,38 @@ public class PrimaryController implements Initializable {
     public void setEmpleados(ArrayList<Empleado> empleados) {
         this.empleados = empleados;
     }
+
+    public List<String> getPermisosEmpleados() {
+        return permisosEmpleados;
+    }
+
+    public Label getBienvenida() {
+        return bienvenida;
+    }
+
+    public PasswordField getPassword() {
+        return password;
+    }
+
+    public TextField getUsuario() {
+        return usuario;
+    }
+
+    public Button getBoton_iniciar() {
+        return boton_iniciar;
+    }
+
+    public CheckBox getCheck_registro() {
+        return check_registro;
+    }
+
+    public TextField getVer_password() {
+        return ver_password;
+    }
+
+    public ComboBox<String> getCombo_usuario() {
+        return combo_usuario;
+    }
+    
+    
 }

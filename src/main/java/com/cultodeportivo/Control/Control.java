@@ -30,6 +30,7 @@ public class Control {
         this.operacionesEliminar = new OperacionesEliminar();
         this.operacionesModificar = new OperacionesActualizar();
         this.controller2 = controller2;
+        this.validar= new ValidarIngresos();
         this.empj = new Emparejador();
     }
 
@@ -52,25 +53,33 @@ public class Control {
     public ArrayList<Cliente> obtenerClientes(ArrayList<Persona> personas) {
         return operacionesAcceso.obtenerClientes(personas);
     }
-    
-    public ArrayList<Cita> obtenerCitas(){
+
+    public ArrayList<Cita> obtenerCitas() {
         return operacionesAcceso.obtenerCitas(this.obtenerClientes(this.obtenerPersonas()), this.obtenerEmpleados(this.obtenerPersonas(), this.obtenerTipos()));
     }
 
     public boolean agregarPersona(Persona persona) {
-        int crearPersona = operacionesEscritura.CrearPersona(persona);
+        String validarPersona = validar.validarPersona(persona);
 
-        switch (crearPersona) {
-            case 0:
-                return false;
-            case 1:
-                return true;
-            case 2:
-                controller2.message.errorMessage("La persona con esa cedula ya existe.");
-                boolean crear = controller2.message.confirmationMessage("Desea crear el registro con esa persona?");
-                return crear;
+        if (validarPersona.equals("Si")) {
+            int crearPersona = operacionesEscritura.CrearPersona(persona);
+
+            switch (crearPersona) {
+                case 0:
+                    return false;
+                case 1:
+                    return true;
+                case 2:
+                    controller2.message.errorMessage("La persona con esa cedula ya existe.");
+                    boolean crear = controller2.message.confirmationMessage("Desea crear el registro con esa persona?");
+                    return crear;
+            }
+            return false;
+        } else {
+            controller2.message.errorMessage(validarPersona);
+            return false;
         }
-        return false;
+
     }
 
     public boolean agregarCliente(Cliente cliente) {
@@ -83,7 +92,15 @@ public class Control {
     }
 
     public boolean modificarPersona(Persona persona) {
-        return operacionesModificar.actualizarPersona(persona);
+        String validarPersona = validar.validarPersona(persona);
+
+        if (validarPersona.equals("Si")) {
+            return operacionesModificar.actualizarPersona(persona);
+        } else {
+            controller2.message.errorMessage(validarPersona);
+            return false;
+        }
+        
     }
 
     public boolean elimiarCliente(int id) {
@@ -95,7 +112,7 @@ public class Control {
                 return true;
             case 2:
                 boolean clienteInactivo = controller2.message.confirmationMessage("El cliente tiene facturas o citas asociadas, desea cambiar el estado del cliente a inactivo?");
-                if (clienteInactivo){
+                if (clienteInactivo) {
                     boolean desactivar = operacionesEliminar.desactivarCliente(id);
                     return desactivar;
                 }
@@ -105,11 +122,25 @@ public class Control {
     }
 
     public boolean agregarServicio(Servicio servicio) {
-        return operacionesEscritura.CrearServicio(servicio);
+        String validarServicio = validar.validarServicio(servicio);
+        if (validarServicio.equals("Si")) {
+            return operacionesEscritura.CrearServicio(servicio);
+        } else {
+            controller2.message.errorMessage(validarServicio);
+            return false;
+        }
+
     }
 
     public boolean modificarServicio(Servicio servicio) {
-        return operacionesModificar.actualizarServicio(servicio);
+        String validarServicio = validar.validarServicio(servicio);
+        if (validarServicio.equals("Si")) {
+            return operacionesModificar.actualizarServicio(servicio);
+        } else {
+            controller2.message.errorMessage(validarServicio);
+            return false;
+        }
+
     }
 
     public boolean eliminarServicio(int id) {
@@ -121,7 +152,7 @@ public class Control {
                 return true;
             case 2:
                 boolean clienteInactivo = controller2.message.confirmationMessage("El servicio tiene facturas asociadas, desea cambiar el estado del servicio a inactivo?");
-                if (clienteInactivo){
+                if (clienteInactivo) {
                     boolean desactivar = operacionesEliminar.desactivarServicio(id);
                     return desactivar;
                 }
@@ -181,8 +212,8 @@ public class Control {
     public boolean modificarUsuario(Usuario usuario) {
         return operacionesModificar.actualizarUsuario(usuario);
     }
-    
-    public boolean agregarCita(Cita cita){
+
+    public boolean agregarCita(Cita cita) {
         return operacionesEscritura.CrearCita(cita);
     }
 
@@ -201,8 +232,8 @@ public class Control {
         }
         return null;
     }
-    
-    public boolean desactivarCita(int id){
+
+    public boolean desactivarCita(int id) {
         return operacionesEliminar.desactivarCita(id);
     }
 
@@ -213,7 +244,7 @@ public class Control {
     public ArrayList<Servicio> obtenerServicios() {
         return operacionesAcceso.obtenerServicios();
     }
-    
+
     public boolean cargarListasController1() {
         controller.setPermisos(this.obtenerPermisos());
         controller.setPersonas(this.obtenerPersonas());
