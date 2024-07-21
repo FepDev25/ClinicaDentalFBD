@@ -45,6 +45,10 @@ public class Cliente {
         }
         this.persona = Objects.requireNonNull(persona, "El objeto 'persona' no puede ser nulo");
     }
+    
+    public String nombreCompleto(){
+        return this.getPersona().getPerNombre() + " " + this.getPersona().getPerApellido();
+    }
 
     @Override
     public String toString() {

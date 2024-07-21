@@ -282,7 +282,7 @@ public class OperacionesAcceso {
                 int citCliente = rs.getInt("cd_clientes_cli_id");
                 int citEmpleado = rs.getInt("cd_empleados_emp_id");
                 
-                Cita cita = empj.emparejarCitas(citEstado, citFecha, citCliente, citEmpleado, citEstado, empleados, clientes);
+                Cita cita = empj.emparejarCitas(citId, citFecha, citCliente, citEmpleado, citEstado, empleados, clientes);
                 citas.add(cita);
             }
             myStatement.close();

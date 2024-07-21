@@ -104,6 +104,8 @@ public class ButtonWorker {
             vista.message.successMessage("Cliente modificado Correctamente!");
             vista.tableWorker.setDataClientes();
             vista.tableWorker.setDataClientesCitas();
+            vista.tableWorker.setDataProximasCitas();
+            vista.tableWorker.setDataCancelarCitas();
         } else {
             vista.message.errorMessage("Error al modificar Cliente.");
         }
@@ -121,12 +123,12 @@ public class ButtonWorker {
         if (confirmar) {
             boolean ejecutar = vista.controlador.elimiarCliente(clienteSeleccionado.getCliId());
             if (ejecutar) {
-                vista.message.successMessage("Cliente elimina Correctamente!");
+                vista.message.successMessage("Cliente eliminado o desactivado Correctamente!");
                 vista.setClientes(vista.controlador.obtenerClientes(vista.getPersonas()));
                 vista.tableWorker.setDataClientes();
                 vista.tableWorker.setDataClientesCitas();
             } else {
-                vista.message.errorMessage("Error al eliminar Cliente.");
+                vista.message.errorMessage("Error al eliminar o desactivar Cliente.");
             }
         } else {
             vista.message.successMessage("Eliminar cliente cancelado.");
@@ -244,11 +246,11 @@ public class ButtonWorker {
         if (confirmar) {
             boolean ejecutar = vista.controlador.eliminarServicio(servicioSeleccionado.getSerId());
             if (ejecutar) {
-                vista.message.successMessage("Servicio eliminado Correctamente!");
+                vista.message.successMessage("Servicio eliminado o editado Correctamente!");
                 vista.setServicios(vista.controlador.obtenerServicios());
                 vista.tableWorker.setDataServicios();
             } else {
-                vista.message.errorMessage("Error al eliminar Servicio.");
+                vista.message.errorMessage("Error al eliminar o editar Servicio.");
             }
         } else {
             vista.message.successMessage("Eliminar servicio cancelado.");
@@ -430,6 +432,8 @@ public class ButtonWorker {
                             vista.controlador.obtenerTipos()), vista.controlador.obtenerPermisos()));
             vista.tableWorker.setDataEmpleados();
             vista.tableWorker.setDataEmpleadosCitas();
+            vista.tableWorker.setDataProximasCitas();
+            vista.tableWorker.setDataCancelarCitas();
         } else {
             vista.message.errorMessage("Error al modificar Empleado.");
         }

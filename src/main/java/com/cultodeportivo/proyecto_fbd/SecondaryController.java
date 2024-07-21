@@ -56,6 +56,8 @@ public class SecondaryController implements Initializable {
     
     public int indiceDoctoresCitas;
     public int indiceClientesCitas;
+    
+    public int indiceCitaEliminada;
 
     public TableWorker tableWorker;
 
@@ -186,6 +188,14 @@ public class SecondaryController implements Initializable {
                 indiceClientesCitas = this.tabla_seleccionar_cliente_citas.getItems().indexOf(newSelection);
             }
         });
+        
+        this.tabla_cancelar_citas.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                indiceCitaEliminada = this.tabla_cancelar_citas.getItems().indexOf(newSelection);
+            }
+        });
+        
+        
         
         llenarCombos();
     }
@@ -439,14 +449,6 @@ public class SecondaryController implements Initializable {
     @FXML
     private TextField text_seleccionar_odontologo_citas;
 
-    @FXML
-    private TableColumn<?, ?> tab_cit_cliente;
-
-    @FXML
-    private TableColumn<?, ?> tab_cit_hora;
-
-    @FXML
-    private TableColumn<?, ?> tab_cit_odontologo;
 
     @FXML
     private TableColumn<Cliente, String> tab_cli_apellidos;
@@ -520,9 +522,38 @@ public class SecondaryController implements Initializable {
     @FXML
     private TableView<Servicio> tabla_servicios;
 
-    // Detalles factura en menu facturacion 
+    // Tabla de citas proximas 
     @FXML
-    private TableView<?> table_citas_recientes;
+    private TableView<Cita> table_citas_recientes;
+    
+    @FXML
+    private TableColumn<Cita, String> tab_cit_cliente;
+
+    @FXML
+    private TableColumn<Cita, String> tab_cit_hora;
+
+    @FXML
+    private TableColumn<Cita, String> tab_cit_odontologo;
+
+    public TableView<Cita> getTable_citas_recientes() {
+        return table_citas_recientes;
+    }
+
+    public TableColumn<Cita, String> getTab_cit_cliente() {
+        return tab_cit_cliente;
+    }
+
+    public TableColumn<Cita, String> getTab_cit_hora() {
+        return tab_cit_hora;
+    }
+
+    public TableColumn<Cita, String> getTab_cit_odontologo() {
+        return tab_cit_odontologo;
+    }
+    
+    
+    
+    // Detalles factura en menu facturacion 
 
     @FXML
     private TableView<?> table_factura_detalle;
@@ -662,7 +693,70 @@ public class SecondaryController implements Initializable {
     public TextField getText_seleccionar_cliente_citas() {
         return text_seleccionar_cliente_citas;
     }
+
+    public DatePicker getReserva_fecha() {
+        return reserva_fecha;
+    }
+
+    public TextField getReserva_label_hora() {
+        return reserva_label_hora;
+    }
+
+    public TextField getReserva_label_minutos() {
+        return reserva_label_minutos;
+    }
      
+    // Cancelar Citas
+    
+    @FXML
+    private TableView<Cita> tabla_cancelar_citas;
+     
+    @FXML
+    private Button boton_cancelar_cita_accion;
+    
+    @FXML
+    private TableColumn<Cita, Integer> tb_cancelar_cita_id;
+    
+    @FXML
+    private TableColumn<Cita, String> tb_cancelar_cita_fecha;
+    
+    @FXML
+    private TableColumn<Cita, String> tb_cancelar_cita_odontologo;
+    
+    @FXML
+    private TableColumn<Cita, String> tb_cancelar_cita_cliente;
+    
+    @FXML
+    private TableColumn<Cita, String> tb_cancelar_cita_estado;
+
+    public TableView<Cita> getTabla_cancelar_citas() {
+        return tabla_cancelar_citas;
+    }
+
+    public Button getBoton_cancelar_cita_accion() {
+        return boton_cancelar_cita_accion;
+    }
+
+    public TableColumn<Cita, Integer> getTb_cancelar_cita_id() {
+        return tb_cancelar_cita_id;
+    }
+
+    public TableColumn<Cita, String> getTb_cancelar_cita_fecha() {
+        return tb_cancelar_cita_fecha;
+    }
+
+    public TableColumn<Cita, String> getTb_cancelar_cita_odontologo() {
+        return tb_cancelar_cita_odontologo;
+    }
+
+    public TableColumn<Cita, String> getTb_cancelar_cita_cliente() {
+        return tb_cancelar_cita_cliente;
+    }
+
+    public TableColumn<Cita, String> getTb_cancelar_cita_estado() {
+        return tb_cancelar_cita_estado;
+    }
+    
     
     
      @FXML

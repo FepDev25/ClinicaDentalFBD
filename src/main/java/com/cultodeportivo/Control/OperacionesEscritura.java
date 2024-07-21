@@ -176,26 +176,27 @@ public class OperacionesEscritura {
         }
     }
 
-    public void CrearCita(Timestamp citFecha, char citEstado, int cliId, int empId) {
+    public boolean CrearCita(Cita cita) {
         System.out.println("Iniciando metodo");
         ConexionOracle.getInstance().getConexion();
 
         try {
             String sql = "INSERT INTO CD_CITAS VALUES (citas_seq.nextval, ?, ?, ?, ?)";
             System.out.println("SQL: " + sql);
-            PreparedStatement myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
+            myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
 
-            myStatement.setTimestamp(1, citFecha);
-            myStatement.setString(2, String.valueOf(citEstado));
-            myStatement.setInt(3, cliId);
-            myStatement.setInt(4, empId);
+            myStatement.setTimestamp(1, Timestamp.valueOf(cita.getCitFecha()));
+            myStatement.setString(2, String.valueOf(cita.getCitEstado()));
+            myStatement.setInt(3, cita.getCliente().getCliId());
+            myStatement.setInt(4, cita.getEmpleado().getEmpId());
 
-            myStatement.executeUpdate();
+            int filas = myStatement.executeUpdate();
             System.out.println("Cita creada exitosamente.");
+            return filas > 0;
 
         } catch (SQLException e) {
-            System.out.println("Error al establecer la conexión a la base de datos o al ejecutar la consulta.");
-            e.printStackTrace();
+            System.out.println("Error al establecer la conexión a la base de datos o al ejecutar la consulta: " + e.getMessage());
+            return false;
         }
     }
 

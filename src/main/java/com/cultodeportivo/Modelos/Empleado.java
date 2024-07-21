@@ -51,6 +51,10 @@ public class Empleado {
         }
         this.tipo = Objects.requireNonNull(tipo, "El objeto 'tipo' no puede ser nulo");
     }
+    
+    public String nombreCompleto(){
+        return this.getPersona().getPerNombre() + " " + this.getPersona().getPerApellido();
+    }
 
     // Método toString
     @Override

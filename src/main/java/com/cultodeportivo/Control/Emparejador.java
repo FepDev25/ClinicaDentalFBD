@@ -59,7 +59,7 @@ public class Emparejador {
         }
     }
     
-    public Cita emparejarCitas(char citId,  LocalDateTime citFecha, int cliId, int empId, char citEstado,  ArrayList<Empleado> empleados, ArrayList<Cliente> clientes){
+    public Cita emparejarCitas(int citId,  LocalDateTime citFecha, int cliId, int empId, char citEstado,  ArrayList<Empleado> empleados, ArrayList<Cliente> clientes){
         Optional<Empleado> empleadoOpt = empleados.stream()
                .filter(e -> e.getEmpId() == empId)
                .findFirst();

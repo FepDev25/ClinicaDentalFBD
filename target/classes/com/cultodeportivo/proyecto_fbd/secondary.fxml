@@ -60,7 +60,7 @@
                <center>
                   <AnchorPane prefHeight="560.0" prefWidth="890.0" stylesheets="@estilos.css" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane fx:id="frame_facturacion" prefHeight="758.0" prefWidth="1040.0" visible="false">
+                        <AnchorPane fx:id="frame_facturacion" prefHeight="758.0" prefWidth="1040.0">
                            <children>
                               <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="740.0" prefWidth="276.0" stylesheets="@estilos.css">
                                  <styleClass>
@@ -161,6 +161,23 @@
                                     <String fx:value="shadow" />
                                     <String fx:value="white-bg" />
                                  </styleClass>
+                                 <children>
+                                    <TableView fx:id="tabla_cancelar_citas" layoutX="14.0" layoutY="41.0" prefHeight="317.0" prefWidth="650.0">
+                                      <columns>
+                                        <TableColumn fx:id="tb_cancelar_cita_id" prefWidth="68.0" text="ID" />
+                                        <TableColumn fx:id="tb_cancelar_cita_fecha" prefWidth="145.0" text="Fecha" />
+                                          <TableColumn fx:id="tb_cancelar_cita_odontologo" prefWidth="199.0" text="Odontólogo" />
+                                          <TableColumn fx:id="tb_cancelar_cita_cliente" prefWidth="176.0" text="Cliente" />
+                                          <TableColumn fx:id="tb_cancelar_cita_estado" prefWidth="61.0" text="Estado" />
+                                      </columns>
+                                    </TableView>
+                                    <Label layoutX="15.0" layoutY="10.0" text="Cancelar Citas:">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <Button fx:id="boton_cancelar_cita_accion" layoutX="264.0" layoutY="370.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="150.0" styleClass="boton_eliminar" stylesheets="@estilos.css" text="Cancelar Cita" />
+                                 </children>
                               </AnchorPane>
                               <AnchorPane fx:id="frame_reservar_citas" layoutX="340.0" layoutY="8.0" prefHeight="421.0" prefWidth="681.0" stylesheets="@estilos.css">
                                  <styleClass>
@@ -202,12 +219,12 @@
                                     </ImageView>
                                     <TableView fx:id="table_citas_recientes" layoutX="24.0" layoutY="36.0" prefHeight="263.0" prefWidth="791.0">
                                       <columns>
-                                        <TableColumn fx:id="tab_cit_hora" prefWidth="134.09869384765625" text="Fecha" />
-                                        <TableColumn fx:id="tab_cit_odontologo" prefWidth="285.47412109375" text="Nombre Odontólogo" />
+                                        <TableColumn fx:id="tab_cit_hora" prefWidth="143.0" text="Fecha" />
+                                        <TableColumn fx:id="tab_cit_odontologo" prefWidth="278.0" text="Nombre Odontólogo" />
                                           <TableColumn fx:id="tab_cit_cliente" prefWidth="369.52587890625" text="Nombre Cliente" />
                                       </columns>
                                     </TableView>
-                                    <Label layoutX="17.0" layoutY="10.0" text="Próximas Citas">
+                                    <Label layoutX="30.0" layoutY="5.0" text="Próximas Citas">
                                        <font>
                                           <Font name="System Bold" size="15.0" />
                                        </font>
@@ -428,7 +445,7 @@
                               <TextField fx:id="buscador_doctor" layoutX="359.0" layoutY="48.0" />
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="seleccionar_cliente_citas" layoutX="340.0" layoutY="8.0" prefHeight="420.0" prefWidth="550.0" stylesheets="@estilos.css">
+                        <AnchorPane fx:id="seleccionar_cliente_citas" layoutX="340.0" layoutY="8.0" prefHeight="420.0" prefWidth="550.0" stylesheets="@estilos.css" visible="false">
                            <styleClass>
                               <String fx:value="white-bg" />
                               <String fx:value="shadow" />

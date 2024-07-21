@@ -3,6 +3,8 @@ package com.cultodeportivo.Control;
 import java.util.ArrayList;
 import com.cultodeportivo.Modelos.*;
 import com.cultodeportivo.proyecto_fbd.*;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 public class Control {
@@ -50,6 +52,10 @@ public class Control {
     public ArrayList<Cliente> obtenerClientes(ArrayList<Persona> personas) {
         return operacionesAcceso.obtenerClientes(personas);
     }
+    
+    public ArrayList<Cita> obtenerCitas(){
+        return operacionesAcceso.obtenerCitas(this.obtenerClientes(this.obtenerPersonas()), this.obtenerEmpleados(this.obtenerPersonas(), this.obtenerTipos()));
+    }
 
     public boolean agregarPersona(Persona persona) {
         int crearPersona = operacionesEscritura.CrearPersona(persona);
@@ -88,7 +94,11 @@ public class Control {
             case 1:
                 return true;
             case 2:
-                controller2.message.errorMessage("El cliente tiene facturas asociadas, no se puede eliminar.");
+                boolean clienteInactivo = controller2.message.confirmationMessage("El cliente tiene facturas o citas asociadas, desea cambiar el estado del cliente a inactivo?");
+                if (clienteInactivo){
+                    boolean desactivar = operacionesEliminar.desactivarCliente(id);
+                    return desactivar;
+                }
         }
         return false;
 
@@ -110,7 +120,11 @@ public class Control {
             case 1:
                 return true;
             case 2:
-                controller2.message.errorMessage("El servicio tiene facturas asociadas, no se puede eliminar.");
+                boolean clienteInactivo = controller2.message.confirmationMessage("El servicio tiene facturas asociadas, desea cambiar el estado del servicio a inactivo?");
+                if (clienteInactivo){
+                    boolean desactivar = operacionesEliminar.desactivarServicio(id);
+                    return desactivar;
+                }
         }
         return false;
     }
@@ -167,6 +181,10 @@ public class Control {
     public boolean modificarUsuario(Usuario usuario) {
         return operacionesModificar.actualizarUsuario(usuario);
     }
+    
+    public boolean agregarCita(Cita cita){
+        return operacionesEscritura.CrearCita(cita);
+    }
 
     public Tipo obtenerTipoPorNombre(String nombre) {
         Optional<Tipo> tipoOpt = this.obtenerTipos().stream().filter(t -> t.getTipNombre().equals(nombre)).findFirst();
@@ -183,6 +201,10 @@ public class Control {
         }
         return null;
     }
+    
+    public boolean desactivarCita(int id){
+        return operacionesEliminar.desactivarCita(id);
+    }
 
     public ArrayList<Usuario> obtenerUsuarios(ArrayList<Empleado> empleados, ArrayList<Permiso> permisos) {
         return operacionesAcceso.obtenerUsuarios(empleados, permisos);
@@ -191,7 +213,7 @@ public class Control {
     public ArrayList<Servicio> obtenerServicios() {
         return operacionesAcceso.obtenerServicios();
     }
-
+    
     public boolean cargarListasController1() {
         controller.setPermisos(this.obtenerPermisos());
         controller.setPersonas(this.obtenerPersonas());
@@ -221,6 +243,7 @@ public class Control {
             controller2.setClientes(this.obtenerClientes(controller2.getPersonas()));
             if ((!controller2.getEmpleados().isEmpty()) && (!controller2.getPermisos().isEmpty())) {
                 controller2.setUsuarios(this.obtenerUsuarios(controller2.getEmpleados(), controller2.getPermisos()));
+                controller2.setCitas(this.obtenerCitas());
             } else {
                 return false;
             }
@@ -229,4 +252,29 @@ public class Control {
         }
         return true;
     }
+
+    public boolean validarDisponibilidadCita(Cita nuevaCita, List<Cita> citasExistente, Empleado empleado) {
+        List<Cita> citasEmpleado = obtenerCitasEmpleado(citasExistente, empleado);
+
+        for (Cita cita : citasEmpleado) {
+            LocalDateTime finEstimadoCitaExistente = cita.getCitFecha().plusMinutes(30);
+
+            if ((nuevaCita.getCitFecha().isAfter(cita.getCitFecha()) || nuevaCita.getCitFecha().isEqual(cita.getCitFecha()))
+                    && nuevaCita.getCitFecha().isBefore(finEstimadoCitaExistente)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public List<Cita> obtenerCitasEmpleado(List<Cita> citasExistente, Empleado empleado) {
+        List<Cita> citasEmpleado = new ArrayList<>();
+        citasExistente.forEach(c -> {
+            if (c.getEmpleado().getPersona().getPerCedula().equals(empleado.getPersona().getPerCedula())) {
+                citasEmpleado.add(c);
+            }
+        });
+        return citasEmpleado;
+    }
+
 }

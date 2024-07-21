@@ -1,6 +1,7 @@
 package com.cultodeportivo.Modelos;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Cita {
@@ -13,6 +14,13 @@ public class Cita {
     // Constructor
     public Cita(int citId, LocalDateTime citFecha, char citEstado, Empleado empleado, Cliente cliente) {
         this.citId = citId;
+        this.citFecha = citFecha;
+        this.citEstado = citEstado;
+        this.empleado = Objects.requireNonNull(empleado, "El objeto 'empleado' no puede ser nulo");
+        this.cliente = Objects.requireNonNull(cliente, "El objeto 'cliente' no puede ser nulo");
+    }
+    
+    public Cita(LocalDateTime citFecha, char citEstado, Empleado empleado, Cliente cliente) {
         this.citFecha = citFecha;
         this.citEstado = citEstado;
         this.empleado = Objects.requireNonNull(empleado, "El objeto 'empleado' no puede ser nulo");
@@ -63,6 +71,13 @@ public class Cita {
             this.cliente.setCliId(citId); 
         }
         this.cliente = Objects.requireNonNull(cliente, "El objeto 'cliente' no puede ser nulo");
+    }
+    
+    public String fechaString(){
+        DateTimeFormatter formatterPersonalizado = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        String fechaHoraComoString = this.citFecha.format(formatterPersonalizado);
+        
+        return fechaHoraComoString;
     }
 
     @Override
