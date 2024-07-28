@@ -2,7 +2,7 @@ com/cultodeportivo/Modelos/Cita.class
 com/cultodeportivo/Modelos/Cliente.class
 com/cultodeportivo/proyecto_fbd/GlobalValues.class
 com/cultodeportivo/Modelos/Servicio.class
-com/cultodeportivo/Control/Test.class
+com/cultodeportivo/proyecto_fbd/EnviarCorreo.class
 com/cultodeportivo/Control/Emparejador.class
 com/cultodeportivo/Modelos/Usuario.class
 com/cultodeportivo/proyecto_fbd/App.class
@@ -13,7 +13,7 @@ com/cultodeportivo/proyecto_fbd/AlertMessage.class
 com/cultodeportivo/Modelos/Permiso.class
 com/cultodeportivo/Control/OperacionesActualizar.class
 com/cultodeportivo/proyecto_fbd/ButtonFacturacion.class
-com/cultodeportivo/proyecto_fbd/EjemploPDF.class
+com/cultodeportivo/proyecto_fbd/EnviarCorreo$1.class
 com/cultodeportivo/Control/ValidarIngresos.class
 com/cultodeportivo/Modelos/FacturaDetalle.class
 com/cultodeportivo/Control/OperacionesAcceso.class
@@ -21,6 +21,7 @@ com/cultodeportivo/proyecto_fbd/PrimaryController.class
 com/cultodeportivo/Modelos/FacturaCabecera.class
 com/cultodeportivo/Control/OperacionesEliminar.class
 com/cultodeportivo/Control/OperacionesEscritura.class
+com/cultodeportivo/proyecto_fbd/FacturaPDF.class
 com/cultodeportivo/Modelos/Empleado.class
 com/cultodeportivo/Control/Control.class
 com/cultodeportivo/Modelos/Tipo.class

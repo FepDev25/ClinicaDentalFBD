@@ -9,7 +9,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class ButtonFacturacion {
-
+    EnviarCorreo envioCorreo;
+    FacturaPDF pdfGenerator;
     FacturaCabecera cabecera;
     ArrayList<FacturaDetalle> detalles;
     Servicio servicio = null;
@@ -21,7 +22,9 @@ public class ButtonFacturacion {
     public ButtonFacturacion(SecondaryController vista) {
         this.vista = vista;
         this.detalles = new ArrayList<>();
-        this.cabecera = new FacturaCabecera(fechaActual);
+        this.cabecera = new FacturaCabecera(fechaActual, GlobalValues.userApp);
+        this.pdfGenerator = new FacturaPDF(cabecera);
+        this.envioCorreo= new EnviarCorreo();
     }
     
     public void asignarAcciones() {
@@ -45,7 +48,7 @@ public class ButtonFacturacion {
             this.cabecera.actualizarData(detalles);
             vista.tableWorker.setDataFacturaCabecera(this.cabecera);
             vista.getLabel_visor_total().setText(String.valueOf(this.cabecera.getCabTotal()));
-            System.out.println(facAux);
+            this.pdfGenerator.agregarDetalle(facAux);
         } catch (NumberFormatException e) {
             vista.message.errorMessage("La cantidad debe ser numerica.");
         }
@@ -54,19 +57,61 @@ public class ButtonFacturacion {
     
     public void aceptarSeleccionCliente() {
         cliente = vista.getTabla_seleccionar_cliente_facturas().getItems().get(vista.indiceClienteFacturacion);
+        this.llenarInfoCliente(cliente);
+        cabecera.setCliente(cliente);
         
+        vista.getSeleccionar_cliente_facturas().setVisible(false);
+    }
+    
+    public void facturar() {
+        int id_cabecera = vista.controlador.agregarFacturaCabecera(this.cabecera);
+        
+        if(id_cabecera > 0){
+            vista.setCabeceras(vista.controlador.obtenerCabeceras());
+            this.cabecera.setCabId(id_cabecera);
+            boolean agregarDetalles = vista.controlador.agregarFacturaDetalle(detalles);
+            if (agregarDetalles){
+                vista.message.successMessage("Factura creada correctamente!");
+                this.pdfGenerator.generarPDF();
+                String destino = this.cabecera.getCliente().getPersona().getPerCorreoElectronico();
+                this.envioCorreo.enviarCorreo(destino);
+                vista.setDetalles(vista.controlador.obtenerDetalles());
+                vaciarInfoCliente();
+                limpiarCampos();
+            } else{
+                vista.message.errorMessage("Error al crear la factura.");
+            }
+        } else{
+            vista.message.errorMessage("Error al crear la factura.");
+        }
+    }
+    
+    public void limpiarCampos(){
+        vista.getTable_factura_detalle().getItems().clear();
+        vista.getTabla_factura_cabecera().getItems().clear();
+        vista.getLabel_visor_total().setText("0.00");
+        this.detalles = new ArrayList<>();
+        this.cliente = null;
+        this.cabecera = new FacturaCabecera(fechaActual, GlobalValues.userApp);
+        this.pdfGenerator = new FacturaPDF(cabecera);
+    }
+    
+    public void llenarInfoCliente(Cliente cliente){
         vista.getFactura_label_apellido().setText("Apellido: " + cliente.getPersona().getPerApellido());
         vista.getFactura_label_cedula().setText("Cedula: " + cliente.getPersona().getPerCedula());
         vista.getFactura_label_correo().setText("Correo: " + cliente.getPersona().getPerCorreoElectronico());
         vista.getFactura_label_direccion().setText("Direccion: " + cliente.getPersona().getPerDireccion());
         vista.getFactura_label_nombre().setText("Nombre: " + cliente.getPersona().getPerNombre());
         vista.getFactura_label_telefono().setText("Telefono: " + cliente.getPersona().getPerTelefono());
-        
-        vista.getSeleccionar_cliente_facturas().setVisible(false);
     }
     
-    public void facturar() {
-        
+    public void vaciarInfoCliente(){
+        vista.getFactura_label_apellido().setText("Apellido: " );
+        vista.getFactura_label_cedula().setText("Cedula: " );
+        vista.getFactura_label_correo().setText("Correo: " );
+        vista.getFactura_label_direccion().setText("Direccion: ");
+        vista.getFactura_label_nombre().setText("Nombre: " );
+        vista.getFactura_label_telefono().setText("Telefono: ");
     }
     
 }

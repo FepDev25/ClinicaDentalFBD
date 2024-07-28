@@ -1,7 +1,6 @@
 package com.cultodeportivo.Modelos;
 
 import com.cultodeportivo.proyecto_fbd.GlobalValues;
-import static java.lang.Math.round;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -25,7 +24,8 @@ public class FacturaCabecera {
         this.usuario = Objects.requireNonNull(usuario, "El objeto 'usuario' no puede ser nulo");
     }
 
-    public FacturaCabecera(LocalDateTime fechaActual) {
+    public FacturaCabecera(LocalDateTime fechaActual, Usuario usuario) {
+        this.usuario = usuario;
         this.cabFecha = fechaActual;
         this.cabSubtotal = 0;
         this.cabTotalIva = 0;

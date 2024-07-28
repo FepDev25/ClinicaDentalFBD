@@ -251,10 +251,7 @@ public class Control {
     public ArrayList<Usuario> obtenerUsuarios(ArrayList<Empleado> empleados, ArrayList<Permiso> permisos) {
         return operacionesAcceso.obtenerUsuarios(empleados, permisos);
     }
-    
-    public void obtenerFacturas(){
-        
-    }
+ 
     
     public ArrayList<Servicio> obtenerServicios() {
         return operacionesAcceso.obtenerServicios();
@@ -298,6 +295,8 @@ public class Control {
         } else {
             return false;
         }
+        Impuesto i = operacionesAcceso.obtenerImpuesto();
+        GlobalValues.iva = i;
         return true;
     }
 
@@ -323,6 +322,18 @@ public class Control {
             }
         });
         return citasEmpleado;
+    }
+    
+    public int agregarFacturaCabecera(FacturaCabecera cabecera){
+        return operacionesEscritura.CrearFacturaCabecera(cabecera);
+    }
+    
+    public boolean agregarFacturaDetalle(ArrayList<FacturaDetalle> detalles){
+        for (FacturaDetalle detalle : detalles) {
+            boolean agregar = operacionesEscritura.CrearFacturaDetalle(detalle);
+            if (!agregar) return false;
+        }
+        return true;
     }
 
 }

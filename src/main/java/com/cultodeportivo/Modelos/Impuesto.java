@@ -3,11 +3,13 @@ package com.cultodeportivo.Modelos;
 public class Impuesto {
     private int impId;
     private double impValor;
+    private char impNombre;
 
     // Constructor
-    public Impuesto(int impId, double impValor) {
+    public Impuesto(int impId, double impValor, char impNombre) {
         this.impId = impId;
         this.impValor = impValor;
+        this.impNombre = impNombre;
     }
 
     public int getImpId() {
@@ -25,6 +27,16 @@ public class Impuesto {
     public void setImpValor(double impValor) {
         this.impValor = impValor;
     }
+
+    public char getImpNombre() {
+        return impNombre;
+    }
+
+    public void setImpNombre(char impNombre) {
+        this.impNombre = impNombre;
+    }
+    
+    
 
     @Override
     public String toString() {

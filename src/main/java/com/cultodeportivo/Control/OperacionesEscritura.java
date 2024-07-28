@@ -1,11 +1,14 @@
 package com.cultodeportivo.Control;
 
 import com.cultodeportivo.Modelos.*;
+import java.sql.CallableStatement;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Timestamp;
+import java.sql.Types;
 
 public class OperacionesEscritura {
 
@@ -17,7 +20,6 @@ public class OperacionesEscritura {
     }
 
     public int CrearPersona(Persona persona) {
-        System.out.println("Iniciando metodo");
         ConexionOracle.getInstance().getConexion();
 
         try {
@@ -29,7 +31,6 @@ public class OperacionesEscritura {
             String correo = persona.getPerCorreoElectronico();
 
             String sql = "INSERT INTO CD_PERSONAS VALUES (personas_seq.nextval, ?, ?, ?, ?, ?, ?)";
-            System.out.println("SQL: " + sql);
             myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
 
             myStatement.setString(1, cedula);
@@ -58,17 +59,14 @@ public class OperacionesEscritura {
         ConexionOracle.getInstance().getConexion();
 
         try {
-    
 
             String sql = "INSERT INTO CD_EMPLEADOS VALUES (empleados_seq.nextval, ?, ?)";
-            System.out.println("SQL: " + sql);
             myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
 
             myStatement.setInt(1, empleado.getPersona().getPerId());
             myStatement.setInt(2, empleado.getTipo().getTipId());
 
             int filas = myStatement.executeUpdate();
-            System.out.println("Empleado creado exitosamente.");
             myStatement.close();
             return filas > 0;
 
@@ -79,12 +77,10 @@ public class OperacionesEscritura {
     }
 
     public boolean CrearUsuario(Usuario user) {
-        System.out.println("Iniciando metodo");
         ConexionOracle.getInstance().getConexion();
 
         try {
             String sql = "INSERT INTO CD_USUARIOS VALUES (usuarios_seq.nextval, ?, ?, ?, ?)";
-            System.out.println("SQL: " + sql);
             myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
 
             myStatement.setString(1, user.getUsrNombre());
@@ -93,7 +89,6 @@ public class OperacionesEscritura {
             myStatement.setInt(4, user.getPermiso().getPrmId());
 
             int filas = myStatement.executeUpdate();
-            System.out.println("Usuario creado exitosamente.");
             myStatement.close();
             return filas > 0;
         } catch (SQLException e) {
@@ -103,12 +98,10 @@ public class OperacionesEscritura {
     }
 
     public boolean CrearServicio(Servicio servicio) {
-        System.out.println("Iniciando metodo");
         ConexionOracle.getInstance().getConexion();
 
         try {
             String sql = "INSERT INTO CD_SERVICIOS (ser_id, ser_nombre, ser_precio, ser_iva, ser_estado) VALUES (servicios_seq.nextval, ?, ?, ?, ?)";
-            System.out.println("SQL: " + sql);
             myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
 
             myStatement.setString(1, servicio.getSerNombre());
@@ -117,7 +110,6 @@ public class OperacionesEscritura {
             myStatement.setString(4, String.valueOf(servicio.getSerEstado()));
 
             int ejecutar = myStatement.executeUpdate();
-            System.out.println("Servicio creado exitosamente.");
             myStatement.close();
             return ejecutar > 0;
         } catch (SQLException e) {
@@ -127,62 +119,68 @@ public class OperacionesEscritura {
         return false;
     }
 
-    public void CrearFacturaCabecera(Timestamp cabFecha, double cabSubtotal, double cabIva, double cabTotal, int cliId, int usrId) {
-        System.out.println("Iniciando metodo");
+    public int CrearFacturaCabecera(FacturaCabecera cabecera) {
         ConexionOracle.getInstance().getConexion();
 
         try {
-            String sql = "INSERT INTO CD_FACTURAS_CABECERA VALUES (facturas_cabecera_seq.nextval, ?, ?, ?, ?, ?, ?)";
-            System.out.println("SQL: " + sql);
-            PreparedStatement myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
+            String sql = "{CALL insertFacturaCabecera(?, ?, ?, ?, ?, ?, ?)}";
+            CallableStatement callableStatement = ConexionOracle.getInstance().getConexion().prepareCall(sql);
 
-            myStatement.setTimestamp(1, cabFecha);
-            myStatement.setDouble(2, cabSubtotal);
-            myStatement.setDouble(3, cabIva);
-            myStatement.setDouble(4, cabTotal);
-            myStatement.setInt(5, cliId);
-            myStatement.setInt(6, usrId);
+            Timestamp fechaT = Timestamp.valueOf(cabecera.getCabFecha());
 
-            myStatement.executeUpdate();
-            System.out.println("Factura cabecera creada exitosamente.");
+            // Registrar parámetros de entrada
+            callableStatement.setTimestamp(1, fechaT);
+            callableStatement.setDouble(2, cabecera.getCabSubtotal());
+            callableStatement.setDouble(3, cabecera.getCabTotalIva());
+            callableStatement.setDouble(4, cabecera.getCabTotal());
+            callableStatement.setInt(5, cabecera.getCliente().getCliId());
+            callableStatement.setInt(6, cabecera.getUsuario().getUsrId());
 
+            // Registrar parámetro de salida
+            callableStatement.registerOutParameter(7, java.sql.Types.INTEGER);
+
+            // Ejecutar la consulta
+            callableStatement.execute();
+
+            int generatedId = callableStatement.getInt(7);
+            callableStatement.close();
+
+            return generatedId;
         } catch (SQLException e) {
-            System.out.println("Error al establecer la conexión a la base de datos o al ejecutar la consulta.");
-            e.printStackTrace();
+            System.out.println("Error al establecer la conexión a la base de datos o al ejecutar la consulta: " + e.getMessage());
+            return -1;
         }
     }
 
-    public void CrearFacturaDetalle(int detProducto, double detCantidad, double detPrecio, int cabId, int serId) {
-        System.out.println("Iniciando metodo");
+    public boolean CrearFacturaDetalle(FacturaDetalle detalle) {
         ConexionOracle.getInstance().getConexion();
 
         try {
-            String sql = "INSERT INTO CD_FACTURAS_DETALLE VALUES (facturas_detalle_seq.nextval, ?, ?, ?, ?, ?)";
-            System.out.println("SQL: " + sql);
-            PreparedStatement myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
+            String sql = "INSERT INTO CD_FACTURAS_DETALLE VALUES (facturas_detalle_seq.nextval, ?, ?, ?, ?, ?, ?, ?)";
+            myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
 
-            myStatement.setInt(1, detProducto);
-            myStatement.setDouble(2, detCantidad);
-            myStatement.setDouble(3, detPrecio);
-            myStatement.setInt(4, cabId);
-            myStatement.setInt(5, serId);
+            myStatement.setDouble(1, detalle.getDetSubtotal());
+            myStatement.setDouble(2, detalle.getDetSubtotal());
+            myStatement.setDouble(3, detalle.getDetIva());
+            myStatement.setInt(4, detalle.getDetCantidad());
+            myStatement.setInt(5, detalle.getServicio().getSerId());
+            myStatement.setInt(6, detalle.getFacturaCabecera().getCabId());
+            myStatement.setDouble(7, detalle.getDetTotal());
 
             myStatement.executeUpdate();
-            System.out.println("Factura detalle creada exitosamente.");
-
+            myStatement.close();
+            return true;
         } catch (SQLException e) {
-            System.out.println("Error al establecer la conexión a la base de datos o al ejecutar la consulta.");
-            e.printStackTrace();
+            System.out.println("Error al establecer la conexión a la base de datos o al ejecutar la consulta: " + e.getMessage());
         }
+        return false;
     }
 
     public boolean CrearCita(Cita cita) {
-        System.out.println("Iniciando metodo");
         ConexionOracle.getInstance().getConexion();
 
         try {
             String sql = "INSERT INTO CD_CITAS VALUES (citas_seq.nextval, ?, ?, ?, ?)";
-            System.out.println("SQL: " + sql);
             myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
 
             myStatement.setTimestamp(1, Timestamp.valueOf(cita.getCitFecha()));
@@ -191,7 +189,7 @@ public class OperacionesEscritura {
             myStatement.setInt(4, cita.getEmpleado().getEmpId());
 
             int filas = myStatement.executeUpdate();
-            System.out.println("Cita creada exitosamente.");
+            myStatement.close();
             return filas > 0;
 
         } catch (SQLException e) {
@@ -201,19 +199,16 @@ public class OperacionesEscritura {
     }
 
     public boolean CrearCliente(Cliente cliente) {
-        System.out.println("Iniciando metodo");
         ConexionOracle.getInstance().getConexion();
 
         try {
             String sql = "INSERT INTO CD_CLIENTES VALUES (clientes_seq.nextval, ?, ?)";
-            System.out.println("SQL: " + sql);
             myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
 
             myStatement.setInt(1, cliente.getPersona().getPerId());
             myStatement.setString(2, String.valueOf(cliente.getCliEstado()));
 
             int ejecutar = myStatement.executeUpdate();
-            System.out.println("Cliente creado exitosamente.");
             myStatement.close();
             return ejecutar > 0;
 

@@ -206,7 +206,6 @@ public class OperacionesAcceso {
         
         try {
             String sql = "SELECT * FROM CD_USUARIOS";
-            System.out.println("SQL: " + sql);
             myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
 
             ResultSet rs = myStatement.executeQuery(); 
@@ -231,7 +230,6 @@ public class OperacionesAcceso {
     
     public ArrayList<Servicio> obtenerServicios() {
         ArrayList<Servicio> servicios = new ArrayList<>();
-        System.out.println("Iniciando metodo");
         ConexionOracle.getInstance().getConexion();
         
         try {
@@ -262,17 +260,14 @@ public class OperacionesAcceso {
         
     public ArrayList<Cita> obtenerCitas(ArrayList<Cliente> clientes, ArrayList<Empleado> empleados) {
         ArrayList<Cita> citas = new ArrayList<>();
-        System.out.println("Iniciando metodo");
         ConexionOracle.getInstance().getConexion();
         
         try {
             String sql = "SELECT * FROM CD_CITAS";
-            System.out.println("SQL: " + sql);
             myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
 
             ResultSet rs = myStatement.executeQuery(); 
 
-            System.out.println(rs);
             while (rs.next()) {
                 int citId = rs.getInt("cit_id");
                 Timestamp fecha = rs.getTimestamp("cit_fecha");
@@ -295,17 +290,14 @@ public class OperacionesAcceso {
     
     public ArrayList<FacturaCabecera> obtenerFacturasCabecera(ArrayList<Cliente> clientes, ArrayList<Usuario> usuarios) {
         ArrayList<FacturaCabecera> cabeceras = new ArrayList<>();
-        System.out.println("Iniciando metodo");
         ConexionOracle.getInstance().getConexion();
         
         try {
             String sql = "SELECT * FROM CD_FACTURAS_CABECERA";
-            System.out.println("SQL: " + sql);
             myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
 
             ResultSet rs = myStatement.executeQuery(); 
 
-            System.out.println(rs);
             while (rs.next()) {
                 int  cabId = rs.getInt("cab_id");
                 Timestamp fecha = rs.getTimestamp("cab_fecha");
@@ -323,7 +315,6 @@ public class OperacionesAcceso {
                 f.setCabSubtotal(cabSubtotal);
                 f.setCabTotal(cabTotal);
                 
-                System.out.println(f);
                 cabeceras.add(f);
             }
             myStatement.close();
@@ -336,17 +327,14 @@ public class OperacionesAcceso {
     
     public ArrayList<FacturaDetalle> obtenerFacturasDetalle(ArrayList<Servicio> servicios, ArrayList<FacturaCabecera> cabeceras) {
         ArrayList<FacturaDetalle> detalles = new ArrayList<>();
-        System.out.println("Iniciando metodo");
         ConexionOracle.getInstance().getConexion();
         
         try {
             String sql = "SELECT * FROM CD_FACTURAS_DETALLE";
-            System.out.println("SQL: " + sql);
             myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
 
             ResultSet rs = myStatement.executeQuery(); 
 
-            System.out.println(rs);
             while (rs.next()) {
                 int  detId = rs.getInt("det_id");
                 double  detPrecioUnitario = rs.getDouble("det_Precio_Unitario");
@@ -367,7 +355,6 @@ public class OperacionesAcceso {
                 f.setDetCantidad(detCantidad);
                 f.setDetTotal(detTotal);
                 
-                System.out.println(f);
                 detalles.add(f);
             }
             myStatement.close();
@@ -379,36 +366,29 @@ public class OperacionesAcceso {
     }
     
     
-    /*public ArrayList<Impuesto> obtenerImpuesto() {
-        ArrayList<Impuesto> impuestos = new ArrayList<>();
-        System.out.println("Iniciando metodo");
+    public Impuesto obtenerImpuesto() {
         ConexionOracle.getInstance().getConexion();
         
         try {
-            String sql = "SELECT * FROM CD_IMPUESTOS";
-            System.out.println("SQL: " + sql);
+            String sql = "SELECT * FROM CD_IMPUESTOS WHERE imp_nombre = '15'";
             myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
 
             ResultSet rs = myStatement.executeQuery(); 
 
-            System.out.println(rs);
             while (rs.next()) {
                 int  imp_id = rs.getInt("imp_id");
                 int imp_valor = rs.getInt("imp_valor");
                 String imp_nombre = rs.getString("imp_nombre");
                 
-                Impuesto i = new Impuesto(imp_id,imp_valor,imp_nombre); ///
+                Impuesto i = new Impuesto(imp_id,imp_valor,imp_nombre.charAt(0));
+                return i;
                         
-                        ///// cambiar el constructor de impuesto agregandole nombre
-                System.out.println(i);
-                impuestos.add(i);
             }
             myStatement.close();
-            return impuestos;
         } catch (SQLException e) {
             System.err.println("Error al obtener Detalles de facturas: " + e.getMessage());
         }
         return null;
-    }*/
+    }
     
 }

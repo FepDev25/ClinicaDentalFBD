@@ -37,12 +37,16 @@ public class FacturaDetalle {
     }
     
     private void calcularAtributos(){
+        double valor_iva = GlobalValues.iva.getImpValor();
+        double porcentaje = valor_iva / 100;
+        
         this.detPrecioUnitario = servicio.getSerPrecio();
         
         double subtotal = this.detPrecioUnitario * this.detCantidad;
-        double total = subtotal * 1.15;
+        double valor_iva_detalle = subtotal * porcentaje;
+        double total = subtotal + valor_iva_detalle;
         
-        this.detIva = this.servicio.getSerIva() == 'S' ? (total-subtotal) : 0;
+        this.detIva = this.servicio.getSerIva() == 'S' ? (valor_iva_detalle) : 0;
         this.detSubtotal = subtotal;
         this.detTotal = this.detIva != 0 ? total : subtotal; 
         
