@@ -118,6 +118,7 @@
                                           <Font name="System Bold" size="15.0" />
                                        </font>
                                     </Label>
+                                    <Button fx:id="boton_quitar_servicio" layoutX="640.0" layoutY="467.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="88.0" styleClass="boton_eliminar" stylesheets="@estilos.css" text="Quitar" />
                                  </children>
                               </AnchorPane>
                               <AnchorPane layoutX="300.0" layoutY="5.0" prefHeight="155.0" prefWidth="518.0" stylesheets="@estilos.css">
@@ -207,7 +208,8 @@
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <Button fx:id="boton_cancelar_cita_accion" layoutX="264.0" layoutY="370.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="150.0" styleClass="boton_eliminar" stylesheets="@estilos.css" text="Cancelar Cita" />
+                                    <Button fx:id="boton_cancelar_cita_accion" layoutX="410.0" layoutY="370.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="150.0" styleClass="boton_eliminar" stylesheets="@estilos.css" text="Cancelar Cita" />
+                                    <Button fx:id="boton_activar_cita" layoutX="110.0" layoutY="370.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="150.0" styleClass="boton_anchor" stylesheets="@estilos.css" text="Activar Cita" />
                                  </children>
                               </AnchorPane>
                               <AnchorPane fx:id="frame_reservar_citas" layoutX="340.0" layoutY="8.0" prefHeight="421.0" prefWidth="681.0" stylesheets="@estilos.css">

@@ -247,6 +247,10 @@ public class Control {
     public boolean desactivarCita(int id) {
         return operacionesEliminar.desactivarCita(id);
     }
+    
+    public boolean activarCita(int id) {
+        return operacionesEliminar.activarCita(id);
+    }
 
     public ArrayList<Usuario> obtenerUsuarios(ArrayList<Empleado> empleados, ArrayList<Permiso> permisos) {
         return operacionesAcceso.obtenerUsuarios(empleados, permisos);

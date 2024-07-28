@@ -32,6 +32,7 @@ public class ButtonCitas {
         vista.getBoton_agendar_cita().setOnAction(e -> crearCita());
 
         vista.getBoton_cancelar_cita_accion().setOnAction(e -> cancelarCita());
+        vista.getBoton_activar_cita().setOnAction(e -> activarCita());
     }
 
     public void incluirDoctorSeleccionado() {
@@ -51,6 +52,8 @@ public class ButtonCitas {
     }
 
     public void crearCita() {
+        LocalDateTime fechaHoraActual = LocalDateTime.now();
+
         try {
             LocalDate fechaSeleccionada = vista.getReserva_fecha().getValue();
 
@@ -61,24 +64,30 @@ public class ButtonCitas {
                 int minuto = Integer.parseInt(vista.getReserva_label_minutos().getText());
 
                 LocalDateTime localDateTime = fechaSeleccionada.atTime(hora, minuto);
-                citaCreada = new Cita(localDateTime, 'A', doctorSeleccionado, clienteSeleccionado);
 
-                boolean validarCita = vista.controlador.validarDisponibilidadCita(citaCreada, vista.controlador.obtenerCitas(), doctorSeleccionado);
-
-                if (validarCita) {
-                    boolean agregarCita = vista.controlador.agregarCita(citaCreada);
-                    if (agregarCita) {
-                        vista.message.successMessage("Cita Creada Correctamente!");
-                        limpiarCamposCita();
-                        vista.setCitas(vista.controlador.obtenerCitas());
-                        vista.tableWorker.setDataProximasCitas();
-                        vista.tableWorker.setDataCancelarCitas();
-                    } else {
-                        vista.message.errorMessage("Error al crear la cita.");
-                    }
+                if (localDateTime.isBefore(fechaHoraActual)) {
+                    vista.message.errorMessage("Error: La hora no puede ser anterior a la hora actual.");
                 } else {
-                    vista.message.errorMessage("Error: El Doctor tiene otra cita agendada a esa hora.");
+                    citaCreada = new Cita(localDateTime, 'A', doctorSeleccionado, clienteSeleccionado);
+
+                    boolean validarCita = vista.controlador.validarDisponibilidadCita(citaCreada, vista.controlador.obtenerCitas(), doctorSeleccionado);
+
+                    if (validarCita) {
+                        boolean agregarCita = vista.controlador.agregarCita(citaCreada);
+                        if (agregarCita) {
+                            vista.message.successMessage("Cita Creada Correctamente!");
+                            limpiarCamposCita();
+                            vista.setCitas(vista.controlador.obtenerCitas());
+                            vista.tableWorker.setDataProximasCitas();
+                            vista.tableWorker.setDataCancelarCitas();
+                        } else {
+                            vista.message.errorMessage("Error al crear la cita.");
+                        }
+                    } else {
+                        vista.message.errorMessage("Error: El Doctor tiene otra cita agendada a esa hora.");
+                    }
                 }
+
             }
         } catch (NumberFormatException e) {
             vista.message.errorMessage("Error: Ingresar una fecha válida.");
@@ -104,6 +113,23 @@ public class ButtonCitas {
             vista.message.errorMessage("Error: Seleccionar una cita.");
         }
 
+    }
+    
+    public void activarCita(){
+        try {
+            citaCancelar = vista.getTabla_cancelar_citas().getItems().get(vista.indiceCitaEliminada);
+            boolean activar = vista.controlador.activarCita(citaCancelar.getCitId());
+            if (activar) {
+                vista.message.successMessage("Cita Modificada Correctamente!");
+                vista.setCitas(vista.controlador.obtenerCitas());
+                vista.tableWorker.setDataProximasCitas();
+                vista.tableWorker.setDataCancelarCitas();
+            } else {
+                vista.message.errorMessage("Error al modificar Cita.");
+            }
+        } catch (NullPointerException e) {
+            vista.message.errorMessage("Error: Seleccionar una cita.");
+        }
     }
 
     public void limpiarCamposCita() {

@@ -185,16 +185,29 @@ public class OperacionesEliminar {
     }
     
     public boolean desactivarCita(int id){
-        System.out.println("Iniciando metodo");
         ConexionOracle.getInstance().getConexion();
 
         try {
             String sql = "UPDATE cd_citas set cit_estado = 'I' WHERE cit_id = ?";
-            System.out.println("SQL: " + sql);
             myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
             myStatement.setInt(1, id);
             myStatement.executeUpdate();
-            System.out.println("Cita editada exitosamente.");
+            myStatement.close();
+            return true;
+        }  catch (SQLException e) {
+            System.out.println("Error al establecer la conexión a la base de datos o al ejecutar la consulta: " + e.getMessage());
+        } 
+        return false;
+    }
+    
+    public boolean activarCita(int id){
+        ConexionOracle.getInstance().getConexion();
+
+        try {
+            String sql = "UPDATE cd_citas set cit_estado = 'A' WHERE cit_id = ?";
+            myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
+            myStatement.setInt(1, id);
+            myStatement.executeUpdate();
             myStatement.close();
             return true;
         }  catch (SQLException e) {

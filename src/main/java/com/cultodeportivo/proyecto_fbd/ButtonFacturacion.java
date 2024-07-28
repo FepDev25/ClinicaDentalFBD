@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class ButtonFacturacion {
+    
     EnviarCorreo envioCorreo;
     FacturaPDF pdfGenerator;
     FacturaCabecera cabecera;
@@ -24,11 +25,12 @@ public class ButtonFacturacion {
         this.detalles = new ArrayList<>();
         this.cabecera = new FacturaCabecera(fechaActual, GlobalValues.userApp);
         this.pdfGenerator = new FacturaPDF(cabecera);
-        this.envioCorreo= new EnviarCorreo();
+        this.envioCorreo = new EnviarCorreo();
     }
     
     public void asignarAcciones() {
         vista.getBoton_buscar_cliente().setOnAction(e -> vista.getSeleccionar_cliente_facturas().setVisible(true));
+        vista.getBoton_quitar_servicio().setOnAction(e -> quitarServicio());
         vista.getBoton_buscar_servicio().setOnAction(e -> agregarServicioDetalle());
         vista.getBoton_cancelar_seleccion_cli_fac().setOnAction(e -> vista.getSeleccionar_cliente_facturas().setVisible(false));
         vista.getBoton_aceptar_seleccion_cli_fac().setOnAction(e -> aceptarSeleccionCliente());
@@ -64,29 +66,39 @@ public class ButtonFacturacion {
     }
     
     public void facturar() {
-        int id_cabecera = vista.controlador.agregarFacturaCabecera(this.cabecera);
-        
-        if(id_cabecera > 0){
-            vista.setCabeceras(vista.controlador.obtenerCabeceras());
-            this.cabecera.setCabId(id_cabecera);
-            boolean agregarDetalles = vista.controlador.agregarFacturaDetalle(detalles);
-            if (agregarDetalles){
-                vista.message.successMessage("Factura creada correctamente!");
-                this.pdfGenerator.generarPDF();
-                String destino = this.cabecera.getCliente().getPersona().getPerCorreoElectronico();
-                this.envioCorreo.enviarCorreo(destino);
-                vista.setDetalles(vista.controlador.obtenerDetalles());
-                vaciarInfoCliente();
-                limpiarCampos();
-            } else{
+        try {
+            int id_cabecera = vista.controlador.agregarFacturaCabecera(this.cabecera);
+            
+            if (id_cabecera > 0) {
+                if (this.detalles.isEmpty()) {
+                    vista.message.errorMessage("Error: La factura debe tener al menos un servicio asociado.");
+                } else {
+                    vista.setCabeceras(vista.controlador.obtenerCabeceras());
+                    this.cabecera.setCabId(id_cabecera);
+                    boolean agregarDetalles = vista.controlador.agregarFacturaDetalle(detalles);
+                    if (agregarDetalles) {
+                        vista.message.successMessage("Factura creada correctamente!");
+                        this.pdfGenerator.generarPDF();
+                        String destino = this.cabecera.getCliente().getPersona().getPerCorreoElectronico();
+                        this.envioCorreo.enviarCorreo(destino);
+                        vista.setDetalles(vista.controlador.obtenerDetalles());
+                        vaciarInfoCliente();
+                        limpiarCampos();
+                    } else {
+                        vista.message.errorMessage("Error al crear la factura.");
+                    }
+                }
+                
+            } else {
                 vista.message.errorMessage("Error al crear la factura.");
             }
-        } else{
-            vista.message.errorMessage("Error al crear la factura.");
+        } catch (NullPointerException e) {
+            vista.message.errorMessage("Seleccionar un cliente para la factura.");
         }
+        
     }
     
-    public void limpiarCampos(){
+    public void limpiarCampos() {
         vista.getTable_factura_detalle().getItems().clear();
         vista.getTabla_factura_cabecera().getItems().clear();
         vista.getLabel_visor_total().setText("0.00");
@@ -96,7 +108,7 @@ public class ButtonFacturacion {
         this.pdfGenerator = new FacturaPDF(cabecera);
     }
     
-    public void llenarInfoCliente(Cliente cliente){
+    public void llenarInfoCliente(Cliente cliente) {
         vista.getFactura_label_apellido().setText("Apellido: " + cliente.getPersona().getPerApellido());
         vista.getFactura_label_cedula().setText("Cedula: " + cliente.getPersona().getPerCedula());
         vista.getFactura_label_correo().setText("Correo: " + cliente.getPersona().getPerCorreoElectronico());
@@ -105,13 +117,28 @@ public class ButtonFacturacion {
         vista.getFactura_label_telefono().setText("Telefono: " + cliente.getPersona().getPerTelefono());
     }
     
-    public void vaciarInfoCliente(){
-        vista.getFactura_label_apellido().setText("Apellido: " );
-        vista.getFactura_label_cedula().setText("Cedula: " );
-        vista.getFactura_label_correo().setText("Correo: " );
+    public void vaciarInfoCliente() {
+        vista.getFactura_label_apellido().setText("Apellido: ");
+        vista.getFactura_label_cedula().setText("Cedula: ");
+        vista.getFactura_label_correo().setText("Correo: ");
         vista.getFactura_label_direccion().setText("Direccion: ");
-        vista.getFactura_label_nombre().setText("Nombre: " );
+        vista.getFactura_label_nombre().setText("Nombre: ");
         vista.getFactura_label_telefono().setText("Telefono: ");
+    }
+    
+    public void quitarServicio() {
+        if (!vista.getTable_factura_detalle().getItems().isEmpty()) {
+            FacturaDetalle detalleEliminar = vista.getTable_factura_detalle().getItems().get(vista.indiceEliminarDetalle);
+            vista.getTable_factura_detalle().getItems().remove(detalleEliminar);
+            this.detalles.remove(detalleEliminar);
+            this.pdfGenerator.detalles.remove(detalleEliminar);
+            this.cabecera.actualizarData(detalles);
+            vista.getLabel_visor_total().setText(String.valueOf(this.cabecera.getCabTotal()));
+            vista.tableWorker.setDataFacturaCabecera(this.cabecera);
+        } else{
+            vista.message.errorMessage("No hay detalles factura para eliminar.");
+        }
+        
     }
     
 }

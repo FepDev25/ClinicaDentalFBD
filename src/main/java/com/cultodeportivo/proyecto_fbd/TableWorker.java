@@ -13,6 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 
 public class TableWorker {
 
@@ -247,7 +248,10 @@ public class TableWorker {
         ObservableList<Cita> citasObservable = FXCollections.observableArrayList();
         if (!vista.getCitas().isEmpty()) {
             for (Cita cita : vista.getCitas()) {
-                citasObservable.add(cita);
+                if (cita.getCitFecha().isAfter(LocalDateTime.now())){
+                    citasObservable.add(cita);
+                }
+                
             }
         }
         return citasObservable;

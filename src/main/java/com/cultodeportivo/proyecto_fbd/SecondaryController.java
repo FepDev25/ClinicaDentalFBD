@@ -62,6 +62,7 @@ public class SecondaryController implements Initializable {
     
     public int indiceServicioFacturacion;
     public int indiceClienteFacturacion;
+    public int indiceEliminarDetalle;
     
     public TableWorker tableWorker;
 
@@ -213,7 +214,11 @@ public class SecondaryController implements Initializable {
             }
         });
         
-        
+        this.table_factura_detalle.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                indiceEliminarDetalle = this.table_factura_detalle.getItems().indexOf(newSelection);
+            }
+        });
         
         llenarCombos();
     }
@@ -238,6 +243,9 @@ public class SecondaryController implements Initializable {
 
     @FXML
     private Button boton_agregar_cliente;
+    
+    @FXML
+    private Button boton_activar_cita;
 
     @FXML
     private Button boton_agregar_empleado;
@@ -322,6 +330,9 @@ public class SecondaryController implements Initializable {
 
     @FXML
     private Button button_seleccionar_odontologo_citas;
+    
+    @FXML
+    private Button boton_quitar_servicio;
 
     @FXML
     private TextField cliente_apellidos;
@@ -1306,6 +1317,20 @@ public class SecondaryController implements Initializable {
         this.getCombo_empleado_permiso().setItems(FXCollections.observableArrayList(permisosString));
         this.getCombo_empleado_tipo().setItems(FXCollections.observableArrayList(tiposString));
     }
+
+    public Button getBoton_quitar_servicio() {
+        return boton_quitar_servicio;
+    }
+
+    public ButtonFacturacion getBtnFact() {
+        return btnFact;
+    }
+
+    public Button getBoton_activar_cita() {
+        return boton_activar_cita;
+    }
+    
+     
     
 
 }
