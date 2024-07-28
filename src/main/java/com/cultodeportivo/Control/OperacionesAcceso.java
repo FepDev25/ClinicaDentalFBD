@@ -311,28 +311,18 @@ public class OperacionesAcceso {
                 Timestamp fecha = rs.getTimestamp("cab_fecha");
                 LocalDateTime cabFecha = fecha.toLocalDateTime();
                 double  cabSubtotal = rs.getDouble("cab_subtotal");
-                double  cabTotalIva = rs.getDouble("cabcab_total_iva");
+                double  cabTotalIva = rs.getDouble("cab_total_iva");
                 double cabTotal = rs.getDouble("cab_total");
                 int  cabCliente = rs.getInt("cd_clientes_cli_id");
                 int  cabUsuario = rs.getInt("cd_usuarios_usr_id");
                 
-                Cliente c=null;
-                for(Cliente cl: clientes){
-                    if(cl.getCliId()== cabCliente){
-                        c=cl;
-                    }
-                }
+                FacturaCabecera f = empj.emparejarFacturaCabecera(cabCliente, cabUsuario, clientes, usuarios);
+                f.setCabId(cabId);
+                f.setCabFecha(cabFecha);
+                f.setCabTotalIva(cabTotalIva);
+                f.setCabSubtotal(cabSubtotal);
+                f.setCabTotal(cabTotal);
                 
-                
-                Usuario u =null;
-                for(Usuario us: usuarios){
-                    if(us.getUsrId()== cabUsuario){
-                        u=us;
-                    }
-                }
-                
-                
-                FacturaCabecera f = new FacturaCabecera(cabId,cabFecha,cabSubtotal,cabTotalIva,cabTotal,c,u);
                 System.out.println(f);
                 cabeceras.add(f);
             }
@@ -362,26 +352,21 @@ public class OperacionesAcceso {
                 double  detPrecioUnitario = rs.getDouble("det_Precio_Unitario");
                 double  detSubtotal = rs.getDouble("det_subtotal");
                 double  detIva = rs.getDouble("det_iva");
+                double  detTotal = rs.getDouble("det_total");
                 int detCantidad = rs.getInt("det_cantidad");
                 
                 int  detServicio = rs.getInt("cd_servicios_ser_id");
                 int  detCabecera = rs.getInt("cd_facturas_cabecera_cab_id");
+  
                 
-                Servicio s = null;
-                FacturaCabecera c = null;///////////////////
+                FacturaDetalle f = empj.emparejarFacturaDetalle(detCabecera, detServicio, cabeceras, servicios);
+                f.setDetId(detId);
+                f.setDetPrecioUnitario(detPrecioUnitario);
+                f.setDetSubtotal(detSubtotal);
+                f.setDetIva(detIva);
+                f.setDetCantidad(detCantidad);
+                f.setDetTotal(detTotal);
                 
-                for(Servicio se:servicios){
-                    if(se.getSerId() == detServicio){
-                        s = se;
-                    }
-                }
-                for(FacturaCabecera ca: cabeceras){
-                    if(ca.getCabId() == detCabecera){
-                        c=ca;
-                    }
-                }
-                
-                FacturaDetalle f = new FacturaDetalle(detId,detPrecioUnitario,detSubtotal,detIva,detCantidad,s,c);
                 System.out.println(f);
                 detalles.add(f);
             }

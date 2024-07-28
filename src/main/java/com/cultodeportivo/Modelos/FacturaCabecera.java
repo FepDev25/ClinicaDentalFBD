@@ -1,6 +1,9 @@
 package com.cultodeportivo.Modelos;
 
+import com.cultodeportivo.proyecto_fbd.GlobalValues;
+import static java.lang.Math.round;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class FacturaCabecera {
@@ -11,7 +14,7 @@ public class FacturaCabecera {
     private double cabTotal;
     private Cliente cliente; 
     private Usuario usuario; 
-
+    
     public FacturaCabecera(int cabId, LocalDateTime cabFecha, double cabSubtotal, double cabTotalIva, double cabTotal, Cliente cliente, Usuario usuario) {
         this.cabId = cabId;
         this.cabFecha = cabFecha;
@@ -22,6 +25,18 @@ public class FacturaCabecera {
         this.usuario = Objects.requireNonNull(usuario, "El objeto 'usuario' no puede ser nulo");
     }
 
+    public FacturaCabecera(LocalDateTime fechaActual) {
+        this.cabFecha = fechaActual;
+        this.cabSubtotal = 0;
+        this.cabTotalIva = 0;
+        this.cabTotal = 0;
+    }
+    
+    public FacturaCabecera(Cliente cliente, Usuario usuario) {
+        this.cliente =cliente;
+        this.usuario = usuario;
+    }
+    
     public int getCabId() {
         return cabId;
     }
@@ -92,8 +107,38 @@ public class FacturaCabecera {
                 ", cabSubtotal=" + cabSubtotal +
                 ", cabTotalIva=" + cabTotalIva +
                 ", cabTotal=" + cabTotal +
-                ", cliente=" + cliente +
-                ", usuario=" + usuario +
+                ", cliente=" + cliente.getCliId() +
+                ", usuario=" + usuario.getUsrId() +
                 '}';
+    }
+    
+    public void actualizarData(ArrayList<FacturaDetalle> detalles){
+        this.calcularIva(detalles);
+        this.calcularSubtotal(detalles);
+        this.calcularTotal(detalles);
+    }
+    
+    private void calcularSubtotal(ArrayList<FacturaDetalle> detalles){
+        this.cabSubtotal = 0;
+        for (FacturaDetalle detalle : detalles) {
+            this.cabSubtotal += detalle.getDetSubtotal();
+        }
+        this.cabSubtotal = GlobalValues.roundToTwoDecimals(cabSubtotal);
+    }
+    
+    private void calcularIva(ArrayList<FacturaDetalle> detalles){
+        this.cabTotalIva = 0;
+        for (FacturaDetalle detalle : detalles) {
+            this.cabTotalIva += detalle.getDetIva();
+        }
+        this.cabTotalIva = GlobalValues.roundToTwoDecimals(cabTotalIva);
+    }
+    
+    private void calcularTotal(ArrayList<FacturaDetalle> detalles){
+        this.cabTotal = 0;
+        for (FacturaDetalle detalle : detalles) {
+            this.cabTotal += detalle.getDetTotal();
+        }
+        this.cabTotal = GlobalValues.roundToTwoDecimals(cabTotal);
     }
 }

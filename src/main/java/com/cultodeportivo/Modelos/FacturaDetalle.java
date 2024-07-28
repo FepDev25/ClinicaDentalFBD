@@ -1,5 +1,6 @@
 package com.cultodeportivo.Modelos;
 
+import com.cultodeportivo.proyecto_fbd.GlobalValues;
 import java.util.Objects;
 
 public class FacturaDetalle {
@@ -10,17 +11,47 @@ public class FacturaDetalle {
     private int detCantidad;
     private Servicio servicio;
     private FacturaCabecera facturaCabecera; 
-
-    public FacturaDetalle(int detId, double detPrecioUnitario, double detSubtotal, double detIva, int detCantidad, Servicio servicio, FacturaCabecera facturaCabecera) {
+    private double detTotal;
+    
+    public FacturaDetalle(int detId, double total, double detSubtotal, double detIva, int detCantidad, Servicio servicio, FacturaCabecera facturaCabecera) {
         this.detId = detId;
-        this.detPrecioUnitario = detPrecioUnitario;
         this.detSubtotal = detSubtotal;
         this.detIva = detIva;
+        this.detTotal = total;
         this.detCantidad = detCantidad;
         this.servicio = Objects.requireNonNull(servicio, "El objeto 'servicio' no puede ser nulo");
         this.facturaCabecera = Objects.requireNonNull(facturaCabecera, "El objeto 'facturaCabecera' no puede ser nulo");
+        this.detPrecioUnitario = servicio.getSerPrecio();
     }
-
+    
+    public FacturaDetalle(int detCantidad, Servicio servicio, FacturaCabecera facturaCabecera) {
+        this.detCantidad = detCantidad;
+        this.servicio = Objects.requireNonNull(servicio, "El objeto 'servicio' no puede ser nulo");
+        this.facturaCabecera = Objects.requireNonNull(facturaCabecera, "El objeto 'facturaCabecera' no puede ser nulo");
+        calcularAtributos();
+    }
+    
+    public FacturaDetalle(Servicio servicio, FacturaCabecera facturaCabecera) {
+        this.servicio = Objects.requireNonNull(servicio, "El objeto 'servicio' no puede ser nulo");
+        this.facturaCabecera = Objects.requireNonNull(facturaCabecera, "El objeto 'facturaCabecera' no puede ser nulo");
+    }
+    
+    private void calcularAtributos(){
+        this.detPrecioUnitario = servicio.getSerPrecio();
+        
+        double subtotal = this.detPrecioUnitario * this.detCantidad;
+        double total = subtotal * 1.15;
+        
+        this.detIva = this.servicio.getSerIva() == 'S' ? (total-subtotal) : 0;
+        this.detSubtotal = subtotal;
+        this.detTotal = this.detIva != 0 ? total : subtotal; 
+        
+        this.detPrecioUnitario = GlobalValues.roundToTwoDecimals(detPrecioUnitario);
+        this.detIva = GlobalValues.roundToTwoDecimals(detIva);
+        this.detSubtotal = GlobalValues.roundToTwoDecimals(detSubtotal);
+        this.detTotal = GlobalValues.roundToTwoDecimals(detTotal);
+    }
+    
     public int getDetId() {
         return detId;
     }
@@ -83,6 +114,15 @@ public class FacturaDetalle {
         this.facturaCabecera = Objects.requireNonNull(facturaCabecera, "El objeto 'facturaCabecera' no puede ser nulo");
     }
 
+    public double getDetTotal() {
+        return detTotal;
+    }
+
+    public void setDetTotal(double detTotal) {
+        this.detTotal = detTotal;
+    }
+    
+    
     // Método toString
     @Override
     public String toString() {
@@ -92,8 +132,7 @@ public class FacturaDetalle {
                 ", detSubtotal=" + detSubtotal +
                 ", detIva=" + detIva +
                 ", detCantidad=" + detCantidad +
-                ", servicio=" + servicio +
-                ", facturaCabecera=" + facturaCabecera +
+                ", detTotal=" + detTotal +
                 '}';
     }
 }

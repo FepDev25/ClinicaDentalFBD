@@ -45,6 +45,7 @@ public class SecondaryController implements Initializable {
     private ArrayList<Servicio> servicios;
     private ButtonWorker btnWorker;
     private ButtonCitas btnCitas;
+    private ButtonFacturacion btnFact;
 
     public Control controlador;
     public AlertMessage message;
@@ -58,7 +59,10 @@ public class SecondaryController implements Initializable {
     public int indiceClientesCitas;
     
     public int indiceCitaEliminada;
-
+    
+    public int indiceServicioFacturacion;
+    public int indiceClienteFacturacion;
+    
     public TableWorker tableWorker;
 
     public ArrayList<Persona> getPersonas() {
@@ -149,6 +153,7 @@ public class SecondaryController implements Initializable {
         tableWorker = new TableWorker(this);
         btnWorker = new ButtonWorker(this);
         btnCitas = new ButtonCitas(this);
+        btnFact = new ButtonFacturacion(this);
         accionBotones();
         validarPermiso();
         label_usuario.setText("Usuario: " + GlobalValues.userApp.getUsrNombre());
@@ -157,6 +162,7 @@ public class SecondaryController implements Initializable {
         tableWorker.setDataTablas();
         btnWorker.asignarAcciones();
         btnCitas.asignarAcciones();
+        btnFact.asignarAcciones();
         message = new AlertMessage();
 
         this.tabla_cliente.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
@@ -192,6 +198,18 @@ public class SecondaryController implements Initializable {
         this.tabla_cancelar_citas.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 indiceCitaEliminada = this.tabla_cancelar_citas.getItems().indexOf(newSelection);
+            }
+        });
+        
+        this.table_servicios_facturas.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                indiceServicioFacturacion = this.table_servicios_facturas.getItems().indexOf(newSelection);
+            }
+        });
+        
+        this.tabla_seleccionar_cliente_facturas.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                indiceClienteFacturacion = this.tabla_seleccionar_cliente_facturas.getItems().indexOf(newSelection);
             }
         });
         
@@ -380,6 +398,40 @@ public class SecondaryController implements Initializable {
     @FXML
     private Label factura_label_telefono;
 
+    public Label getFactura_label_apellido() {
+        return factura_label_apellido;
+    }
+
+    public Label getFactura_label_cedula() {
+        return factura_label_cedula;
+    }
+
+    public Label getFactura_label_correo() {
+        return factura_label_correo;
+    }
+
+    public Label getFactura_label_direccion() {
+        return factura_label_direccion;
+    }
+
+    public Label getFactura_label_fecha() {
+        return factura_label_fecha;
+    }
+
+    public Label getFactura_label_nombre() {
+        return factura_label_nombre;
+    }
+
+    public Label getFactura_label_nro() {
+        return factura_label_nro;
+    }
+
+    public Label getFactura_label_telefono() {
+        return factura_label_telefono;
+    }
+    
+    
+
     @FXML
     private AnchorPane frame_barra_lateral;
 
@@ -409,9 +461,6 @@ public class SecondaryController implements Initializable {
 
     @FXML
     private AnchorPane frame_servicios;
-
-    @FXML
-    private TextField label_buscar_servicio;
 
     @FXML
     private TextField label_seleccionar_cantidad;
@@ -556,35 +605,134 @@ public class SecondaryController implements Initializable {
     // Detalles factura en menu facturacion 
 
     @FXML
-    private TableView<?> table_factura_detalle;
+    private TableView<FacturaDetalle> table_factura_detalle;
 
     @FXML
-    private TableColumn<?, ?> tb_fac_det_cantidad;
+    private TableColumn<FacturaDetalle, Integer> tb_fac_det_cantidad;
 
     @FXML
-    private TableColumn<?, ?> tb_fac_det_iva;
+    private TableColumn<FacturaDetalle, Double> tb_fac_det_iva;
 
     @FXML
-    private TableColumn<?, ?> tb_fac_det_nombre;
+    private TableColumn<FacturaDetalle, String> tb_fac_det_nombre;
 
     @FXML
-    private TableColumn<?, ?> tb_fac_det_subtotal;
-
+    private TableColumn<FacturaDetalle, Double> tb_fac_det_subtotal;
+    
     @FXML
-    private TableColumn<?, ?> tb_fac_det_total;
+    private TableColumn<FacturaDetalle, Double> tb_fac_unitario;
+    
+    @FXML
+    private TableColumn<FacturaDetalle, Double> tb_fac_det_total;
+
+    public TableView<FacturaDetalle> getTable_factura_detalle() {
+        return table_factura_detalle;
+    }
+
+    public TableColumn<FacturaDetalle, Integer> getTb_fac_det_cantidad() {
+        return tb_fac_det_cantidad;
+    }
+
+    public TableColumn<FacturaDetalle, Double> getTb_fac_det_iva() {
+        return tb_fac_det_iva;
+    }
+
+    public TableColumn<FacturaDetalle, String> getTb_fac_det_nombre() {
+        return tb_fac_det_nombre;
+    }
+
+    public TableColumn<FacturaDetalle, Double> getTb_fac_det_subtotal() {
+        return tb_fac_det_subtotal;
+    }
+
+    public TableColumn<FacturaDetalle, Double> getTb_fac_det_total() {
+        return tb_fac_det_total;
+    }
+
+    public TableColumn<FacturaDetalle, Double> getTb_fac_unitario() {
+        return tb_fac_unitario;
+    }
+    
+    
+    
+    
 
     // Factura cabecera en menu facturacion
     @FXML
-    private TableView<?> tabla_factura_cabecera;
+    private TableView<FacturaCabecera> tabla_factura_cabecera;
 
     @FXML
-    private TableColumn<?, ?> tabla_factura_cabecera_iva;
+    private TableColumn<FacturaCabecera, Double> tabla_factura_cabecera_iva;
 
     @FXML
-    private TableColumn<?, ?> tabla_factura_cabecera_subtotal;
+    private TableColumn<FacturaCabecera, Double> tabla_factura_cabecera_subtotal;
 
     @FXML
-    private TableColumn<?, ?> tabla_factura_cabecera_total;
+    private TableColumn<FacturaCabecera, Double> tabla_factura_cabecera_total;
+
+    public TableView<FacturaCabecera> getTabla_factura_cabecera() {
+        return tabla_factura_cabecera;
+    }
+
+    public TableColumn<FacturaCabecera, Double> getTabla_factura_cabecera_iva() {
+        return tabla_factura_cabecera_iva;
+    }
+
+    public TableColumn<FacturaCabecera, Double> getTabla_factura_cabecera_subtotal() {
+        return tabla_factura_cabecera_subtotal;
+    }
+
+    public TableColumn<FacturaCabecera, Double> getTabla_factura_cabecera_total() {
+        return tabla_factura_cabecera_total;
+    }
+
+    public Label getLabel_visor_total() {
+        return label_visor_total;
+    }
+    
+    // Seleccionar cliente facturacion
+    
+    @FXML
+    private AnchorPane seleccionar_cliente_facturas;
+    @FXML
+    private TextField buscar_cliente_facturas;
+    @FXML
+    private TableView<Cliente> tabla_seleccionar_cliente_facturas;
+    @FXML
+    private Button boton_cancelar_seleccion_cli_fac;
+    @FXML
+    private Button boton_aceptar_seleccion_cli_fac;
+    @FXML
+    private TableColumn<Cliente, String> tb_selec_cli_nombre;
+    @FXML
+    private TableColumn<Cliente, String> tb_selec_cli_apellido;
+    @FXML
+    private TableColumn<Cliente, String> tb_selec_cli_cedula;
+    public AnchorPane getSeleccionar_cliente_facturas() {
+        return seleccionar_cliente_facturas;
+    }
+    public TextField getBuscar_cliente_facturas() {
+        return buscar_cliente_facturas;
+    }
+    public TableView<Cliente> getTabla_seleccionar_cliente_facturas() {
+        return tabla_seleccionar_cliente_facturas;
+    }
+    public Button getBoton_cancelar_seleccion_cli_fac() {
+        return boton_cancelar_seleccion_cli_fac;
+    }
+    public Button getBoton_aceptar_seleccion_cli_fac() {
+        return boton_aceptar_seleccion_cli_fac;
+    }
+    public TableColumn<Cliente, String> getTb_selec_cli_nombre() {
+        return tb_selec_cli_nombre;
+    }
+    public TableColumn<Cliente, String> getTb_selec_cli_apellido() {
+        return tb_selec_cli_apellido;
+    }
+    public TableColumn<Cliente, String> getTb_selec_cli_cedula() {
+        return tb_selec_cli_cedula;
+    }
+    
     
     // Seleccionar doctor citas
     @FXML
@@ -1111,8 +1259,38 @@ public class SecondaryController implements Initializable {
         return empleado_usuario;
     }
     
+    // Seleccionar servicios factura 
+    @FXML
+    private TableView<Servicio> table_servicios_facturas;
     
+    @FXML
+    private TableColumn<Servicio, String> table_citas_facturas_nombre;
     
+    @FXML
+    private TableColumn<Servicio, Double> table_citas_facturas_precio;
+    
+    @FXML
+    private TextField label_buscar_servicio;
+
+    public TableView<Servicio> getTable_servicios_facturas() {
+        return table_servicios_facturas;
+    }
+
+    public TableColumn<Servicio, String> getTable_citas_facturas_nombre() {
+        return table_citas_facturas_nombre;
+    }
+
+    public TableColumn<Servicio, Double> getTable_citas_facturas_precio() {
+        return table_citas_facturas_precio;
+    }
+
+    public TextField getLabel_buscar_servicio() {
+        return label_buscar_servicio;
+    }
+    
+    public TextField getLabel_seleccionar_cantidad() {
+        return label_seleccionar_cantidad;
+    }
     public void llenarCombos(){
         List<String> permisosString = new ArrayList<>();
         for (Permiso permiso : this.getPermisos()) {

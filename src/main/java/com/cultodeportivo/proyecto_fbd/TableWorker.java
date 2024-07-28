@@ -3,6 +3,8 @@ package com.cultodeportivo.proyecto_fbd;
 import com.cultodeportivo.Modelos.Cita;
 import com.cultodeportivo.Modelos.Cliente;
 import com.cultodeportivo.Modelos.Empleado;
+import com.cultodeportivo.Modelos.FacturaCabecera;
+import com.cultodeportivo.Modelos.FacturaDetalle;
 import com.cultodeportivo.Modelos.Servicio;
 import java.time.LocalDateTime;
 import javafx.beans.property.SimpleStringProperty;
@@ -28,6 +30,10 @@ public class TableWorker {
         valuesClientesCitas();
         valuesCitasProximas();
         valuesCitasCancelar();
+        valuesServiciosFactura();
+        valuesDetallesFactura();
+        valuesCabeceraFactura();
+        valuesClientesFacturacion();
     }
 
     public void setDataTablas() {
@@ -93,13 +99,84 @@ public class TableWorker {
         vista.getTb_cancelar_cita_cliente().setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getCliente().nombreCompleto()));
         vista.getTb_cancelar_cita_fecha().setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().fechaString()));
     }
+    
+    public void valuesServiciosFactura() {
+        vista.getTable_citas_facturas_nombre().setCellValueFactory(new PropertyValueFactory<>("serNombre"));
+        vista.getTable_citas_facturas_precio().setCellValueFactory(new PropertyValueFactory<>("serPrecio"));
+    }
+    
+    public void valuesDetallesFactura(){
+        vista.getTb_fac_det_cantidad().setCellValueFactory(new PropertyValueFactory<>("detCantidad"));
+        vista.getTb_fac_det_iva().setCellValueFactory(new PropertyValueFactory<>("detIva"));
+        vista.getTb_fac_det_nombre().setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getServicio().getSerNombre()));
+        vista.getTb_fac_det_subtotal().setCellValueFactory(new PropertyValueFactory<>("detSubtotal"));
+        vista.getTb_fac_det_total().setCellValueFactory(new PropertyValueFactory<>("detTotal"));
+        vista.getTb_fac_unitario().setCellValueFactory(new PropertyValueFactory<>("detPrecioUnitario"));
+    }
+    
+    public void valuesCabeceraFactura(){
+        vista.getTabla_factura_cabecera_iva().setCellValueFactory(new PropertyValueFactory<>("cabTotalIva"));
+        vista.getTabla_factura_cabecera_subtotal().setCellValueFactory(new PropertyValueFactory<>("cabSubtotal"));
+        vista.getTabla_factura_cabecera_total().setCellValueFactory(new PropertyValueFactory<>("cabTotal"));
+    }
+    
+    private void valuesClientesFacturacion() {
+        vista.getTb_selec_cli_nombre().setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getPersona().getPerNombre()));
+        vista.getTb_selec_cli_apellido().setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getPersona().getPerApellido()));
+        vista.getTb_selec_cli_cedula().setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getPersona().getPerCedula()));
+    }
 
     public void setDataServicios() {
         vista.getTabla_servicios().setItems(serviciosObservable());
+        
+        ObservableList<Servicio> servicioFacsObservable = serviciosObservableFacturar();
+        FilteredList<Servicio> listaFiltrada = new FilteredList<>(servicioFacsObservable, p -> true);
+        vista.getLabel_buscar_servicio().textProperty().addListener((obs, viejoValor, nuevoValor) -> {
+            listaFiltrada.setPredicate(servicio -> {
+                if (nuevoValor == null || nuevoValor.isEmpty()) {
+                    return true;
+                }
+                String lowerCaseFilter = nuevoValor.toLowerCase();
+                if (servicio.getSerNombre().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        });
+        SortedList<Servicio> sortedData = new SortedList<>(listaFiltrada);
+        vista.getTable_servicios_facturas().setItems(sortedData);
+    }
+    
+    public void setDetalleFacturaDetalles(FacturaDetalle detalle){
+        vista.getTable_factura_detalle().getItems().add(detalle);
+    }
+    
+    public void setDataFacturaCabecera(FacturaCabecera cabecera){
+        vista.getTabla_factura_cabecera().getItems().clear();
+        vista.getTabla_factura_cabecera().getItems().add(cabecera);
     }
 
     public void setDataClientes() {
         vista.getTabla_cliente().setItems(clientesObservable());
+        
+        ObservableList<Cliente> clientesObservable = clientesActivosObservable();
+        FilteredList<Cliente> listaFiltrada = new FilteredList<>(clientesObservable, p -> true);
+        vista.getBuscar_cliente_facturas().textProperty().addListener((obs, viejoValor, nuevoValor) -> {
+            listaFiltrada.setPredicate(ciente -> {
+                if (nuevoValor == null || nuevoValor.isEmpty()) {
+                    return true;
+                }
+                String lowerCaseFilter = nuevoValor.toLowerCase();
+                if (ciente.getPersona().getPerNombre().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        });
+        SortedList<Cliente> sortedData = new SortedList<>(listaFiltrada);
+        vista.getTabla_seleccionar_cliente_facturas().setItems(sortedData);
     }
 
     public void setDataEmpleados() {
@@ -181,6 +258,18 @@ public class TableWorker {
         if (!vista.getServicios().isEmpty()) {
             for (Servicio servicio : vista.getServicios()) {
                 serviciosObservable.add(servicio);
+            }
+        }
+        return serviciosObservable;
+    }
+    
+    public ObservableList<Servicio> serviciosObservableFacturar() {
+        ObservableList<Servicio> serviciosObservable = FXCollections.observableArrayList();
+        if (!vista.getServicios().isEmpty()) {
+            for (Servicio servicio : vista.getServicios()) {
+                if (servicio.getSerEstado() == 'A'){
+                    serviciosObservable.add(servicio);
+                }
             }
         }
         return serviciosObservable;

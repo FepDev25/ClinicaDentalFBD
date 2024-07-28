@@ -57,6 +57,17 @@ public class Control {
     public ArrayList<Cita> obtenerCitas() {
         return operacionesAcceso.obtenerCitas(this.obtenerClientes(this.obtenerPersonas()), this.obtenerEmpleados(this.obtenerPersonas(), this.obtenerTipos()));
     }
+    
+    public ArrayList<FacturaCabecera> obtenerCabeceras(){
+        return operacionesAcceso.obtenerFacturasCabecera(
+                this.obtenerClientes(this.obtenerPersonas()), 
+                this.obtenerUsuarios(this.obtenerEmpleados(this.obtenerPersonas(), this.obtenerTipos()), 
+                        this.obtenerPermisos()));
+    }
+    
+    public ArrayList<FacturaDetalle> obtenerDetalles(){
+        return operacionesAcceso.obtenerFacturasDetalle(this.obtenerServicios(), this.obtenerCabeceras());
+    }
 
     public boolean agregarPersona(Persona persona) {
         String validarPersona = validar.validarPersona(persona);
@@ -240,7 +251,11 @@ public class Control {
     public ArrayList<Usuario> obtenerUsuarios(ArrayList<Empleado> empleados, ArrayList<Permiso> permisos) {
         return operacionesAcceso.obtenerUsuarios(empleados, permisos);
     }
-
+    
+    public void obtenerFacturas(){
+        
+    }
+    
     public ArrayList<Servicio> obtenerServicios() {
         return operacionesAcceso.obtenerServicios();
     }
@@ -275,6 +290,8 @@ public class Control {
             if ((!controller2.getEmpleados().isEmpty()) && (!controller2.getPermisos().isEmpty())) {
                 controller2.setUsuarios(this.obtenerUsuarios(controller2.getEmpleados(), controller2.getPermisos()));
                 controller2.setCitas(this.obtenerCitas());
+                controller2.setCabeceras(this.obtenerCabeceras());
+                controller2.setDetalles(this.obtenerDetalles());
             } else {
                 return false;
             }

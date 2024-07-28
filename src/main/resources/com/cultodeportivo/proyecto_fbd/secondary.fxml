@@ -105,11 +105,12 @@
                                     </TableView>
                                     <TableView fx:id="table_factura_detalle" prefHeight="461.0" prefWidth="730.0">
                                       <columns>
-                                        <TableColumn fx:id="tb_fac_det_nombre" prefWidth="397.6082763671875" text="Nombre Servicio" />
-                                        <TableColumn fx:id="tb_fac_det_cantidad" prefWidth="78.3917236328125" text="Cantidad" />
-                                          <TableColumn fx:id="tb_fac_det_subtotal" prefWidth="90.83441162109375" text="Subtotal" />
-                                          <TableColumn fx:id="tb_fac_det_iva" prefWidth="75.00439453125" text="IVA" />
-                                          <TableColumn fx:id="tb_fac_det_total" prefWidth="96.00433349609375" text="Total" />
+                                        <TableColumn fx:id="tb_fac_det_nombre" prefWidth="255.0" text="Nombre Servicio" />
+                                          <TableColumn fx:id="tb_fac_unitario" prefWidth="100.0" text="Precio Unitario" />
+                                        <TableColumn fx:id="tb_fac_det_cantidad" prefWidth="100.0" text="Cantidad" />
+                                          <TableColumn fx:id="tb_fac_det_subtotal" prefWidth="100.0" text="Subtotal" />
+                                          <TableColumn fx:id="tb_fac_det_iva" prefWidth="77.0" text="IVA" />
+                                          <TableColumn fx:id="tb_fac_det_total" prefWidth="100.0" text="Total" />
                                       </columns>
                                     </TableView>
                                     <Label layoutX="4.0" layoutY="471.0" text="Total Factura:">
@@ -125,19 +126,25 @@
                                     <String fx:value="shadow" />
                                  </styleClass>
                                  <children>
-                                    <Label fx:id="label_usuario1" layoutX="30.0" layoutY="21.0" text="Servicio:">
+                                    <Label fx:id="label_usuario1" layoutX="10.0" layoutY="10.0" text="Servicio:">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="label_buscar_servicio" layoutX="94.0" layoutY="18.0" />
-                                    <Label fx:id="label_usuario11" layoutX="301.0" layoutY="21.0" text="Cantidad:">
+                                    <TextField fx:id="label_buscar_servicio" layoutX="75.0" layoutY="10.0" prefHeight="25.0" prefWidth="181.0" />
+                                    <Label fx:id="label_usuario11" layoutX="301.0" layoutY="10.0" text="Cantidad:">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="label_seleccionar_cantidad" layoutX="380.0" layoutY="18.0" prefHeight="25.0" prefWidth="120.0" />
-                                    <Button fx:id="boton_buscar_servicio" layoutX="380.0" layoutY="60.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="120.0" styleClass="boton_anchor" stylesheets="@estilos.css" text="Buscar" />
+                                    <TextField fx:id="label_seleccionar_cantidad" layoutX="380.0" layoutY="10.0" prefHeight="25.0" prefWidth="120.0" text="1" />
+                                    <Button fx:id="boton_buscar_servicio" layoutX="380.0" layoutY="50.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="120.0" styleClass="boton_anchor" stylesheets="@estilos.css" text="Aceptar" />
+                                    <TableView fx:id="table_servicios_facturas" layoutY="40.0" prefHeight="116.0" prefWidth="294.0">
+                                      <columns>
+                                        <TableColumn fx:id="table_citas_facturas_nombre" prefWidth="210.0" text="Servicio" />
+                                        <TableColumn fx:id="table_citas_facturas_precio" prefWidth="83.0" text="Precio" />
+                                      </columns>
+                                    </TableView>
                                  </children>
                               </AnchorPane>
                               <AnchorPane layoutX="830.0" layoutY="5.0" prefHeight="155.0" prefWidth="200.0" stylesheets="@estilos.css">
@@ -151,6 +158,30 @@
                                           <Font name="System Bold" size="60.0" />
                                        </font>
                                     </Label>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane fx:id="seleccionar_cliente_facturas" layoutX="300.0" layoutY="5.0" prefHeight="420.0" prefWidth="550.0" stylesheets="@estilos.css" visible="false">
+                                 <styleClass>
+                                    <String fx:value="white-bg" />
+                                    <String fx:value="shadow" />
+                                 </styleClass>
+                                 <children>
+                                    <Button fx:id="boton_cancelar_seleccion_cli_fac" layoutX="30.0" layoutY="371.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" styleClass="boton_eliminar" stylesheets="@estilos.css" text="Cancelar" />
+                                    <Button fx:id="boton_aceptar_seleccion_cli_fac" layoutX="328.0" layoutY="371.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" styleClass="boton_anchor" stylesheets="@estilos.css" text="Aceptar" />
+                                    <TableView fx:id="tabla_seleccionar_cliente_facturas" layoutX="30.0" layoutY="84.0" prefHeight="271.0" prefWidth="490.0">
+                                       <columns>
+                                          <TableColumn fx:id="tb_selec_cli_nombre" prefWidth="175.0" text="Nombre" />
+                                          <TableColumn fx:id="tb_selec_cli_apellido" prefWidth="175.0" text="Apellidos" />
+                                          <TableColumn fx:id="tb_selec_cli_cedula" prefWidth="137.0" text="Cedula" />
+                                       </columns>
+                                    </TableView>
+                                    <Label layoutX="30.0" layoutY="14.0" text="Seleccionar Cliente:">
+                                       <font>
+                                          <Font name="System Bold" size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="279.0" layoutY="52.0" text="Buscar:" />
+                                    <TextField fx:id="buscar_cliente_facturas" layoutX="359.0" layoutY="48.0" />
                                  </children>
                               </AnchorPane>
                            </children></AnchorPane>

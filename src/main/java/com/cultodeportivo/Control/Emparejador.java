@@ -120,5 +120,40 @@ public class Emparejador {
         }
     }
     
-
+    public FacturaCabecera emparejarFacturaCabecera(int cli_id, int user_id, ArrayList<Cliente> clientes, ArrayList<Usuario> usuarios){
+        Optional <Cliente> clienteOpt = clientes.stream()
+                .filter(c -> c.getCliId() == cli_id)
+                .findFirst();
+        
+        Optional<Usuario> usuarioOpt = usuarios.stream()
+               .filter(u -> u.getUsrId() == user_id)
+               .findFirst();
+        
+        if (usuarioOpt.isPresent() && clienteOpt.isPresent()){
+            Cliente cliente = clienteOpt.get();
+            Usuario usuario = usuarioOpt.get();
+            return new FacturaCabecera(cliente, usuario);
+        } else{
+            return null;
+        }
+    }
+    
+    public FacturaDetalle emparejarFacturaDetalle(int cab_id, int serv_id, ArrayList<FacturaCabecera> cabeceras, ArrayList<Servicio> servicios){
+        Optional <FacturaCabecera> cabOpt = cabeceras.stream()
+                .filter(c -> c.getCabId() == cab_id)
+                .findFirst();
+        
+        Optional<Servicio> servicioOpt = servicios.stream()
+               .filter(s -> s.getSerId() == serv_id)
+               .findFirst();
+        
+        if (cabOpt.isPresent() && servicioOpt.isPresent()){
+            FacturaCabecera cabecera = cabOpt.get();
+            Servicio servicio = servicioOpt.get();
+            return new FacturaDetalle(servicio, cabecera);
+        } else{
+            return null;
+        }
+    }
+    
 }
