@@ -37,6 +37,8 @@ public class ButtonFacturacion {
         vista.getBoton_facturar().setOnAction(e -> facturar());
         
         vista.getFactura_label_fecha().setText("Fecha: " + fechaActual.format(DateTimeFormatter.ISO_DATE));
+        vista.getFactura_label_nro().setText("Nro. Factura: " + GlobalValues.numeroFactura);
+        setConsumidorFinal();
     }
     
     public void agregarServicioDetalle() {
@@ -103,9 +105,11 @@ public class ButtonFacturacion {
         vista.getTabla_factura_cabecera().getItems().clear();
         vista.getLabel_visor_total().setText("0.00");
         this.detalles = new ArrayList<>();
-        this.cliente = null;
         this.cabecera = new FacturaCabecera(fechaActual, GlobalValues.userApp);
         this.pdfGenerator = new FacturaPDF(cabecera);
+        vista.controlador.actualizarNumeroFactura();
+        vista.getFactura_label_nro().setText("Nro. Factura: " + GlobalValues.numeroFactura);
+        setConsumidorFinal();
     }
     
     public void llenarInfoCliente(Cliente cliente) {
@@ -139,6 +143,12 @@ public class ButtonFacturacion {
             vista.message.errorMessage("No hay detalles factura para eliminar.");
         }
         
+    }
+    
+    public void setConsumidorFinal(){
+        this.cliente = vista.controlador.empj.encontrarConsumidorFinal(vista.controlador.obtenerClientes(vista.controlador.obtenerPersonas()));
+        llenarInfoCliente(cliente);
+        cabecera.setCliente(cliente);
     }
     
 }

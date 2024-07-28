@@ -8,6 +8,7 @@ import java.math.RoundingMode;
 public class GlobalValues {
     public static Usuario userApp;
     public static Impuesto iva;
+    public static int numeroFactura;
     
     public static double roundToTwoDecimals(double value) {
         BigDecimal bd = new BigDecimal(Double.toString(value));

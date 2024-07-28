@@ -6,6 +6,7 @@ module com.cultodeportivo.proyecto_fbd {
     requires jakarta.activation;
     requires itextpdf;
     requires java.desktop;
+    requires jbcrypt;
     
     opens com.cultodeportivo.proyecto_fbd to javafx.fxml;
     opens com.cultodeportivo.Modelos to javafx.base;

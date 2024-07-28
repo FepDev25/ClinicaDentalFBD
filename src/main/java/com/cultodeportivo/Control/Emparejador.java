@@ -156,4 +156,20 @@ public class Emparejador {
         }
     }
     
+    public Cliente encontrarConsumidorFinal(ArrayList<Cliente> clientes){
+        String cedula = "9999999999";
+        Optional<Cliente> clienteOpt = clientes.stream()
+               .filter(e -> e.getPersona().getPerCedula().equals(cedula))
+               .findFirst();
+        
+        if (clienteOpt.isPresent()){
+            Cliente cliente = clienteOpt.get();
+            return cliente;
+        } else {
+            System.out.println("Cliente no encontrada.");
+            return null;
+        }
+    }
+    
+    
 }

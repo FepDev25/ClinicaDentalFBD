@@ -2,13 +2,11 @@ package com.cultodeportivo.Control;
 
 import com.cultodeportivo.Modelos.*;
 import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Timestamp;
-import java.sql.Types;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class OperacionesEscritura {
 
@@ -75,16 +73,20 @@ public class OperacionesEscritura {
         }
         return false;
     }
+    
+    private String encriptarContrasenia(String contrasenia) {
+        return BCrypt.hashpw(contrasenia, BCrypt.gensalt());
+    }
 
     public boolean CrearUsuario(Usuario user) {
         ConexionOracle.getInstance().getConexion();
-
+        String contraseniaEncriptada = encriptarContrasenia(user.getUsrContrasenia());
         try {
             String sql = "INSERT INTO CD_USUARIOS VALUES (usuarios_seq.nextval, ?, ?, ?, ?)";
             myStatement = ConexionOracle.getInstance().getConexion().prepareStatement(sql);
 
             myStatement.setString(1, user.getUsrNombre());
-            myStatement.setString(2, user.getUsrContrasenia());
+            myStatement.setString(2, contraseniaEncriptada);
             myStatement.setInt(3, user.getEmpleado().getEmpId());
             myStatement.setInt(4, user.getPermiso().getPrmId());
 
@@ -128,7 +130,6 @@ public class OperacionesEscritura {
 
             Timestamp fechaT = Timestamp.valueOf(cabecera.getCabFecha());
 
-            // Registrar parámetros de entrada
             callableStatement.setTimestamp(1, fechaT);
             callableStatement.setDouble(2, cabecera.getCabSubtotal());
             callableStatement.setDouble(3, cabecera.getCabTotalIva());
@@ -136,10 +137,8 @@ public class OperacionesEscritura {
             callableStatement.setInt(5, cabecera.getCliente().getCliId());
             callableStatement.setInt(6, cabecera.getUsuario().getUsrId());
 
-            // Registrar parámetro de salida
             callableStatement.registerOutParameter(7, java.sql.Types.INTEGER);
 
-            // Ejecutar la consulta
             callableStatement.execute();
 
             int generatedId = callableStatement.getInt(7);
@@ -218,5 +217,5 @@ public class OperacionesEscritura {
         }
         return false;
     }
-
+    
 }

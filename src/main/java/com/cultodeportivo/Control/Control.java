@@ -293,6 +293,7 @@ public class Control {
                 controller2.setCitas(this.obtenerCitas());
                 controller2.setCabeceras(this.obtenerCabeceras());
                 controller2.setDetalles(this.obtenerDetalles());
+                GlobalValues.numeroFactura = operacionesAcceso.obtenerNumeroFactura();
             } else {
                 return false;
             }
@@ -302,6 +303,12 @@ public class Control {
         Impuesto i = operacionesAcceso.obtenerImpuesto();
         GlobalValues.iva = i;
         return true;
+    }
+    
+    public void actualizarNumeroFactura(){
+        int proximo = GlobalValues.numeroFactura += 1;
+        operacionesAcceso.escribirArchivo(String.valueOf(proximo));
+        GlobalValues.numeroFactura = operacionesAcceso.obtenerNumeroFactura();
     }
 
     public boolean validarDisponibilidadCita(Cita nuevaCita, List<Cita> citasExistente, Empleado empleado) {

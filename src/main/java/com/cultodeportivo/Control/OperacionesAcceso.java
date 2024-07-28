@@ -3,10 +3,17 @@ package com.cultodeportivo.Control;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import com.cultodeportivo.Modelos.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class OperacionesAcceso {
     private ConexionOracle conexion;
@@ -227,7 +234,7 @@ public class OperacionesAcceso {
         }
         return null;
     }
-    
+
     public ArrayList<Servicio> obtenerServicios() {
         ArrayList<Servicio> servicios = new ArrayList<>();
         ConexionOracle.getInstance().getConexion();
@@ -390,5 +397,33 @@ public class OperacionesAcceso {
         }
         return null;
     }
+    
+    public int obtenerNumeroFactura() {
+        String nombreArchivo = "numeroFactura.txt";
+        int numeroFactura = -1;
+        File archivo = new File(nombreArchivo);
+        try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
+            String linea;
+            System.out.println("Contenido del archivo " + nombreArchivo + ":");
+            if ((linea = br.readLine()) != null) {
+                numeroFactura = Integer.parseInt(linea);
+            }
+            return numeroFactura;
+        } catch (IOException e) {
+            System.out.println("Error al leer el archivo: " + e.getMessage());
+        }
+        return numeroFactura;
+    }
+    
+    public void escribirArchivo(String texto) {
+        String nombreArchivo = "numeroFactura.txt";
+        File archivo = new File(nombreArchivo);
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(archivo))) {
+            bw.write(texto);
+        } catch (IOException e) {
+            System.out.println("Error al actualizar Numero de factura.");
+        }
+    }
+
     
 }
